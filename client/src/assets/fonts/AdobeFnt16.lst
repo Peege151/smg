@@ -1,0 +1,166 @@
+%!Adobe-FontList 1.16
+%Locale:0x409
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:AGaramondPro-Bold
+FamilyName:Adobe Garamond Pro
+StyleName:Bold
+MenuName:Adobe Garamond Pro Bold
+StyleBits:0
+WeightClass:700
+WidthClass:5
+AngleClass:0
+FullName:Adobe Garamond Pro Bold
+WritingScript:Roman
+OutlineFileName:\AGaramondPro-Bold.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+FileLength:75116
+FileModTime:1352729943
+DesignSize:120
+NameArray:0,Mac,4,Adobe Garamond Pro Bold
+NameArray:0,Win,1,Adobe Garamond Pro Bold
+NameArray:0,Win,16,Adobe Garamond Pro
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:TrueType
+FontName:Akkurat-Light
+FamilyName:Akkurat-Light
+StyleName:Light
+MenuName:Akkurat-Light
+StyleBits:0
+WeightClass:200
+WidthClass:5
+AngleClass:0
+FullName:Akkurat-Light
+WritingScript:Roman
+OutlineFileName:\Akkurat-Light.ttf
+DataFormat:sfntData
+FileLength:22068
+FileModTime:1461700805
+NameArray:0,Mac,4,Akkurat-Light
+NameArray:0,Win,1,Akkurat-Light
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:Knockout-HTF27-JuniorBantamwt
+FamilyName:Knockout HTF27-JuniorBantamwt
+StyleName:Regular
+MenuName:Knockout HTF27-JuniorBantamwt
+StyleBits:0
+WeightClass:500
+WidthClass:5
+AngleClass:0
+FullName:Knockout-HTF27-JuniorBantamwt
+WritingScript:Roman
+OutlineFileName:\Knockout-HTF27-JuniorBantamwt.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+FileLength:32184
+FileModTime:1471302824
+NameArray:0,Mac,4,Knockout-HTF27-JuniorBantamwt
+NameArray:0,Win,1,Knockout HTF27-JuniorBantamwt
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:Knockout-HTF47-Bantamweight
+FamilyName:Knockout HTF47-Bantamweight
+StyleName:Regular
+MenuName:Knockout HTF47-Bantamweight
+StyleBits:0
+WeightClass:500
+WidthClass:5
+AngleClass:0
+FullName:Knockout-HTF47-Bantamweight
+WritingScript:Roman
+OutlineFileName:\Knockout-HTF47-Bantamweight.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+FileLength:32600
+FileModTime:1471302824
+NameArray:0,Mac,4,Knockout-HTF47-Bantamweight
+NameArray:0,Win,1,Knockout HTF47-Bantamweight
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:Mercury-DisplayRoman
+FamilyName:Mercury
+StyleName:Display Roman
+MenuName:Mercury Display
+StyleBits:0
+WeightClass:500
+WidthClass:5
+AngleClass:0
+FullName:Mercury Display Roman
+WritingScript:Roman
+OutlineFileName:\Mercury-DisplayRoman.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+FileLength:37604
+FileModTime:1375820582
+NameArray:0,Mac,4,Mercury Display Roman
+NameArray:0,Win,1,Mercury Display
+NameArray:0,Win,16,Mercury
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:MinionPro-Regular
+FamilyName:Minion Pro
+StyleName:Regular
+MenuName:Minion Pro
+StyleBits:0
+WeightClass:400
+WidthClass:5
+AngleClass:0
+FullName:Minion Pro
+WritingScript:Roman
+OutlineFileName:\MinionPro-Regular.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+FileLength:218640
+FileModTime:1373550036
+DesignSize:110
+NameArray:0,Mac,4,Minion Pro
+NameArray:0,Win,1,Minion Pro
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:FuturaFuturis-Regular
+FamilyName:FuturaFuturis
+StyleName:Regular
+MenuName:FuturaFuturis
+StyleBits:0
+WeightClass:400
+WidthClass:5
+AngleClass:0
+FullName:FuturaFuturis Regular
+WritingScript:Roman
+OutlineFileName:\ParaType - FuturaFuturis Regular.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+FileLength:67876
+FileModTime:1389105556
+NameArray:0,Mac,4,FuturaFuturis Regular
+NameArray:0,Win,1,FuturaFuturis
+%EndFont
+
