@@ -7,3 +7,21 @@ body {
   font-family: 'KnockoutBan';
   src: local('KnockoutBan'), url('./assets/fonts/KnockoutBan.otf');
 }
+@font-face {
+  font-family: 'Akkurat-Light';
+  src: local('Akkurat-Light'), url('./assets/fonts/Akkurat-Light.ttf');
+  font-weight: 200
+}
+
+@font-face {
+  font-family: 'MinionPro';
+  src: local('MinionPro'), url('./assets/fonts/MinionPro-Regular.otf');
+}
+@font-face {
+  font-family: 'ParaType';
+  src: local('ParaType'), url('./assets/fonts/ParaType.otf');
+}
+@font-face {
+  font-family: 'KnockoutJr';
+  src: local('KnockoutJr'), url('./assets/fonts/KnockoutJunior.otf');
+}
