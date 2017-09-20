@@ -19,6 +19,20 @@ class SearchCategories extends Component {
         selected: obj
       }
     }
+
+    search(){
+      console.log('TODO -- Add Actions ');
+    }
+
+    clearSearch(){
+      let obj = {};
+      let categoriesOfSelection = CATEGORIES.forEach((cat, index) => {
+        let key = cat.selector;
+        console.log(key)
+        obj[key] = [];
+      });
+      this.setState({selected: obj});
+    }
     onCarrotClick(idx){
       let array = this.state.collapsed.slice()
       if(this.state.collapsed.indexOf(idx) > -1 ){
@@ -30,18 +44,17 @@ class SearchCategories extends Component {
       })
     }
 
-    // TODO Fix this.  Not adding value to selected array on the state.
     clickCheckbox(category, variant){
-      console.log('variant => ', category, variant);
-      // let categoryChecked = this.state.selected[category.selector].splice();
-      // if(this.state.selected[category.selector].indexOf(variant.value) > -1) {
-      //   categoryChecked.push(variant.value)
-      // } else {
-      //
-      // }
-      // this.setState({selected: categoryChecked }, () => {
-      //   console.log('State => ', this.state)
-      // })
+      let categoryObject = Object.assign(this.state.selected);
+      if ( categoryObject[category.selector].indexOf(variant.value) === -1 ) {
+        categoryObject[category.selector].push(variant.value)
+      } else {
+        console.log('Removing From Index', this.state.selected[category.selector].indexOf(variant.value))
+        categoryObject[category.selector].splice(this.state.selected[category.selector].indexOf(variant.value), 1);
+      }
+      this.setState({selected: categoryObject}, () => {
+        console.log('New State => ', this.state);
+      })
     }
 
     returnArrow(index){
@@ -87,8 +100,9 @@ class SearchCategories extends Component {
                         category.inline === true  && styles.inlineCheckbox,
                       )}>
                         <input
-                          onClick={() => {this.clickCheckbox(category, variant)}}
+                          onChange={() => {this.clickCheckbox(category, variant)}}
                           className={css(styles.checkbox)}
+                          checked={this.state.selected[category.selector].indexOf(variant.value) > -1}
                           type='checkbox' />
                         <span> {variant.title} </span>
                       </div>
@@ -103,6 +117,11 @@ class SearchCategories extends Component {
       return (
         <div className={css(styles.wrapper)}>
           { categories }
+          <div className={css(styles.buttonSpacer)}></div>
+          <div className={css(styles.buttonWrapper)}>
+            <button onClick={() => this.clearSearch() } className={css(styles.buttons)}> Clear </button>
+            <button onClick={() => this.search() } className={css(styles.buttons)}> Search </button>
+          </div>
         </div>
       );
     }

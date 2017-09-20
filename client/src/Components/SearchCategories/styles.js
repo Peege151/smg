@@ -1,5 +1,5 @@
 import { StyleSheet } from 'aphrodite';
-
+const BUTTON_SPACER = 20
 const styles = StyleSheet.create({
     wrapper: {
       fontFamily: 'times',
@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
       padding: 10,
       background: '#f0f0f0',
       display: 'inline-block',
+      marginBottom: BUTTON_SPACER
     },
     similarArtists: {
       width: '100%',
@@ -58,6 +59,25 @@ const styles = StyleSheet.create({
     },
     checkbox: {
       transform: 'scale(2)'
+    },
+    buttonWrapper: {
+      position: 'absolute',
+      bottom: 0,
+      right:0,
+    },
+    buttonSpacer: {
+      height: BUTTON_SPACER
+    },
+    buttons: {
+      background: '#4c7c5f',
+      color: 'white',
+      border: 'none',
+      padding: 5,
+      fontSize: 18,
+      width: 100,
+      ':first-of-type': {
+        marginRight: 10,
+      }
     }
 });
 export default styles;
