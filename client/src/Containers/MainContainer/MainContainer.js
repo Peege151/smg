@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import logo from './../../assets/logo-black.png';
-import Browse from '../../Components/Browse/Browse.js';
+import SearchContainer from '../SearchContainer/SearchContainer.js';
+import BrowseContainer from '../BrowseContainer/BrowseContainer.js';
 import styles from './styles.js';
 import { css } from 'aphrodite';
-import Routes from '../../routes.js';
+
 import {
-  BrowserRouter as Router,
-  Route,
+  Route
 } from 'react-router-dom'
 
 class MainContainer extends Component {
@@ -19,8 +18,9 @@ class MainContainer extends Component {
 
     render() {
         return (
-          <div className={css(styles.wrapper)}>
-            <Route path='/browse' component={Browse} />
+          <div className={ css(styles.wrapper) }>
+            <Route exact path='/' component={ SearchContainer } />
+            <Route path='/browse' component={ BrowseContainer } />
           </div>
       );
     }

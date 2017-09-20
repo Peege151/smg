@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-
 import styles from './styles.js';
 import { css } from 'aphrodite';
 
-
-class Browse extends Component {
+class BrowseContainer extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -12,14 +10,13 @@ class Browse extends Component {
       };
     }
 
-
     render() {
         return (
-          <div className={css(styles.wrapper)}>
-            <h1> Browse </h1>
+          <div className={ css(styles.wrapper) }>
+              Browse Container
           </div>
       );
     }
 }
 
-export default Browse;
+export default BrowseContainer;

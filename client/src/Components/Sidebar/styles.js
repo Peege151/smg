@@ -8,15 +8,13 @@ const styles = StyleSheet.create({
       fontSize: 24,
       fontWeight: 400,
       width: '20%',
-      display: 'inline-block'
+      display: 'inline-block',
+      paddingRight: 30,
+      boxSizing: 'border-box',
     },
     item: {
       margin: 0,
       padding: '5px'
-    },
-    logo: {
-      width: '100%',
-      marginBottom: 20
     },
     active: {
       background: '#4c7c5f',
@@ -28,5 +26,4 @@ const styles = StyleSheet.create({
       textDecoration: 'none'
     }
 });
-
-export default styles;
+export { styles };

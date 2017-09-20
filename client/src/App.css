@@ -2,11 +2,13 @@
   width: 90%;
   margin: 0 auto;
   padding-top:50px;
+  box-sizing: border-box;
 }
 
-.App-logo {
+.app-logo {
   height: 80px;
-  margin-top: 20px;
+  margin-bottom: 20px;
+  display: block;
 }
 
 .App-header {
@@ -17,4 +19,7 @@
 
 .App-intro {
   font-size: large;
+}
+* {
+  box-sizing: border-box;
 }

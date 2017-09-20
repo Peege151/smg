@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import Sidebar from './Components/Sidebar/Sidebar.js';
-import Searchbar from './Components/Sidebar/Sidebar.js';
 import MainContainer from './Containers/MainContainer/MainContainer.js'
+import logo from './assets/logo-black.png';
 
 import {
   BrowserRouter as Router,
-  Route,
 } from 'react-router-dom'
 
 import './App.css';
@@ -18,6 +17,7 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
+          <img src={logo} className='app-logo' alt="logo" />
           <Sidebar />
           <MainContainer>
 

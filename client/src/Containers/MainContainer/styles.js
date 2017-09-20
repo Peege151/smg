@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
       fontWeight: 400,
       width: '80%',
       display: 'inline-block',
-      verticalAlign: 'top'
+      verticalAlign: 'top',
+      boxSizing: 'border-box',
     }
 });
 

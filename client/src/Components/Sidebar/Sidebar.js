@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import logo from './../../assets/logo-black.png';
 
-import styles from './styles.js';
+import { styles } from './styles.js';
 import { css } from 'aphrodite';
 import {
-  BrowserRouter as Router,
-  Route,
   Link
 } from 'react-router-dom'
 
@@ -34,22 +31,21 @@ class Sidebar extends Component {
       const headers = routes.map( (route, index) => {
         return (
             <div key={index + '1'}>
-              <h3
-                  onClick={() => this.onClick(index)}
-                  className={css(
-                    styles.item,
-                    this.state.active === index  && styles.active,
-                  )}>
-                    <Link className={css(styles.link)} to={route.href}>
-                     {route.title}
-                    </Link>
-              </h3>
+              <Link className={css(styles.link)} to={route.href}>
+                <h3
+                    onClick={() => this.onClick(index)}
+                    className={css(
+                      styles.item,
+                      this.state.active === index  && styles.active,
+                    )}>
+                       {route.title}
+                </h3>
+              </Link>
             </div>
         )
       })
         return (
           <div className={css(styles.wrapper)}>
-            <img src={logo} className={css(styles.logo)} alt="logo" />
               <div>
                 { headers }
               </div>
