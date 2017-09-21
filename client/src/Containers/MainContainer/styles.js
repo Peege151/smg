@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
       fontFamily: "Akkurat-Light",
       fontSize: 24,
       fontWeight: 400,
-      width: '80%',
       display: 'inline-block',
       verticalAlign: 'top',
       boxSizing: 'border-box',

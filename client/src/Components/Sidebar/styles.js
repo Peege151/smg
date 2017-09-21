@@ -5,25 +5,33 @@ import { StyleSheet } from 'aphrodite';
 const styles = StyleSheet.create({
     wrapper: {
       fontFamily: "Akkurat-Light",
-      fontSize: 24,
-      fontWeight: 400,
-      width: '20%',
       display: 'inline-block',
-      paddingRight: 30,
       boxSizing: 'border-box',
+      position: 'absolute',
+      right: '5%',
+      paddingRight: 0,
+    },
+    innerWrapper: {
+      position: 'relative',
+      zIndex: 3,
+    },
+    list: {
+      width: '100%',
+      display: 'inline',
+      zIndex: 2,
+      color: 'white',
     },
     item: {
       margin: 0,
-      padding: '5px'
+      color: 'white',
     },
     active: {
-      background: '#4c7c5f',
-      color: 'white'
+      borderBottom: '1px solid #4c7c5f',
     },
-
     link: {
       color: 'inherit',
-      textDecoration: 'none'
+      textDecoration: 'none',
+      display: 'inline-block',
     }
 });
 export { styles };

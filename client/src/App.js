@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Sidebar from './Components/Sidebar/Sidebar.js';
 import MainContainer from './Containers/MainContainer/MainContainer.js'
-import logo from './assets/logo-black.png';
 
 import {
   BrowserRouter as Router,
@@ -17,7 +16,6 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <img src={logo} className='app-logo' alt="logo" />
           <Sidebar />
           <MainContainer>
 

@@ -19,6 +19,9 @@ const styles = StyleSheet.create({
     },
     display: 'inline'
   },
+  header: {
+    display: 'table'
+  },
   routeItem: {
     display: 'inline',
   },

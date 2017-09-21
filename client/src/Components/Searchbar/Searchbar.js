@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import styles from './styles.js';
 import { css } from 'aphrodite';
-import  * as sidebarStyles from '../Sidebar/styles.js';
-
 
 const routes = [
   {title: 'Search By Title'},
@@ -32,7 +30,7 @@ class Searchbar extends Component {
       })
       return (
         <div className={css(styles.wrapper)}>
-           <h3 className={css(sidebarStyles.styles.item)} > Search </h3>
+           <h3 className={css(styles.header)}> Search </h3>
            <ul className={css(styles.list)}>
              { items }
            </ul>
