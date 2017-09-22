@@ -53,10 +53,14 @@ class Filters extends Component {
       })
     }
 
-    clearVibe = (syn, e) => {
-      console.log('Syn and E root', syn)
-      console.log('Clearing Index', syn.stopPropagation, e.stopPropagation)
-      e.stopPropagation()
+    clearVibe = (idx, e) => {
+      e.stopPropagation();
+      console.log('State', this.state.vibeDescriptors);
+      let array = this.state.vibeDescriptors.slice();
+      console.log('array before', array);
+      array.splice(idx, 1);
+      console.log('array after', array);
+      this.setState({vibeDescriptors: array})
     }
 
     selectFilter = (data) => {
@@ -71,7 +75,7 @@ class Filters extends Component {
         console.log('Removing From Index', this.state.selected[category.selector].indexOf(variant.value))
         categoryObject[category.selector].splice(this.state.selected[category.selector].indexOf(variant.value), 1);
       }
-        console.log('New State => ', this.state);
+      console.log('New State => ', this.state);
       if ( category.selector === 'vibe' ) {
         vibeDescriptors.splice(vibeIndex, 1, variant);
       }
@@ -79,6 +83,8 @@ class Filters extends Component {
         selected: categoryObject,
         showingDescriptorMenu: showingDescriptorMenu,
         vibeDescriptors: vibeDescriptors
+      }, () => {
+        console.log('Vibes => ', this.state.vibeDescriptors)
       })
     }
 

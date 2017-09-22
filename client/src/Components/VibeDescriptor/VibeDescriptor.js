@@ -59,7 +59,7 @@ class VibeDescriptor extends Component {
                     </span>
 
                     <div className={css(styles.inner)}>
-                      <div onClick={ this.props.clearVibe.bind(this, 1) } className={css(styles.clearVibe)}>
+                      <div onClick={ this.props.clearVibe.bind(this.props.descriptorIndex, this.props.descriptorIndex) } className={css(styles.clearVibe)}>
                         -
                       </div>
                       { this.props.vibeDescriptors[this.props.descriptorIndex].title }
