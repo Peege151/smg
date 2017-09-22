@@ -30,12 +30,7 @@ class FilterHeaders extends Component {
       this.setState({collapsed: idx});
     }
 
-    clickCheckbox(category, variant){
-
-    }
-
     render() {
-      console.log('Prop in Headers', this.props);
       let headers = CATEGORIES.map((category, index) => {
         return (
           <div

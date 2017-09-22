@@ -54,6 +54,17 @@ const styles = StyleSheet.create({
     whiteSpace: 'no-wrap',
     float: 'left'
   },
+  activeVibe: {
+    position: 'relative',
+    background: 'wheat',
+    outline:'1px solid #EEE',
+    height: BENCH_HEIGHT,
+    width: '25%',
+    fontSize: 18,
+    verticalAlign: 'middle',
+    display: 'table',
+    float: 'left'
+  },
   inner: {
     display: 'table-cell',
     verticalAlign: 'middle',
