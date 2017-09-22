@@ -13,22 +13,9 @@ class FilterHeaders extends Component {
       });
       this.state = {
         collapsed: 0,
-        selected: obj
       }
     }
 
-    clearSearch(){
-      let obj = {};
-      CATEGORIES.forEach((cat, index) => {
-        let key = cat.selector;
-        console.log(key)
-        obj[key] = [];
-      });
-      this.setState({selected: obj});
-    }
-    filterClick(idx){
-      this.setState({collapsed: idx});
-    }
 
     render() {
       let headers = CATEGORIES.map((category, index) => {
@@ -40,6 +27,7 @@ class FilterHeaders extends Component {
           >
             <div className={css(
               styles.innerHeader,
+              this.props.selected[category.selector].length && styles.hasActive,
               this.props.activeFilterIndex === index && styles.active
             )}>
               { category.title }

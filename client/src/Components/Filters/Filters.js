@@ -18,10 +18,9 @@ class Filters extends Component {
       });
       this.state = {
         activeVibeContext: 0,
-        vibeDescriptors: [],
+        vibeDescriptors: this.props.vibeDescriptors,
         showingVibeContexts: false,
         showingDescriptorMenu: false,
-        selected: obj
       }
     }
 
@@ -31,10 +30,11 @@ class Filters extends Component {
           <VibeDescriptor
             key={'vibedescriptor' + index}
             descriptorIndex={index}
-            selectFilter={ this.selectFilter }
+            selectFilter={ this.props.selectFilter }
             clearVibe={ this.clearVibe }
             showingDescriptorMenu={ this.state.showingDescriptorMenu }
-            vibeDescriptors={ this.state.vibeDescriptors }
+            vibeDescriptors={ this.props.vibeDescriptors }
+            clearVibe={ this.props.clearVibe }
             />
           )
       });
@@ -50,41 +50,6 @@ class Filters extends Component {
             <span className={css(styles.innerVibeContext)}> { vibe } </span>
           </div>
         )
-      })
-    }
-
-    clearVibe = (idx, e) => {
-      e.stopPropagation();
-      console.log('State', this.state.vibeDescriptors);
-      let array = this.state.vibeDescriptors.slice();
-      console.log('array before', array);
-      array.splice(idx, 1);
-      console.log('array after', array);
-      this.setState({vibeDescriptors: array})
-    }
-
-    selectFilter = (data) => {
-      let { category, variant, vibeIndex } = data;
-      let showingDescriptorMenu = false;
-      let vibeDescriptors = this.state.vibeDescriptors;
-      let categoryObject = Object.assign(this.state.selected);
-
-      if ( categoryObject[category.selector].indexOf(variant.value) === -1 ) {
-        categoryObject[category.selector].push(variant.value)
-      } else {
-        console.log('Removing From Index', this.state.selected[category.selector].indexOf(variant.value))
-        categoryObject[category.selector].splice(this.state.selected[category.selector].indexOf(variant.value), 1);
-      }
-      console.log('New State => ', this.state);
-      if ( category.selector === 'vibe' ) {
-        vibeDescriptors.splice(vibeIndex, 1, variant);
-      }
-      this.setState({
-        selected: categoryObject,
-        showingDescriptorMenu: showingDescriptorMenu,
-        vibeDescriptors: vibeDescriptors
-      }, () => {
-        console.log('Vibes => ', this.state.vibeDescriptors)
       })
     }
 
@@ -127,10 +92,10 @@ class Filters extends Component {
           return (
             <div key={ 'category' + variant.title } className={css(styles[category.selector])}>
               <div
-                onClick={this.selectFilter.bind(null, {category, variant}, null)}
+                onClick={this.props.selectFilter.bind(null, {category, variant}, null)}
                 className={css(
                   styles.inner,
-                  this.state.selected[category.selector].indexOf(variant.value) > -1 && styles.active
+                  this.props.selected[category.selector].indexOf(variant.value) > -1 && styles.active
               )}>
                 { variant.title }
                 { category.selector === 'tempo' ? <span> <br />{variant.value} BPM </span> : null}

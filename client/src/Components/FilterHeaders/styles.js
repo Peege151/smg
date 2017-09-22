@@ -18,7 +18,12 @@ const styles = StyleSheet.create({
       width: '16.6666666667%'
     },
     active: {
+      border: '1px solid #EEE',
       background: '#4c7c5f',
+      color: 'white',
+    },
+    hasActive: {
+      background: '#6ea684',
       color: 'white',
     },
     innerHeader: {
