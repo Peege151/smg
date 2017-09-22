@@ -31,9 +31,10 @@ class Filters extends Component {
           <VibeDescriptor
             key={'vibedescriptor' + index}
             descriptorIndex={index}
-            vibeDescriptors={ this.state.vibeDescriptors }
             selectFilter={ this.selectFilter }
+            clearVibe={ this.clearVibe }
             showingDescriptorMenu={ this.state.showingDescriptorMenu }
+            vibeDescriptors={ this.state.vibeDescriptors }
             />
           )
       });
@@ -52,8 +53,14 @@ class Filters extends Component {
       })
     }
 
+    clearVibe = (syn, e) => {
+      console.log('Syn and E root', syn)
+      console.log('Clearing Index', syn.stopPropagation, e.stopPropagation)
+      e.stopPropagation()
+    }
+
     selectFilter = (data) => {
-      let { category, variant } = data;
+      let { category, variant, vibeIndex } = data;
       let showingDescriptorMenu = false;
       let vibeDescriptors = this.state.vibeDescriptors;
       let categoryObject = Object.assign(this.state.selected);
@@ -65,8 +72,8 @@ class Filters extends Component {
         categoryObject[category.selector].splice(this.state.selected[category.selector].indexOf(variant.value), 1);
       }
         console.log('New State => ', this.state);
-      if (category.selector === 'vibe') {
-        vibeDescriptors.push(variant);
+      if ( category.selector === 'vibe' ) {
+        vibeDescriptors.splice(vibeIndex, 1, variant);
       }
       this.setState({
         selected: categoryObject,
@@ -85,8 +92,6 @@ class Filters extends Component {
 
     createFilters(){
       let category = CATEGORIES[this.props.activeFilterIndex];
-      console.log('Category? ', category);
-
       if(category.selector === 'vibe'){
         return (
           <div>
@@ -106,7 +111,7 @@ class Filters extends Component {
                     <span className={css(styles.absoluteText)}> My </span>
                     <div> { VIBE_CONTEXTS[this.state.activeVibeContext] }</div>
                   </div>
-              }
+               }
             </div>
             { this.generateOptionCategories() }
           </div>

@@ -12,7 +12,6 @@ class VibeDescriptor extends Component {
       }
     }
     openDescriptorMenu = () => {
-      console.log('BAM');
       this.setState({showingMenu: !this.state.showingMenu})
     }
 
@@ -21,7 +20,7 @@ class VibeDescriptor extends Component {
       return category.variants.map((variant)=>{
         return (
           <div
-            onClick={ this.props.selectFilter.bind(null, {category, variant})}
+            onClick={ this.props.selectFilter.bind(null, {category, variant, vibeIndex: this.props.descriptorIndex})}
             key={variant.value}
             className={css(styles.descriptorItems)}>
               <span className={ css(styles.descriptorInner)}> { variant.title } </span>
@@ -31,10 +30,8 @@ class VibeDescriptor extends Component {
     }
 
     render() {
-      console.log('State of Vibe Desc', this.state)
       let descriptorItems = []
       descriptorItems = this.generateDescriptorItems()
-      console.log('Rendering');
       return (
         <span>
           {
@@ -53,10 +50,20 @@ class VibeDescriptor extends Component {
                 <div>
                   { this.props.vibeDescriptors.length  && this.props.vibeDescriptors.length > this.props.descriptorIndex
                   ?
-                  <div onClick={ this.openDescriptorMenu } className={css(styles.activeVibe)}>
+                  <div onClick={ this.openDescriptorMenu } className={css(
+                    styles.activeVibe,
+                    styles['vibe' + this.props.descriptorIndex]
+                  )}>
                     <span className={css(styles.absoluteText)}>
+                      { this.props.descriptorIndex === 0 ? `Is`:`And` }
                     </span>
-                    <div className={css(styles.inner)}> { this.props.vibeDescriptors[this.props.descriptorIndex].title } </div>
+
+                    <div className={css(styles.inner)}>
+                      <div onClick={ this.props.clearVibe.bind(this, 1) } className={css(styles.clearVibe)}>
+                        -
+                      </div>
+                      { this.props.vibeDescriptors[this.props.descriptorIndex].title }
+                    </div>
                   </div>
                   :
                   <div onClick={ this.openDescriptorMenu } className={css(styles.vibe)}>
@@ -73,9 +80,7 @@ class VibeDescriptor extends Component {
             <div className={css(
               styles.vibe,
               styles[this.props.descriptorIndex]
-
             )}>
-              <div className={css(styles.inner)}>  </div>
             </div>
           }
         </span>

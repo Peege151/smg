@@ -7,6 +7,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 3,
     left: 5,
+    zIndex: 99,
+  },
+  clearVibe: {
+    position: 'absolute',
+    top: 3,
+    right: 8,
+    fontSize: 24,
   },
   active: {
     background: '#5f4c7c',
@@ -53,6 +60,18 @@ const styles = StyleSheet.create({
     display: 'table',
     whiteSpace: 'no-wrap',
     float: 'left'
+  },
+  vibe0: {
+    background: '#6b568c',
+    color: 'white',
+  },
+  vibe1: {
+    background: '#775f9c',
+    color: 'white',
+  },
+  vibe2: {
+    background: '#846ea6',
+    color: 'white',
   },
   activeVibe: {
     position: 'relative',
