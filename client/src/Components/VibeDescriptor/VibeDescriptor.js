@@ -17,10 +17,28 @@ class VibeDescriptor extends Component {
     render() {
 
       return (
-        <div className={css(styles.vibe)}>
-          <span className={css(styles.absoluteText)}> Is </span>
-          <div className={css(styles.inner)}> + </div>
-        </div>
+        <span>
+          {
+            this.props.descriptorIndex <= this.props.mostAdvancedDescriptor
+            ?
+              <div className={css(styles.vibe)}>
+                <span className={css(styles.absoluteText)}>
+                  { this.props.descriptorIndex === 0 ? `Is`:`And` }
+                </span>
+                <div className={css(styles.inner)}> + </div>
+              </div>
+            :
+            <div className={css(
+              styles.vibe,
+              styles[this.props.descriptorIndex]
+
+            )}>
+              <span className={css(styles.absoluteText)}>
+              </span>
+              <div className={css(styles.inner)}>  </div>
+            </div>
+          }
+        </span>
       );
     }
 }

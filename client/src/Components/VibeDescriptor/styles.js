@@ -29,5 +29,11 @@ const styles = StyleSheet.create({
     verticalAlign: 'middle',
     textAlign: 'center',
   },
+  1: {
+    background: '#dcdbdb',
+  },
+  2: {
+    background: '#e5e5e4'
+  }
 });
 export default styles;

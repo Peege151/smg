@@ -21,7 +21,13 @@ class Filters extends Component {
 
     generateOptionCategories(){
       return VIBE_DESCRIPTOR_LIMIT.map((index) => {
-        return (<VibeDescriptor key={'vibedescriptor' + index}/>)
+        return (
+          <VibeDescriptor
+            key={'vibedescriptor' + index}
+            descriptorIndex={index}
+            mostAdvancedDescriptor={ this.state.mostAdvancedDescriptor }
+            />
+          )
       });
     }
 
