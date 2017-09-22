@@ -9,17 +9,12 @@ class FilterHeaders extends Component {
       let obj = {};
       CATEGORIES.forEach((cat, index) => {
         let key = cat.selector;
-        console.log(key)
         obj[key] = [];
       });
       this.state = {
         collapsed: 0,
         selected: obj
       }
-    }
-
-    search(){
-      console.log('TODO -- Add Actions ');
     }
 
     clearSearch(){
@@ -36,16 +31,7 @@ class FilterHeaders extends Component {
     }
 
     clickCheckbox(category, variant){
-      let categoryObject = Object.assign(this.state.selected);
-      if ( categoryObject[category.selector].indexOf(variant.value) === -1 ) {
-        categoryObject[category.selector].push(variant.value)
-      } else {
-        console.log('Removing From Index', this.state.selected[category.selector].indexOf(variant.value))
-        categoryObject[category.selector].splice(this.state.selected[category.selector].indexOf(variant.value), 1);
-      }
-      this.setState({selected: categoryObject}, () => {
-        console.log('New State => ', this.state);
-      });
+
     }
 
     render() {
@@ -72,10 +58,6 @@ class FilterHeaders extends Component {
             { headers }
           </div>
           <div className={css(styles.buttonSpacer)}></div>
-          <div className={css(styles.buttonWrapper)}>
-            <button onClick={() => this.clearSearch() } className={css(styles.buttons)}> Clear </button>
-            <button onClick={() => this.search() } className={css(styles.buttons)}> Search </button>
-          </div>
         </div>
       );
     }

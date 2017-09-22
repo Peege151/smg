@@ -11,11 +11,17 @@ const VIBE_DESCRIPTOR_LIMIT = [0,1,2];
 class Filters extends Component {
     constructor(props) {
       super(props);
+      let obj = {};
+      CATEGORIES.forEach((cat, index) => {
+        let key = cat.selector;
+        obj[key] = [];
+      });
       this.state = {
         activeVibeContext: 0,
         vibeAdjectives: 0,
         showingVibeContexts: false,
         mostAdvancedDescriptor: 0,
+        selected: obj
       }
     }
 
@@ -42,6 +48,20 @@ class Filters extends Component {
           </div>
         )
       })
+    }
+
+    selectFilter = (data) => {
+      let { category, variant } = data;
+      let categoryObject = Object.assign(this.state.selected);
+      if ( categoryObject[category.selector].indexOf(variant.value) === -1 ) {
+        categoryObject[category.selector].push(variant.value)
+      } else {
+        console.log('Removing From Index', this.state.selected[category.selector].indexOf(variant.value))
+        categoryObject[category.selector].splice(this.state.selected[category.selector].indexOf(variant.value), 1);
+      }
+      this.setState({selected: categoryObject}, () => {
+        console.log('New State => ', this.state);
+      });
     }
 
     showVibeContexts = () => {
@@ -84,7 +104,12 @@ class Filters extends Component {
         return category.variants.map((variant, idx) => {
           return (
             <div key={ 'category' + variant.title } className={css(styles[category.selector])}>
-              <div className={css(styles.inner)}>
+              <div
+                onClick={this.selectFilter.bind(null, {category, variant}, null)}
+                className={css(
+                  styles.inner,
+                  this.state.selected[category.selector].indexOf(variant.value) > -1 && styles.active
+              )}>
                 { variant.title }
                 { category.selector === 'tempo' ? <span> <br />{variant.value} BPM </span> : null}
               </div>
@@ -97,8 +122,10 @@ class Filters extends Component {
     render() {
       let filters = this.createFilters(this.props.activeFilterIndex);
       return (
-        <div className={css(styles.filtersWrapper)}>
-          { filters }
+        <div className={ css(styles.filtersWrapperOuter) }>
+          <div className={ css(styles.filtersWrapperInner) }>
+            { filters }
+          </div>
         </div>
       );
     }

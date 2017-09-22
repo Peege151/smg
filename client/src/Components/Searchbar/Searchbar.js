@@ -17,6 +17,12 @@ class Searchbar extends Component {
     onClick(index){
       this.setState({active: index});
     }
+
+
+    search(){
+      console.log('TODO -- Add Actions ');
+    }
+
     render() {
       let items = routes.map((route, index) => {
         return (
@@ -35,6 +41,10 @@ class Searchbar extends Component {
              { items }
            </ul>
            <input className={css(styles.searchbar)} />
+           <div className={css(styles.buttonWrapper)}>
+             <button onClick={() => this.clearSearch() } className={css(styles.buttons)}> Clear </button>
+             <button onClick={() => this.search() } className={css(styles.buttons)}> Search </button>
+           </div>
         </div>
       );
     }

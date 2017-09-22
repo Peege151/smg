@@ -3,12 +3,14 @@ import { StyleSheet } from 'aphrodite/no-important';
 const BENCH_HEIGHT = 252
 
 const styles = StyleSheet.create({
-  filtersWrapper: {
-    height: '400px',
-    // display: 'flex',
-    // flexDirection: 'column',
+  filtersWrapperOuter: {
+    width:'100%',
     background: '#EEE',
-    overflow: 'hidden',
+    display: 'table',
+    position: 'fixed',
+  },
+  filtersWrapperInner: {
+    height: '400px',
     margin: '0 auto',
     width: '90%',
     display: 'table',
