@@ -7,6 +7,7 @@ import Searchbar from '../../Components/Searchbar/Searchbar.js';
 import FilterHeaders from '../../Components/FilterHeaders/FilterHeaders.js';
 import Filters from '../../Components/Filters/Filters.js';
 
+import SongsContainer from '../SongsContainer/SongsContainer';
 import { CATEGORIES } from '../../Components/FilterHeaders/categories.js';
 
 class SearchContainer extends Component {
@@ -68,7 +69,8 @@ class SearchContainer extends Component {
     }
 
     render() {
-      console.log('Active Filter Index', this.state.activeFilterIndex );
+      let props = this.props;
+      console.log('Search Container Props', this.props );
       return (
         <div className={ css(styles.wrapper) }>
           <img src={bgimage} className={css(styles.banner)} alt="logo" />
@@ -101,6 +103,7 @@ class SearchContainer extends Component {
               <Filters clearVibe={ this.clearVibe } vibeDescriptors={this.state.vibeDescriptors} selected={ this.state.selected } selectFilter={ this.selectFilter } activeFilterIndex={ this.state.activeFilterIndex } />
             </div>
           }
+          <SongsContainer {...props}/>
         </div>
       );
     }

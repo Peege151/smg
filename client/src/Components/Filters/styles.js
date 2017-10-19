@@ -7,10 +7,9 @@ const styles = StyleSheet.create({
     width:'100%',
     background: '#EEE',
     display: 'table',
-    position: 'fixed',
   },
   filtersWrapperInner: {
-    height: '400px',
+    height: '380px',
     margin: '0 auto',
     width: '90%',
     display: 'table',

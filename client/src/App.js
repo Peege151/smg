@@ -10,16 +10,19 @@ import './App.css';
 
 class App extends Component {
 
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      playing: false,
+    };
+  }
 
   render() {
     return (
       <Router>
         <div className="App">
           <Sidebar />
-          <MainContainer>
-
-          </MainContainer>
+          <MainContainer></MainContainer>
         </div>
       </Router>
     );

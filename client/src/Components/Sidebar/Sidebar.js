@@ -6,12 +6,13 @@ import {
   Link
 } from 'react-router-dom'
 
+import Login from '../Login/Login.js';
 import Browse from '../Browse/Browse.js';
 
 let routes = [
-  { title: ' SEARCH', active: true, href: '/' },
-  { title: ' BROWSE', active: false, href: '/browse', component: Browse },
-  { title: ' ABOUT SMG', active: false, href: '/about' }
+  { title: 'SEARCH', active: true, href: '/' },
+  // { title: 'ABOUT SMG', active: false, href: '/about' },
+  { title: 'LOGIN', active: false, href: '/login', component: Login }
 ];
 
 class Sidebar extends Component {
