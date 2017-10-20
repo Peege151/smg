@@ -58,8 +58,6 @@ class SearchContainer extends Component {
         selected: categoryObject,
         showingDescriptorMenu: showingDescriptorMenu,
         vibeDescriptors: vibeDescriptors
-      }, () => {
-        console.log('Vibes => ', this.state.vibeDescriptors)
       })
     }
 
@@ -103,7 +101,7 @@ class SearchContainer extends Component {
               <Filters clearVibe={ this.clearVibe } vibeDescriptors={this.state.vibeDescriptors} selected={ this.state.selected } selectFilter={ this.selectFilter } activeFilterIndex={ this.state.activeFilterIndex } />
             </div>
           }
-          <SongsContainer {...props}/>
+          <SongsContainer {...props}{...this.state}/>
         </div>
       );
     }

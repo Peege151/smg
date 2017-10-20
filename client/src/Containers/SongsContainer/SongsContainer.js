@@ -68,6 +68,29 @@ class SongsContainer extends Component {
         )
       })
     }
+    filterSongs = () => {
+      let filters =  [].concat(...Object.keys(this.props.selected).map(key => {return this.props.selected[key]}))
+      if(filters.length){
+        let query = filters.join('%20');
+        fetch('http://localhost:3001/api/songs/?include=' + query, {
+          method: 'GET',
+          headers: { "Content-Type": "application/json" }
+        })
+        .then(handleErrors)
+        .then(data => {
+          return data.json();
+        })
+        .then(json => {
+          console.log('Data', json);
+          this.setState({ songs: json })
+        })
+      }
+    }
+    componentWillReceiveProps = (newProps) => {
+       let oldFilters = [].concat(...Object.keys(this.props.selected).map(key => {return this.props.selected[key]}))
+       let newFilters = [].concat(...Object.keys(newProps).map(key => {return newProps[key]}))
+       if (oldFilters.length !== newFilters.length) this.filterSongs()
+    }
     componentWillMount(){
       fetch('http://localhost:3001/api/songs/', {
         method: 'GET',
@@ -89,6 +112,7 @@ class SongsContainer extends Component {
     render() {
       let songs =  this.renderSongTable();
       let headers = this.renderHeaders();
+      console.log('Props On SongC', this.props);
       return (
         <div className={ css(styles.wrapper) }>
           <div className={css(styles.headerWrapper)}>

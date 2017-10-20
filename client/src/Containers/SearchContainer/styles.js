@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
       ':focus': {
         outline:0
       },
-      fontFamily: 'Akkurat',
+      fontFamily: 'Akkurat-Light',
       display: 'inline-block',
       width:'50%',
       border: 'none',

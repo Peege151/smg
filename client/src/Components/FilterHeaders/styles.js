@@ -2,7 +2,7 @@ import { StyleSheet } from 'aphrodite/no-important';
 const BUTTON_SPACER = 40
 const styles = StyleSheet.create({
     wrapper: {
-      fontFamily: 'times',
+      fontFamily: 'Akkurat-Light',
       fontSize: 18,
       width: '90%',
       marginLeft: '5%',

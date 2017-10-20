@@ -112,6 +112,7 @@ class Filters extends Component {
         <div className={ css(styles.filtersWrapperOuter) }>
           <div className={ css(styles.filtersWrapperInner) }>
             { filters }
+            <div className={css(styles.clearFilters)}> Clear All </div>
           </div>
         </div>
       );

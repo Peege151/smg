@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     width:'100%',
     background: '#EEE',
     display: 'table',
+    fontFamily: 'Akkurat-Light',
   },
   filtersWrapperInner: {
     height: '380px',
@@ -115,6 +116,13 @@ const styles = StyleSheet.create({
     verticalAlign: 'middle',
     textAlign: 'center',
     height: BENCH_HEIGHT / 3,
+  },
+  clearFilters: {
+    fontSize: 16,
+    textDecoration: 'underline',
+    textAlign: 'right',
+    display: 'table',
+    width: '100%'
   }
 });
 export default styles;
