@@ -27,16 +27,22 @@ class SongsContainer extends Component {
       };
     }
     beautifyFilters = (song) => {
+      let categories = CATEGORIES.filter(cat => cat.selector === 'genres')[0].variants.map(vari => vari.value);
       return song.filters.map( filter => {
-        let letter = filter.split('')[0].toUpperCase()
-        return filter.split('').map( (lett, idx) => {
+        if (categories.indexOf(filter) > -1 ){
+          let letter = filter.split('')[0].toUpperCase();
+          return filter.split('').map( (lett, idx) => {
+            if (filter.split('')[idx - 1] === '_') return lett.toUpperCase();
             if (idx === 0) return letter;
+            if (lett === '_') return " "
             return lett;
-        }).join('')
-      })
+          }).join('')
+        }
+        // this next line removes undefined values from the array, that arrived
+        // there as a result of non-genre filter variants initially pushing undefined to array
+      }).filter(i => i)
     };
     renderSongTable = () => {
-      console.log('Props?', this.props);
       return this.state.songs.map( song => {
         let prettyFilters = this.beautifyFilters(song);
         let writers = song.writers.map(writer => writer.name)
@@ -51,7 +57,7 @@ class SongsContainer extends Component {
             <div className={ css(styles.td) }> { writers.join(', ') }</div>
             <div className={ css(styles.td) }> { prettyFilters.join(' ') } </div>
             <div className={ css(styles.td) }> { song.tempo } BPM </div>
-            <div className={ css(styles.td) }> { song.length || '2:45'} </div>
+            <div className={ css(styles.td) }> { song.duration } </div>
           </div>
         )
       })
@@ -59,13 +65,30 @@ class SongsContainer extends Component {
     renderHeaders = () => {
       return HEADERS.map( header => {
         return (
-          <div className={css(
+          <div key={header} className={css(
             styles.header,
             header === '' && styles.play
           )}>
             { header }
           </div>
         )
+      })
+    }
+    getAllSongs = () => {
+      fetch('http://api.shiftedmusicgroup.com/api/songs/', {
+        method: 'GET',
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(handleErrors)
+      .then(data => {
+        return data.json();
+      })
+      .then(json => {
+        console.log('Songs', json);
+        this.setState({ songs: json })
+      })
+      .catch(err => {
+        this.setState({clientError: err.message})
       })
     }
     filterSongs = () => {
@@ -84,35 +107,29 @@ class SongsContainer extends Component {
           console.log('Data', json);
           this.setState({ songs: json })
         })
+      } else {
+        this.getAllSongs();
       }
     }
     componentWillReceiveProps = (newProps) => {
+      console.log('Receiving new Props', newProps)
        let oldFilters = [].concat(...Object.keys(this.props.selected).map(key => {return this.props.selected[key]}))
-       let newFilters = [].concat(...Object.keys(newProps).map(key => {return newProps[key]}))
-       if (oldFilters.length !== newFilters.length) this.filterSongs()
+       let newFilters = [].concat(...Object.keys(newProps.selected).map(key => {return newProps.selected[key]})).filter(Boolean)
+       if (oldFilters.length !== newFilters.length) {
+         console.log('FILTERING SONGS FROM WRP');
+       } else {
+         this.filterSongs();
+       }
+       if(!newFilters.length){
+         this.getAllSongs();
+       }
     }
     componentWillMount(){
-      fetch('http://api.shiftedmusicgroup.com/api/songs/', {
-        method: 'GET',
-        headers: { "Content-Type": "application/json" }
-      })
-      .then(handleErrors)
-      .then(data => {
-        return data.json();
-      })
-      .then(json => {
-        console.log('Data', json);
-        this.setState({ songs: json })
-      })
-      .catch(err => {
-        this.setState({clientError: err.message})
-      })
+      this.getAllSongs();
     }
-
     render() {
       let songs =  this.renderSongTable();
       let headers = this.renderHeaders();
-      console.log('Props On SongC', this.props);
       return (
         <div className={ css(styles.wrapper) }>
           <div className={css(styles.headerWrapper)}>

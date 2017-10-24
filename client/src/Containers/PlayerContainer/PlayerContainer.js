@@ -66,7 +66,7 @@ class PlayerContainer extends Component {
           </div>
           <div className={css(styles.song)}>
             <div> { this.props.song.title } </div>
-            <div> { this.state.timeString } / 3:24 </div>
+            <div> { this.state.timeString } / { this.props.song.duration } </div>
           </div>
           <div className={css(styles.by)}> By: </div>
           <div className={css(styles.writers)}> { writers.join(', ') } </div>

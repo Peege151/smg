@@ -36,7 +36,18 @@ class SearchContainer extends Component {
       array.splice(idx, 1);
       this.setState({vibeDescriptors: array})
     }
-
+    removeFilters = (e) => {
+      console.log('e', e)
+      e.stopPropagation();
+      console.log('Removing Filters')
+      let obj = {};
+      CATEGORIES.forEach((cat, index) => {
+        let key = cat.selector;
+        obj[key] = [];
+      });
+      console.log('Object Post Clear?', obj)
+      this.setState({selected: obj}, () => console.log('State?', this.state));
+    }
     selectFilter = (data) => {
       let { category, variant, vibeIndex } = data;
       let showingDescriptorMenu = false;
@@ -49,7 +60,6 @@ class SearchContainer extends Component {
         console.log('Removing From Index', this.state.selected[category.selector].indexOf(variant.value))
         categoryObject[category.selector].splice(this.state.selected[category.selector].indexOf(variant.value), 1);
       }
-      console.log('New State => ', this.state);
       if ( category.selector === 'vibe' ) {
         vibeDescriptors.splice(vibeIndex, 1, variant);
       }
@@ -97,7 +107,7 @@ class SearchContainer extends Component {
             :
             <div className={css(styles.filterContainerWrapper)}>
               <FilterHeaders selected={ this.state.selected } setActiveFilter={this.setActiveFilter} activeFilterIndex={ this.state.activeFilterIndex } />
-              <Filters clearVibe={ this.clearVibe } vibeDescriptors={this.state.vibeDescriptors} selected={ this.state.selected } selectFilter={ this.selectFilter } activeFilterIndex={ this.state.activeFilterIndex } />
+              <Filters removeFilters={this.removeFilters} clearVibe={ this.clearVibe } vibeDescriptors={this.state.vibeDescriptors} selected={ this.state.selected } selectFilter={ this.selectFilter } activeFilterIndex={ this.state.activeFilterIndex } />
             </div>
           }
           <SongsContainer {...props}{...this.state}/>

@@ -107,12 +107,15 @@ class Filters extends Component {
     }
 
     render() {
+      console.log('SELECTED FILTERS', this.props.selected);
       let filters = this.createFilters(this.props.activeFilterIndex);
       return (
         <div className={ css(styles.filtersWrapperOuter) }>
           <div className={ css(styles.filtersWrapperInner) }>
             { filters }
-            <div className={css(styles.clearFilters)}> Clear All </div>
+            <div className={css(styles.clearFilters)}>
+              <span onClick={this.props.removeFilters.bind(this)}> Clear All </span>
+            </div>
           </div>
         </div>
       );
