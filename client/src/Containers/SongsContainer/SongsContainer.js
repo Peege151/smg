@@ -27,7 +27,6 @@ class SongsContainer extends Component {
       };
     }
     beautifyFilters = (song) => {
-      console.log( 'Song', song );
       return song.filters.map( filter => {
         let letter = filter.split('')[0].toUpperCase()
         return filter.split('').map( (lett, idx) => {
@@ -40,6 +39,7 @@ class SongsContainer extends Component {
       console.log('Props?', this.props);
       return this.state.songs.map( song => {
         let prettyFilters = this.beautifyFilters(song);
+        let writers = song.writers.map(writer => writer.name)
         return (
           <div key={`${song.title}` } className={css(styles.rowWrapper)}>
             <div className={ css(styles.playButtonContainer)} onClick={this.props.toggleAudio.bind(null, song)}>
@@ -48,10 +48,10 @@ class SongsContainer extends Component {
               </div>
             </div>
             <div className={ css(styles.td, styles.songTitle) }> { song.title } </div>
-            <div className={ css(styles.td) }> Mike Irish</div>
+            <div className={ css(styles.td) }> { writers.join(', ') }</div>
             <div className={ css(styles.td) }> { prettyFilters.join(' ') } </div>
-            <div className={ css(styles.td) }> Slow - 80BPM </div>
-            <div className={ css(styles.td) }> 3:24 </div>
+            <div className={ css(styles.td) }> { song.tempo } BPM </div>
+            <div className={ css(styles.td) }> { song.length || '2:45'} </div>
           </div>
         )
       })

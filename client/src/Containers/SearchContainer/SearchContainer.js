@@ -31,7 +31,6 @@ class SearchContainer extends Component {
     }
 
     clearVibe = (idx, e) => {
-      console.log('Fire');
       e.stopPropagation();
       let array = this.state.vibeDescriptors.slice();
       array.splice(idx, 1);
