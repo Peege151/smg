@@ -72,7 +72,7 @@ class SongsContainer extends Component {
       let filters =  [].concat(...Object.keys(this.props.selected).map(key => {return this.props.selected[key]}))
       if(filters.length){
         let query = filters.join('%20');
-        fetch('http://localhost:3001/api/songs/?include=' + query, {
+        fetch('http://api.shiftedmusicgroup.com/api/songs/?include=' + query, {
           method: 'GET',
           headers: { "Content-Type": "application/json" }
         })
@@ -92,7 +92,7 @@ class SongsContainer extends Component {
        if (oldFilters.length !== newFilters.length) this.filterSongs()
     }
     componentWillMount(){
-      fetch('http://localhost:3001/api/songs/', {
+      fetch('http://api.shiftedmusicgroup.com/api/songs/', {
         method: 'GET',
         headers: { "Content-Type": "application/json" }
       })

@@ -8,18 +8,20 @@ const CATEGORIES = [
     selector: 'vibe',
     inline: true,
     variants: [
+      { title: 'Ambient', status: 0, value: 'ambient' },
       { title: 'Anthemic', status: 0, value: 'anthemic' },
-      { title: 'Atmospheric', status: 0, value: 'atmospheric' },
+      { title: 'Break Up', status: 0, value: 'break_up' },
+      { title: 'Chill', status: 0, value: 'chill' },
       { title: 'Cinematic', status: 0, value: 'cinematic' },
-      { title: 'Cover Song', status: 0, value: 'cover_song' },
       { title: 'Dark', status: 0, value: 'dark' },
       { title: 'Driving', status: 0, value: 'driving' },
       { title: 'Ethereal', status: 0, value: 'ethereal' },
       { title: 'Feel Good', status: 0, value: 'feel_good' },
       { title: 'Fun', status: 0, value: 'fun' },
       { title: 'Holiday', status: 0, value: 'holiday' },
+      { title: 'Romantic', status: 0, value: 'romantic' },
       { title: 'Sad', status: 0, value: 'sad' },
-      { title: 'Sultry', status: 0, value: 'sultry' },
+      { title: 'Sexy', status: 0, value: 'sexy' },
     ]
   },
   {
