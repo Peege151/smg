@@ -21,6 +21,17 @@ const styles = StyleSheet.create({
       width:'100%',
       height: BUTTON_HEIGHT,
     },
+    songNote: {
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '30px',
+      background: '#eee',
+      fontSize: 16,
+      fontFamily:' Akkurat-Light',
+    },
     button: {
       ':focus': {
         outline:0

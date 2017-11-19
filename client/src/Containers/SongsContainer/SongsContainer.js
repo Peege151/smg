@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import styles from './styles.js';
 import { css } from 'aphrodite';
-import bgimage  from './../../assets/speaker.jpg';
-
-import Searchbar from '../../Components/Searchbar/Searchbar.js';
-import FilterHeaders from '../../Components/FilterHeaders/FilterHeaders.js';
-import Filters from '../../Components/Filters/Filters.js';
 
 import { CATEGORIES } from '../../Components/FilterHeaders/categories.js';
 
@@ -28,19 +23,28 @@ class SongsContainer extends Component {
     }
     beautifyFilters = (song) => {
       let categories = CATEGORIES.filter(cat => cat.selector === 'genres')[0].variants.map(vari => vari.value);
-      return song.filters.map( filter => {
+      let filters =  song.filters.map( filter => {
         if (categories.indexOf(filter) > -1 ){
           let letter = filter.split('')[0].toUpperCase();
           return filter.split('').map( (lett, idx) => {
             if (filter.split('')[idx - 1] === '_') return lett.toUpperCase();
+            if (filter.split('')[idx - 1] === '-') return lett.toUpperCase();
             if (idx === 0) return letter;
             if (lett === '_') return " "
+            if (lett === '-') return " "
+
             return lett;
           }).join('')
         }
         // this next line removes undefined values from the array, that arrived
         // there as a result of non-genre filter variants initially pushing undefined to array
-      }).filter(i => i)
+      }).filter(i => i).join(' ')
+      if (filters.length > 20){
+        filters = filters.replace(/^(.{11}[^\s]*).*/, "$1...")
+      } else {
+        filters = filters.replace(/^(.{11}[^\s]*).*/, "$1")
+      }
+      return filters;
     };
     renderSongTable = () => {
       return this.state.songs.map( song => {
@@ -53,11 +57,13 @@ class SongsContainer extends Component {
                 <i className={`fa fa-play ${css(styles.playIcon)}`}></i>
               </div>
             </div>
-            <div className={ css(styles.td, styles.songTitle) }> { song.title } </div>
-            <div className={ css(styles.td) }> { writers.join(', ') }</div>
-            <div className={ css(styles.td) }> { prettyFilters.join(' ') } </div>
-            <div className={ css(styles.td) }> { song.tempo } BPM </div>
-            <div className={ css(styles.td) }> { song.duration } </div>
+            <div className={css(styles.innerSongRow)}>
+              <div className={ css(styles.td, styles.songTitle) }> { song.title } </div>
+              <div className={ css(styles.td) }> { writers.join(', ') }</div>
+              <div className={ css(styles.td) }> { prettyFilters } </div>
+              <div className={ css(styles.td) }> { song.tempo } BPM </div>
+              <div className={ css(styles.td) }> { song.duration } </div>
+            </div>
           </div>
         )
       })
@@ -95,6 +101,7 @@ class SongsContainer extends Component {
       let filters =  [].concat(...Object.keys(this.props.selected).map(key => {return this.props.selected[key]}))
       if(filters.length){
         let query = filters.join('%20');
+        //fetch('http://localhost:8081/api/songs/?include=' + query, {
         fetch('http://api.shiftedmusicgroup.com/api/songs/?include=' + query, {
           method: 'GET',
           headers: { "Content-Type": "application/json" }

@@ -17,6 +17,10 @@ const styles = StyleSheet.create({
       display: 'inline-block',
       width: '16.6666666667%'
     },
+    mobileHeaders: {
+      width: '33.3333%',
+      padding: '2px',
+    },
     active: {
       border: '1px solid #EEE',
       background: '#4c7c5f',
@@ -30,6 +34,9 @@ const styles = StyleSheet.create({
       border: '1px solid #EEE',
       padding: 10,
       background: 'white',
+    },
+    innerHeaderMobile: {
+      padding: '10px 3px',
     },
     categoryTitle: {
       margin: 0,

@@ -34,7 +34,6 @@ class Filters extends Component {
             clearVibe={ this.clearVibe }
             showingDescriptorMenu={ this.state.showingDescriptorMenu }
             vibeDescriptors={ this.props.vibeDescriptors }
-            clearVibe={ this.props.clearVibe }
             />
           )
       });
@@ -95,10 +94,11 @@ class Filters extends Component {
                 onClick={this.props.selectFilter.bind(null, {category, variant}, null)}
                 className={css(
                   styles.inner,
+                  window.innerWidth < 768 && styles[category.selector + 'Mobile'],
                   this.props.selected[category.selector].indexOf(variant.value) > -1 && styles.active
               )}>
                 { variant.title }
-                { category.selector === 'tempo' ? <span> <br />{variant.value} BPM </span> : null}
+                { category.selector === 'tempo' ? <span> <br />{variant.speed} BPM </span> : null}
               </div>
             </div>
           )

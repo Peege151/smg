@@ -96,7 +96,7 @@ class SearchContainer extends Component {
                 styles.button,
                 this.state.method === 'search' && styles.active
               )}
-              onClick={() => this.apply('search')}
+              onClick={() => alert('Coming Soon...')}
             >
               Search
             </button>
@@ -111,6 +111,9 @@ class SearchContainer extends Component {
             </div>
           }
           <SongsContainer {...props}{...this.state}/>
+          <div className={css(styles.songNote)}>
+            <p>If you have any questions, feel free to contact us at any time.  We rep 100% of all tracks here  </p>
+          </div>
         </div>
       );
     }

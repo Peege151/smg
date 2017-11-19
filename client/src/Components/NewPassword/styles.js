@@ -1,5 +1,4 @@
-import { StyleSheet, css } from 'aphrodite';
-import logo from '../../assets/loader.png';
+import { StyleSheet } from 'aphrodite';
 import loginbg from './../../assets/login-bg.jpg';
 import APP_CONSTANTS from '../../constants.js';
 
@@ -35,7 +34,6 @@ const styles = StyleSheet.create({
     zIndex: 3,
     transform: 'translateY(-50%)',
     borderRadius: 4,
-    position: 'relative',
     textAlign: 'center',
     paddingBottom: 40
   },

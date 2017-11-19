@@ -17,10 +17,10 @@ const styles = StyleSheet.create({
   },
   active: {
     background: '#5f4c7c',
-    color: 'white'
+    color: 'white',
   },
   descriptorMenuWrapperOuter: {
-    width: '25%',
+    width: window.innerWidth < 768 ? '100%' : '25%',
     position: 'relative',
     border: '1px solid #EEE',
     bottom: ( BENCH_HEIGHT * DESCRIPTOR_CONTAINER_MULTIPLIER - BENCH_HEIGHT ) /2,
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     background: 'white',
     outline:'1px solid #EEE',
     height: BENCH_HEIGHT,
-    width: '25%',
+    width: window.innerWidth < 768 ? '100%' : '25%',
     fontSize: 18,
     verticalAlign: 'middle',
     display: 'table',
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     background: 'wheat',
     outline:'1px solid #EEE',
     height: BENCH_HEIGHT,
-    width: '25%',
+    width: window.innerWidth < 768 ? '100%' : '25%',
     fontSize: 18,
     verticalAlign: 'middle',
     display: 'table',

@@ -1,4 +1,4 @@
-import { StyleSheet, css } from 'aphrodite';
+import { StyleSheet } from 'aphrodite';
 import loginbg from './../../assets/login-bg.jpg';
 const styles = StyleSheet.create({
     wrapper: {

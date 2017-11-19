@@ -30,7 +30,7 @@ class PlayerContainer extends Component {
       let minute = Math.floor(this.state.currentTime / 60);
       let seconds = this.state.currentTime % 60;
       if (seconds < 10) seconds = '0' + String(seconds)
-      if (this.state.currentTime === 0) timeString === '0:00'
+      if (this.state.currentTime === 0) timeString = '0:00'
       timeString = String(minute) + ':'+ String(seconds);
       console.log(String(minute), String(seconds))
       this.setState({ currentTime: this.state.currentTime + 1, timeString });

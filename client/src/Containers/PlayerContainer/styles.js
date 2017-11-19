@@ -1,14 +1,9 @@
-import { StyleSheet, css } from 'aphrodite';
-import logo from '../../assets/loader.png';
-import loginbg from './../../assets/login-bg.jpg';
-import APP_CONSTANTS from '../../constants.js';
+import { StyleSheet } from 'aphrodite';
 const playWidth = 50;
-const playHeight = 50;
 
 const styles = StyleSheet.create({
   playerWrapper: {
     width: '100%',
-    height: '50px',
     position: 'fixed',
     bottom: 0,
     background: '#dcdbdb',
@@ -30,7 +25,6 @@ const styles = StyleSheet.create({
   },
   playButtonWrapper: {
     cursor: 'pointer',
-    width: playWidth,
     height: playWidth,
     display: 'inline-block',
     background: 'white',

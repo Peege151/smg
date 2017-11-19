@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import SearchContainer from '../SearchContainer/SearchContainer.js';
 import BrowseContainer from '../BrowseContainer/BrowseContainer.js';
 import Login from '../../Components/Login/Login.js';
+import Contact from '../../Components/Contact/Contact.js'
 import NewPassword from '../../Components/NewPassword/NewPassword.js';
 import PlayerContainer from '../PlayerContainer/PlayerContainer.js';
+import Footer from '../../Components/Footer/Footer.js';
+import About from '../../Components/About/About.js';
 import styles from './styles.js';
 import { css } from 'aphrodite';
 
@@ -32,12 +35,11 @@ class MainContainer extends Component {
             <Route exact path='/' render={()=><SearchContainer {...this.state} toggleAudio={this.toggleAudio}/>}/>
             <Route path='/browse' component={ BrowseContainer } />
             <Route path='/login' component={ Login } />
+            <Route path='/contact' component={ Contact } />
             <Route path='/reset' component={ NewPassword } />
-            <div className={css(styles.songNote)}>
-              <p>If you have any questions, feel free to contact us at any time.  We rep 100% of all tracks here  </p>
-            </div>
+            <Route path='/about' component={ About } />
             <div className={css(styles.footer)}>
-              <p> This is the footer </p>
+              <Footer />
             </div>
             {
               this.state.initiatedPlayer

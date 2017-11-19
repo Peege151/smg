@@ -84,7 +84,7 @@ const CATEGORIES = [
       { title: 'Horns', status: 0, value: 'horns' },
       { title: 'Strings', status: 0, value: 'strings' },
       { title: 'Drums', status: 0, value: 'drums' },
-      { title: 'Oohs & Ahhs', status: 0, value: 'oohs_n_ahhs' },
+      { title: 'Oohs & Ahhs', status: 0, value: 'oohs_n_ahh' },
       { title: 'Organ', status: 0, value: 'organ' },
       { title: 'Synths', status: 0, value: 'synths' },
 
@@ -96,17 +96,17 @@ const CATEGORIES = [
     variants: [
       {
         title: 'Slow Speed',
-        status: 0, value: '60-90',
+        status: 0, value: 'slow', speed: '0 - 90',
         selected: false,
       },
       {
         title: 'Medium Speed',
-        status: 0, value: '91-120',
+        status: 0, value: 'medium', speed: '91-120',
         selected: false,
       },
       {
         title: `Fast Speed`,
-        status: 0, value: '121+',
+        status: 0, value: 'fast', speed: '121+',
         selected: false,
       }
     ]

@@ -7,11 +7,11 @@ import {
 } from 'react-router-dom'
 
 import Login from '../Login/Login.js';
-import Browse from '../Browse/Browse.js';
 
 let routes = [
   { title: 'SEARCH', active: true, href: '/' },
-  // { title: 'ABOUT SMG', active: false, href: '/about' },
+  { title: 'ABOUT', active: false, href: '/about' },
+  { title: 'CONTACT', active: false, href: '/contact' },
   { title: 'LOGIN', active: false, href: '/login', component: Login }
 ];
 

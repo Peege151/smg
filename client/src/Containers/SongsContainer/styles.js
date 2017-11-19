@@ -1,6 +1,4 @@
-import { StyleSheet, css } from 'aphrodite';
-import logo from '../../assets/loader.png';
-import loginbg from './../../assets/login-bg.jpg';
+import { StyleSheet } from 'aphrodite';
 import APP_CONSTANTS from '../../constants.js';
 let numHeadersOtherThanPlay = 4;
 let playWidth = 50
@@ -10,17 +8,19 @@ const styles = StyleSheet.create({
     margin: '0 auto',
     padding: 10,
     fontSize: 18,
-    display: 'flex',
     borderBottom: '2px solid #ddd',
-    displayContent: 'center',
-    alignItems: 'center'
+    position: 'relative',
+    height: 90,
   },
   headerWrapper: {
     background: '',
-    width: '90%',
+    width: 'calc(90% - ' + 50 + 'px)',
     margin: '0 auto',
     padding: 10,
-    borderBottom: '2px solid #ddd'
+    borderBottom: '2px solid #ddd',
+    display: window.innerWidth < 768 ? 'none' : 'block',
+    position: 'relative',
+    left: '-15px'
   },
   header: {
     color: '#999',
@@ -28,12 +28,22 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: 14,
     padding: 10,
-    width: 'calc(20% - ' +  Math.ceil(playWidth / numHeadersOtherThanPlay) + 'px)',
+    width: 'calc(20% - ' +  Math.ceil((playWidth) / numHeadersOtherThanPlay) + 'px)',
   },
   td: {
-    display: 'inline-block',
-    width: 'calc(20% - ' +  Math.ceil(playWidth / numHeadersOtherThanPlay) + 'px)',
-    padding: 10
+    display: window.innerWidth < 768 ? 'block' : 'inline-block',
+    width: window.innerWidth < 768 ? '100%' : 'calc(20% - ' +  Math.ceil((playWidth) / numHeadersOtherThanPlay) + 'px)',
+    padding: window.innerWidth < 768 ? 3 : 10,
+
+  },
+  innerSongRow: {
+    display: 'flex',
+    flexDirection: window.innerWidth < 768 ? 'column' : 'row',
+    displayContent: 'center',
+    alignItems: 'center',
+    width: 'calc(100% - ' + playWidth + 'px)',
+    left: playWidth + 10, //padding,
+    position: 'relative',
   },
   songTitle: {
     textDecoration: 'underline',
@@ -60,8 +70,8 @@ const styles = StyleSheet.create({
     height: playWidth,
     display: 'inline-block',
     background: '#dcdbdb',
-    position: 'relative',
-    top: 0,
+    position: 'absolute',
+    top: "calc(50% - " + playWidth / 2 + "px)",
     bottom: 0,
   },
 });

@@ -33,7 +33,7 @@ class VibeDescriptor extends Component {
       let descriptorItems = []
       descriptorItems = this.generateDescriptorItems()
       return (
-        <span>
+        <div>
           {
             this.props.descriptorIndex <= this.props.vibeDescriptors.length
             ?
@@ -83,7 +83,7 @@ class VibeDescriptor extends Component {
             )}>
             </div>
           }
-        </span>
+        </div>
       );
     }
 }

@@ -23,10 +23,14 @@ class FilterHeaders extends Component {
           <div
             onClick={() => this.props.setActiveFilter(index)}
             key={ 'category' + category.title }
-            className={css(styles.header)}
+            className={css(
+              styles.header,
+              window.innerWidth < 768 && styles.mobileHeaders
+            )}
           >
             <div className={css(
               styles.innerHeader,
+              window.innerWidth < 768 && styles.innerHeaderMobile,
               this.props.selected[category.selector].length && styles.hasActive,
               this.props.activeFilterIndex === index && styles.active
             )}>
