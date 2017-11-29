@@ -7,7 +7,7 @@ import { CATEGORIES } from '../../Components/FilterHeaders/categories.js';
 function handleErrors(response) {
   console.log('Handle Errors', response);
     if (!response.ok) {
-        throw Error(response.statusText);
+      throw Error(response.statusText);
     }
     return response;
 }

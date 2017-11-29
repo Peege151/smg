@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderBottom: '2px solid #ddd',
     position: 'relative',
-    height: 90,
+    height: window.innerWidth < 768 ? 'auto' : 90,
   },
   headerWrapper: {
     background: '',
@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
     display: window.innerWidth < 768 ? 'block' : 'inline-block',
     width: window.innerWidth < 768 ? '100%' : 'calc(20% - ' +  Math.ceil((playWidth) / numHeadersOtherThanPlay) + 'px)',
     padding: window.innerWidth < 768 ? 3 : 10,
-
   },
   innerSongRow: {
     display: 'flex',
