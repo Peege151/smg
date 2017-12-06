@@ -46,7 +46,7 @@ class SearchContainer extends Component {
         obj[key] = [];
       });
       console.log('Object Post Clear?', obj)
-      this.setState({selected: obj}, () => console.log('State?', this.state));
+      this.setState({selected: obj, vibeDescriptors: []}, () => console.log('State?', this.state));
     }
     selectFilter = (data) => {
       let { category, variant, vibeIndex } = data;

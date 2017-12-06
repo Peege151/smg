@@ -8,6 +8,8 @@ import VibeDescriptor from '../VibeDescriptor/VibeDescriptor.js';
 const VIBE_CONTEXTS = ['STORY', 'CHARACTER', 'PROJECT' ];
 const VIBE_DESCRIPTOR_LIMIT = [0,1,2];
 
+
+
 class Filters extends Component {
     constructor(props) {
       super(props);
@@ -31,7 +33,7 @@ class Filters extends Component {
             key={'vibedescriptor' + index}
             descriptorIndex={index}
             selectFilter={ this.props.selectFilter }
-            clearVibe={ this.clearVibe }
+            clearVibe={ this.props.clearVibe }
             showingDescriptorMenu={ this.state.showingDescriptorMenu }
             vibeDescriptors={ this.props.vibeDescriptors }
             />

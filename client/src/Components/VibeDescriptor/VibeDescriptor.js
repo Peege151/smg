@@ -20,9 +20,9 @@ class VibeDescriptor extends Component {
       return category.variants.map((variant)=>{
         return (
           <div
-            onClick={ this.props.selectFilter.bind(null, {category, variant, vibeIndex: this.props.descriptorIndex})}
-            key={variant.value}
-            className={css(styles.descriptorItems)}>
+            onClick={ this.props.selectFilter.bind(null, {category, variant, vibeIndex: this.props.descriptorIndex })}
+            key={ variant.value }
+            className={ css(styles.descriptorItems) }>
               <span className={ css(styles.descriptorInner)}> { variant.title } </span>
           </div>
         );
@@ -59,7 +59,7 @@ class VibeDescriptor extends Component {
                     </span>
 
                     <div className={css(styles.inner)}>
-                      <div onClick={ this.props.clearVibe.bind(this.props.descriptorIndex, this.props.descriptorIndex) } className={css(styles.clearVibe)}>
+                      <div onClick={ this.props.clearVibe.bind(this.props.descriptorIndex, this.props.descriptorIndex) } className={css(styles.clearVibe) }>
                         -
                       </div>
                       { this.props.vibeDescriptors[this.props.descriptorIndex].title }
