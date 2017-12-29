@@ -21,31 +21,30 @@ class PlayerContainer extends Component {
 
     componentWillReceiveProps(newProps){
       if(this.props.song._id !== newProps.song._id) {
-        this.setState({playing: true})
+        this.setState({playing: true, currentTime: 0})
       }
     }
     timer = () => {
-      console.log('Firing', this.state.currentTime)
       let timeString;
       let minute = Math.floor(this.state.currentTime / 60);
       let seconds = this.state.currentTime % 60;
       if (seconds < 10) seconds = '0' + String(seconds)
       if (this.state.currentTime === 0) timeString = '0:00'
       timeString = String(minute) + ':'+ String(seconds);
-      console.log(String(minute), String(seconds))
       this.setState({ currentTime: this.state.currentTime + 1, timeString });
     }
     onPlayClick = () => {
       let track = document.getElementById('audio-track');
+      console.log('Play Button Fire')
       if(track){
-        if(this.state.playing){
+        if(this.state.playing === this.props.song._id){
           track.pause();
           clearInterval(this.state.interval)
           this.setState( {playing: false } )
         } else {
           track.play();
           let id = setInterval( this.timer , 1000)
-          this.setState( {playing: true, interval: id } )
+          this.setState( {playing: this.props.song._id, interval: id} )
         }
       }
 

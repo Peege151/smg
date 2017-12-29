@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
     backgroundSize: 'contain',
   },
   paragraphWrapper: {
-    padding: 20
+    width: '80%',
+    margin: '0 auto',
   },
   header: {
     margin: 0,

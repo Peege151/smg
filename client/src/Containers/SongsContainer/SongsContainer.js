@@ -25,13 +25,16 @@ class SongsContainer extends Component {
       let categories = CATEGORIES.filter(cat => cat.selector === 'genres')[0].variants.map(vari => vari.value);
       let filters =  song.filters.map( filter => {
         if (categories.indexOf(filter) > -1 ){
+          if (filter === 'hiphop-rap') filter = 'hip|hop';
           let letter = filter.split('')[0].toUpperCase();
           return filter.split('').map( (lett, idx) => {
             if (filter.split('')[idx - 1] === '_') return lett.toUpperCase();
             if (filter.split('')[idx - 1] === '-') return lett.toUpperCase();
+            if (filter.split('')[idx - 1] === '|') return lett.toUpperCase();
             if (idx === 0) return letter;
             if (lett === '_') return " "
             if (lett === '-') return " "
+            if (lett === '|') return '-'
 
             return lett;
           }).join('')
@@ -54,7 +57,12 @@ class SongsContainer extends Component {
           <div key={`${song.title}` } className={css(styles.rowWrapper)}>
             <div className={ css(styles.playButtonContainer)} onClick={this.props.toggleAudio.bind(null, song)}>
               <div className={ css(styles.playButton)}>
-                <i className={`fa fa-play ${css(styles.playIcon)}`}></i>
+                { this.props.playing === song._id
+                  ? <i className={`fa fa-pause ${css(styles.playIcon)}`}></i>
+                  : <i className={`fa fa-play ${css(styles.playIcon)}`}></i>
+                }
+
+
               </div>
             </div>
             <div className={css(styles.innerSongRow)}>

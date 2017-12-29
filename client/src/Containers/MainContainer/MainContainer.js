@@ -26,7 +26,7 @@ class MainContainer extends Component {
     toggleAudio = (song) => {
       console.log('Got em');
 
-      this.setState({ playing: !this.state.playing, initiatedPlayer: true, song: song || this.state.song });
+      this.setState({ playing: song._id, initiatedPlayer: true, song: song || this.state.song });
     }
     render() {
 

@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderBottom: '2px solid #ddd',
     position: 'relative',
+    display: 'flex',
     height: window.innerWidth < 768 ? 'auto' : 90,
   },
   headerWrapper: {
