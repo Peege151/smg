@@ -1,16 +1,17 @@
 import { StyleSheet } from 'aphrodite';
-const playWidth = 50;
+const playWidth = 120; //includes padding
+const playerBgColor = '#dcdbdb';
+
 
 const styles = StyleSheet.create({
   playerWrapper: {
     width: '100%',
     position: 'fixed',
     bottom: 0,
-    background: '#dcdbdb',
+    background: playerBgColor,
     height: 70,
     display: 'flex',
     alignItems: 'center',
-    padding: 5,
   },
   playIcon: {
     display: 'flex',
@@ -22,6 +23,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     fontSize: 10,
     zIndex: 2,
+  },
+  scrubInnerWrapper: {
+    position: 'relative',
+    width: '100%',
+  },
+  scrubInnerWrapper: {
+    width: 'calc(100% - ' + playWidth + 'px)',
+    position: 'absolute',
+    zIndex: -1,
+    height: 60,
+    top: 5
+  },
+  outerPlay: {
+    display: 'inline-block',
+    padding: 10,
+  },
+  scrubProgress: {
+    background: '#a494bc',
+    height: 60,
+    top: 5,
+    borderRight: '10px '+ playerBgColor,
   },
   playButtonWrapper: {
     cursor: 'pointer',
@@ -37,7 +59,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     fontSize: 16,
-    padding: '0px 10px'
+    padding: '0px 20px'
   },
   by: {
     fontSize: 12,

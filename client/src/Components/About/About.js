@@ -21,18 +21,27 @@ class About extends Component {
             </div>
             <div className={css(styles.paragraphWrapper)}>
               <p className={css(styles.paragraph)}>
-                Shifted Music Group was the first venture away from the traditional recording <a href='https://shiftedrecording.com'>
-                studio</a> business model for the Shifted Family.
-                When founders Mike and Pat moved to their second space in 2016, they planned for
-                an outfit to get music made for clients in the studio out into the real world.
+                Shifted Music Group was the first venture away from the traditional <a href='https://shiftedrecording.com'>
+                recording studio</a> business model for Shifted.
+                When founders Mike Irish and Patrick Sullivan moved to their second space in 2016,
+                they wanted to help clients take their projects further.
+
+                From this notion, Shifted Music Group was created -
+                an outfit to assist in the licensing of independent music.
               </p>
               <p className={css(styles.paragraph)}>
-                Since then, the SMG team has grown, and will continue to grow in the coming years.
+                Feel free to browse through the catalog, and listen to the work we have created.
+                We would love to place our music with your project. &nbsp;
+                 <a href='https://shiftedmusicgroup.com/contact'>Get in touch </a> with us!
+              </p>
+              <p className={css(styles.paragraph)}>
               </p>
             </div>
           </div>
       );
     }
 }
+
+//319306984
 
 export default About;

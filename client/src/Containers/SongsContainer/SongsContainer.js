@@ -32,10 +32,9 @@ class SongsContainer extends Component {
             if (filter.split('')[idx - 1] === '-') return lett.toUpperCase();
             if (filter.split('')[idx - 1] === '|') return lett.toUpperCase();
             if (idx === 0) return letter;
-            if (lett === '_') return " "
-            if (lett === '-') return " "
-            if (lett === '|') return '-'
-
+            if (lett === '_') return " ";
+            if (lett === '-') return " ";
+            if (lett === '|') return '-';
             return lett;
           }).join('')
         }
@@ -61,7 +60,6 @@ class SongsContainer extends Component {
                   ? <i className={`fa fa-pause ${css(styles.playIcon)}`}></i>
                   : <i className={`fa fa-play ${css(styles.playIcon)}`}></i>
                 }
-
 
               </div>
             </div>
