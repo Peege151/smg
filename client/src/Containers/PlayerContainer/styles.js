@@ -8,10 +8,11 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'fixed',
     bottom: 0,
-    background: playerBgColor,
     height: 70,
+    background: '#eeeeee',
     display: 'flex',
     alignItems: 'center',
+    zIndex: 0,
   },
   playIcon: {
     display: 'flex',
@@ -25,29 +26,28 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   scrubInnerWrapper: {
-    position: 'relative',
-    width: '100%',
-  },
-  scrubInnerWrapper: {
+    borderLeft: '3px solid #eeeeee',
     width: 'calc(100% - ' + playWidth + 'px)',
     position: 'absolute',
-    zIndex: -1,
+    backgroundSize: 'contain',
     height: 60,
-    top: 5
+    top: 5,
+    zIndex: 1,
   },
   outerPlay: {
     display: 'inline-block',
     padding: 10,
   },
   scrubProgress: {
-    background: '#a494bc',
+    background: 'white', //'#a494bc',
     height: 60,
     top: 5,
     borderRight: '10px '+ playerBgColor,
+    zIndex:0,
   },
   playButtonWrapper: {
-    cursor: 'pointer',
-    height: playWidth,
+    width: playWidth,
+    height: 60,
     display: 'inline-block',
     background: 'white',
     position: 'relative',
@@ -56,18 +56,40 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   song: {
-    display: 'flex',
-    flexDirection: 'column',
+    zIndex: 2,
     fontSize: 16,
-    padding: '0px 20px'
+    padding: '0px 20px',
+    position: 'relative'
+  },
+  songTitle: {
+    zIndex: 2,
+    position: 'relative',
+    bottom: 5,
+    ':hover': {
+      textDecoration: 'underline',
+    }
   },
   by: {
     fontSize: 12,
-    fontStyle: 'italic'
+    fontStyle: 'italic',
+    position: 'relative',
+    bottom: 5,
   },
-  writers: {
-    fontSize: 18,
-    padding: '0px 10px'
+  timeCounters: {
+    pointerEvents: 'none',
+    zIndex: 2,
+    position: 'absolute',
+    fontSize: 12,
+    left: playWidth,
+    bottom: 15,
+  },
+  songWriters: {
+    zIndex: 1,
+    position: 'relative',
+    bottom: 5,
+    ':hover': {
+      textDecoration: 'underline',
+    }
   }
 });
 

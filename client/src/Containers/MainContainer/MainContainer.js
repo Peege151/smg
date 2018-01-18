@@ -21,18 +21,40 @@ class MainContainer extends Component {
         playing: false,
         initiatedPlayer: false,
         song: undefined,
+        paused: true
       };
     }
     toggleAudio = (song) => {
-      console.log('Got em');
+      console.log('Main Container Toggle');
+      console.log('Play Click...')
+      let track = document.getElementById('audio-track');
+      if (!this.state.playing && !this.state.initiatedPlayer){
+        console.log('Initial Play', song)
+        this.setState({ song: song, paused: false, playing: song._id, initiatedPlayer: true },  )
+      } else if(!this.state.playing && this.state.initiatedPlayer){
+        console.log('Not Playing, lets play', song)
+        track.play();
+        this.setState({ song: song, paused: false, playing: song._id, initiatedPlayer: true },  )
+      } else if (this.state.playing === song._id){
+        track.pause();
+        this.setState( {playing: false, paused: true } )
+        console.log('We were playing, click was hit to pause');
+      } else if(this.state.playing !== song._id){
+        // new song hit from container
+        console.log("New Song Hit From Container...")
+        track.pause();
+        this.setState( {song: song, playing: song._id, paused: false } )
+      } else {
+        track.play();
+        this.setState( { paused: false } )
+        // this.props.toggleAudio(this.props.song);
 
-      this.setState({ playing: song._id, initiatedPlayer: true, song: song || this.state.song });
-    }
+      }    }
     render() {
-
+        console.log('Router Props of MC', this.props)
         return (
           <div className={ css(styles.mainContainerWrapper) }>
-            <Route exact path='/' render={()=><SearchContainer {...this.state} toggleAudio={this.toggleAudio}/>}/>
+            <Route exact path='/' render={(routeProps)=><SearchContainer {...routeProps}{...this.state} toggleAudio={this.toggleAudio}/>}/>
             <Route path='/browse' component={ BrowseContainer } />
             <Route path='/login' component={ Login } />
             <Route path='/contact' component={ Contact } />

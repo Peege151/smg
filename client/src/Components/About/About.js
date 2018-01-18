@@ -30,9 +30,16 @@ class About extends Component {
                 an outfit to assist in the licensing of independent music.
               </p>
               <p className={css(styles.paragraph)}>
+                In our first six months, we built a custom wesite, organized all of our music,
+                met a bunch of amazing music supervisors, and got several placements.  We even hired Chedda,
+                the legend.
+              </p>
+              <p className={css(styles.paragraph)}>
                 Feel free to browse through the catalog, and listen to the work we have created.
                 We would love to place our music with your project. &nbsp;
-                 <a href='https://shiftedmusicgroup.com/contact'>Get in touch </a> with us!
+                <a href='https://shiftedmusicgroup.com/contact'> Get in touch </a> with us!  If you
+                are a song writer and are interested in either exlusive or non-exclusive representation,
+                give us a call.
               </p>
               <p className={css(styles.paragraph)}>
               </p>

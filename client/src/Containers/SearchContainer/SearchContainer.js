@@ -32,9 +32,14 @@ class SearchContainer extends Component {
 
     clearVibe = (idx, e) => {
       e.stopPropagation();
+      console.log('Clearing Vibe', idx);
       let array = this.state.vibeDescriptors.slice();
       array.splice(idx, 1);
-      this.setState({vibeDescriptors: array})
+      console.log('New Array', array);
+      let newArr = array.map(item => item.value);
+      let selected = Object.assign({}, this.state.selected);
+      selected.vibe = newArr;
+      this.setState({vibeDescriptors: array, selected}, () => {console.log('Cleared Vibe, filters left', this.state.selected)})
     }
     removeFilters = (e) => {
       console.log('e', e)

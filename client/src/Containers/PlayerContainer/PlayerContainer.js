@@ -10,7 +10,7 @@ class PlayerContainer extends Component {
       this.state = {
         playing: true,
         currentTime: "0:00",
-        track: undefined
+        track: undefined,
       };
     }
 
@@ -23,34 +23,41 @@ class PlayerContainer extends Component {
     }
 
     componentWillReceiveProps(newProps){
-      if(this.props.song._id !== newProps.song._id) {
-        document.getElementById('audio-track').currentTime = 0;
-        this.setState({playing: newProps.song._id || true, currentTime: 0})
-      }
-      if(this.props.song._id === newProps.song._id){
-        this.state.track.pause();
-      }
+      console.log('PLAYER GETTING PROPS', newProps.paused, this.state.paused)
+      this.setState({paused: newProps.paused})
+        // if(this.props.playing !== newProps.playing) {
+        //   console.log('Not the same song...')
+        //   document.getElementById('audio-track').currentTime = 0;
+        //   this.setState({playing: newProps.song._id || true, currentTime: 0, paused: false})
+        // }
+        // if(this.props.song._id === newProps.playing && !this.state.paused){
+        //   console.log('Lets Pause the player icon', newProps.playing)
+        //   this.state.track.pause();
+        //   this.setState({playing: false, paused: true }, () => console.log('Playing? ', this.state.playing))
+        // } else if (this.props.song._id === newProps.playing && this.state.paused){
+        //   this.state.track.play();
+        //   this.setState({playing: newProps.song._id, paused: false })
+        // }
+
     }
 
     onPlayClick = () => {
+      console.log('Play Click...')
       let track = document.getElementById('audio-track');
-      if(this.state.playing === this.props.song._id){
-        track.pause();
-        clearInterval(this.state.interval)
-        this.setState( {playing: false } )
-      } else if(this.state.playing){
-        track.pause();
-      } else {
-        track.play();
-        let id = setInterval( this.timer , 1000)
-        this.setState( { playing: this.props.song._id } )
-      }
+      this.props.toggleAudio(this.props.song);
+      this.setState({ paused: !this.state.paused })
     }
     renderAudioTrack = () => {
       return (
         <audio autoPlay id='audio-track' src={this.props.song.files[0].url}> </audio>
       )
     }
+
+    hide404Image = (nt, node) => {
+      console.log('Error Hit', node);
+      node.target.style.display='none'
+    }
+
     scrubAudio = (e) => {
       let audio = document.getElementById('audio-track');
 
@@ -79,34 +86,39 @@ class PlayerContainer extends Component {
         return time;
       }
     }
+    onSongTitleClick = () => {
+      console.log('Sup', this.props)
+    }
     render() {
       let writers = this.props.song.writers.map( writer => {
         return writer.name;
       })
       let progWidth = this.state.track ? ((this.state.track.currentTime / this.state.track.duration * 100) + '%') : '0%';
-      console.log('ProgWidth', progWidth)
       let track = this.renderAudioTrack();
       return (
         <div className={ css(styles.playerWrapper) }>
-          <div className={css(styles.outerPlay)}>
-            <div className={css(styles.playButtonWrapper)}>
-              { this.state.playing ?
-                <i className={`fa fa-pause ${css(styles.playIcon)}`} onClick={ this.onPlayClick.bind(null, this) }></i>
-                :
-                <i className={`fa fa-play ${css(styles.playIcon)}`} onClick={ this.onPlayClick.bind(null, this) }></i>
-              }
-            </div>
+          <div className={css(styles.playButtonWrapper)}>
+            { this.state.paused ?
+              <i className={`fa fa-play ${css(styles.playIcon)}`} onClick={ this.onPlayClick.bind(null, this) }></i>
+              :
+              <i className={`fa fa-pause ${css(styles.playIcon)}`} onClick={ this.onPlayClick.bind(null, this) }></i>
+            }
           </div>
           <div className={css(styles.scrubOuterWrapper)}>
-            <div id='scrub' className={css(styles.scrubInnerWrapper)} onClick={(e) => this.scrubAudio(e) } >
+            <div id='scrub'  className={css(styles.scrubInnerWrapper)} onClick={(e) => this.scrubAudio(e) } >
+              <img style={{width: '100%', position: 'absolute', height: '60'}} src={`${this.props.song.waveform}`} onError={this.hide404Image.bind(null, this)}/>
               <div style={{ width: progWidth }} className={css(styles.scrubProgress)}> </div>
             </div>
           </div>
 
           <div className={css(styles.song)}>
-            <div> { this.props.song.title } <span className={css(styles.by)}> by</span>&nbsp;  { writers.join(', ') } </div>
-              <div> { this.state.currentTime } / { this.props.song.duration } </div>
+            <span className={css(styles.songTitle)} onClick={ this.onSongTitleClick.bind(this, null) } >
+              { this.props.song.title }
+            </span>
+            <span className={css(styles.by)}> &nbsp;by&nbsp; </span>
+            <span className={css(styles.songWriters)}> { writers.join(', ') } </span>
           </div>
+          <div className={css(styles.timeCounters)}> { this.state.currentTime } / { this.props.song.duration }</div>
           { track }
         </div>
       );
