@@ -23,7 +23,11 @@ const styles = StyleSheet.create({
     },
     item: {
       margin: 0,
+      fontSize: 18,
       color: 'white',
+    },
+    invert: {
+      color: 'black',
     },
     active: {
       borderBottom: '1px solid #4c7c5f',

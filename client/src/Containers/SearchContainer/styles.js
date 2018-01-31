@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
     },
     banner: {
       width: '100%',
-      height: '200px',
       objectFit: 'cover',
       display: 'block',
     },

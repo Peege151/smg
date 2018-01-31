@@ -11,13 +11,13 @@ class Searchbar extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        active: 0
+        active: 0,
+        searchModel: 'writers' // match the initial option
       };
     }
     onClick(index){
       this.setState({active: index});
     }
-
 
     search(){
       console.log('TODO -- Add Actions ');
@@ -36,15 +36,17 @@ class Searchbar extends Component {
       })
       return (
         <div className={css(styles.wrapper)}>
-           <h3 className={css(styles.header)}> Search </h3>
-           <ul className={css(styles.list)}>
-             { items }
-           </ul>
-           <input className={css(styles.searchbar)} />
-           <div className={css(styles.buttonWrapper)}>
-             <button onClick={() => this.clearSearch() } className={css(styles.buttons)}> Clear </button>
-             <button onClick={() => this.search() } className={css(styles.buttons)}> Search </button>
-           </div>
+          <input
+            id='thesearchbar'
+            placeholder='Search Catalog Database...'
+            onChange={ this.props.onInputEntry }
+            className={css(styles.searchbar)}
+            />
+          <select className={css(styles.searchModel)} onChange={this.props.changeSearchModel}>
+            <option value='writers'> Writers </option>
+            <option value='artists'> Artists </option>
+            <option value='songs'> Songs </option>
+          </select>
         </div>
       );
     }

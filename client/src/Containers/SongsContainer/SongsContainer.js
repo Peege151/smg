@@ -107,6 +107,7 @@ class SongsContainer extends Component {
       })
     }
     getAllSongs = () => {
+      console.log('Getting Songs')
       fetch('http://api.shiftedmusicgroup.com/api/songs/', {
         method: 'GET',
         headers: { "Content-Type": "application/json" }
@@ -124,40 +125,57 @@ class SongsContainer extends Component {
     }
     filterSongs = (newProps) => {
       console.log('the props', newProps);
-      let filters =  [].concat(...Object.keys(newProps.selected).map(key => {return newProps.selected[key]}))
-      console.log('FIltering with these filters', filters)
-      if(filters.length){
-        let query = filters.join('%20');
-        //fetch('http://localhost:8081/api/songs/?include=' + query, {
-        fetch('http://api.shiftedmusicgroup.com/api/songs/?include=' + query, {
-          method: 'GET',
-          headers: { "Content-Type": "application/json" }
-        })
-        .then(handleErrors)
-        .then(data => {
-          return data.json();
-        })
-        .then(json => {
-          this.setState({ songs: json })
-        })
+      if(newProps.method === 'filter'){
+        let filters =  [].concat(...Object.keys(newProps.selected).map(key => { return newProps.selected[key] }))
+        console.log('FIltering with these filters', filters)
+        if(filters.length){
+          let query = filters.join('%20');
+          //fetch('http://localhost:8081/api/songs/?include=' + query, {
+          fetch('http://api.shiftedmusicgroup.com/api/songs/?include=' + query, {
+            method: 'GET',
+            headers: { "Content-Type": "application/json" }
+          })
+          .then(handleErrors)
+          .then(data => {
+            return data.json();
+          })
+          .then(json => {
+            this.setState({ songs: json })
+          })
+        } else {
+          this.getAllSongs();
+        }
       } else {
         this.getAllSongs();
       }
     }
     componentWillReceiveProps = (newProps) => {
-       let oldFilters = [].concat(...Object.keys(this.props.selected).map(key => {return this.props.selected[key]}))
-       let newFilters = [].concat(...Object.keys(newProps.selected).map(key => {return newProps.selected[key]})).filter(Boolean)
-       console.log('Receiving new Props in SC', oldFilters.length, newFilters.length);
-       if (oldFilters.length !== newFilters.length) {
-         console.log('Different length')
-         this.filterSongs(newProps);
-       } else {
-         console.log('Filtering Songs', newProps.selected)
-         this.filterSongs(newProps);
-       }
-       if(!newFilters.length){
-         this.getAllSongs();
-       }
+      if(newProps.method === 'filter'){
+        let oldFilters = [].concat(...Object.keys(this.props.selected).map(key => {return this.props.selected[key]}))
+        let newFilters = [].concat(...Object.keys(newProps.selected).map(key => {return newProps.selected[key]})).filter(Boolean)
+        console.log('Receiving new Props in SC', oldFilters.length, newFilters.length);
+        if (oldFilters.length !== newFilters.length) {
+          console.log('Different length')
+          this.filterSongs(newProps);
+        } else {
+          console.log('Filtering Songs', newProps.selected)
+          this.filterSongs(newProps);
+        }
+        if(!newFilters.length){
+          this.getAllSongs();
+        }
+      } else {
+        // using input bar
+        if(newProps.searchModel !== this.props.searchModel){
+          this.getAllSongs();
+        }
+        if(newProps.songsFromSearchInput.length){
+          this.setState({ songs: newProps.songsFromSearchInput })
+        } else {
+          console.log('Ok...', this.state)
+          this.setState({songs: this.state.songs})
+        }
+      }
     }
     componentWillMount(){
       this.getAllSongs();

@@ -1,6 +1,10 @@
 import { StyleSheet } from 'aphrodite';
-const playWidth = 120; //includes padding
+const playWidth = 100; //includes padding
+const artworkWidth = 70;
+const artworkMargin = 10
 const playerBgColor = '#dcdbdb';
+
+const scrubWidthMinusArtAndButton = playWidth + artworkWidth;
 
 
 const styles = StyleSheet.create({
@@ -14,11 +18,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 0,
   },
+  waveformLoaded: {
+    background: '#dcdcdc'
+  },
+  artworkWrap: {
+    width: artworkWidth,
+    height: artworkWidth,
+    position: 'relative',
+  },
+  artwork: {
+    width: '100%',
+    paddingLeft: artworkMargin,
+    position: 'relative',
+    top: 5,
+  },
   playIcon: {
     display: 'flex',
     position: 'absolute',
-    top: 0,
+    top: 5,
     bottom: 0,
+    height: 60,
+    background: 'white',
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
@@ -27,11 +47,11 @@ const styles = StyleSheet.create({
   },
   scrubInnerWrapper: {
     borderLeft: '3px solid #eeeeee',
-    width: 'calc(100% - ' + playWidth + 'px)',
+    width: 'calc(100% - ' + scrubWidthMinusArtAndButton + 'px)',
     position: 'absolute',
     backgroundSize: 'contain',
-    height: 60,
-    top: 5,
+    height: 70,
+    top: 0,
     zIndex: 1,
   },
   outerPlay: {
@@ -47,9 +67,9 @@ const styles = StyleSheet.create({
   },
   playButtonWrapper: {
     width: playWidth,
-    height: 60,
+    height: 70,
     display: 'inline-block',
-    background: 'white',
+    background: '#eeeeee',
     position: 'relative',
     width: 100,
     top: 0,
@@ -69,6 +89,11 @@ const styles = StyleSheet.create({
       textDecoration: 'underline',
     }
   },
+  waveformImage: {
+    width: '100%',
+    position: 'absolute',
+    height: '70px'
+  },
   by: {
     fontSize: 12,
     fontStyle: 'italic',
@@ -80,7 +105,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
     position: 'absolute',
     fontSize: 12,
-    left: playWidth,
+    left: scrubWidthMinusArtAndButton + 20, // plus 20 padding
     bottom: 15,
   },
   songWriters: {

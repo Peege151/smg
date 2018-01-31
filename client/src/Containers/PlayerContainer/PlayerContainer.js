@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styles from './styles.js';
 import { css } from 'aphrodite';
+import image from './../../assets/jom.jpg';
 
 
 
@@ -11,6 +12,7 @@ class PlayerContainer extends Component {
         playing: true,
         currentTime: "0:00",
         track: undefined,
+        waveformLoaded: false,
       };
     }
 
@@ -51,6 +53,11 @@ class PlayerContainer extends Component {
       return (
         <audio autoPlay id='audio-track' src={this.props.song.files[0].url}> </audio>
       )
+    }
+
+    waveformLoaded = () => {
+      console.log('WAVEFORM LOADED');
+      this.setState({waveformLoaded: true})
     }
 
     hide404Image = (nt, node) => {
@@ -97,16 +104,36 @@ class PlayerContainer extends Component {
       let track = this.renderAudioTrack();
       return (
         <div className={ css(styles.playerWrapper) }>
-          <div className={css(styles.playButtonWrapper)}>
+          <div className={css(
+            styles.playButtonWrapper,
+          //  this.state.waveformLoaded && styles.waveformLoaded
+          )}>
             { this.state.paused ?
               <i className={`fa fa-play ${css(styles.playIcon)}`} onClick={ this.onPlayClick.bind(null, this) }></i>
               :
               <i className={`fa fa-pause ${css(styles.playIcon)}`} onClick={ this.onPlayClick.bind(null, this) }></i>
             }
           </div>
+          <div className={css(styles.artworkWrap)}>
+            <img className={css(styles.artwork)} alt='album-artwork' src={image}/>
+          </div>
           <div className={css(styles.scrubOuterWrapper)}>
-            <div id='scrub'  className={css(styles.scrubInnerWrapper)} onClick={(e) => this.scrubAudio(e) } >
-              <img style={{width: '100%', position: 'absolute', height: '60'}} src={`${this.props.song.waveform}`} onError={this.hide404Image.bind(null, this)}/>
+            <div
+              id='scrub'
+              onClick={(e) => this.scrubAudio(e) }
+              className={css(
+                styles.scrubInnerWrapper,
+                this.state.waveformLoaded && styles.waveformLoaded
+              )}>
+              <img
+                className={css(
+                  styles.waveformImage,
+                  //this.state.waveformLoaded && styles.waveformLoaded
+                )}
+                src={`${this.props.song.waveform}`}
+                onLoad={this.waveformLoaded.bind(null, this)}
+                onError={this.hide404Image.bind(null, this)}
+                />
               <div style={{ width: progWidth }} className={css(styles.scrubProgress)}> </div>
             </div>
           </div>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import styles from './styles.js';
 import { css } from 'aphrodite';
+import image from './../../assets/banner.jpg';
 
 
 class Contact extends Component {
@@ -20,11 +21,16 @@ class Contact extends Component {
     render() {
       console.log('')
         return (
-          <div className={css(styles.wrapper)}>
-            <div className={css(styles.navColorAdjust)}></div>
-            <h3> Here Is How to Reach Us. </h3>
-            <div> Licensing Requests
-              <div> Patrick Sullivan
+          <div className={css(styles.outer)}>
+            <div className={css(styles.wrapper)}>
+              <div className={css(styles.overlay)}></div>
+              <img className={css(styles.image)} src={image} />
+            </div>
+            <h3 className={css(styles.header)}> Here Is How to Reach Us. </h3>
+            <div className={css(styles.content)}>
+              <h5> Licensing </h5>
+              <div>
+                Patrick Sullivan
                 { this.state.active !== 1
                 ?
                 <span
@@ -34,7 +40,8 @@ class Contact extends Component {
                 : ' patrick@shiftedmusicgroup.com' }
               </div>
             </div>
-            <div> Inquiries
+            <div className={css(styles.content)}>
+              <h5> Inquiries </h5>
               <div> Andrew Travis
                 { this.state.active !== 2
                 ?

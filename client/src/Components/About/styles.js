@@ -1,24 +1,35 @@
 import { StyleSheet } from 'aphrodite';
-import moss from './../../assets/moss.jpg';
+import image from './../../assets/banner2.jpg';
 
 
 const styles = StyleSheet.create({
   wrapper: {
-    background: "url("+moss+")",
-    height: 400,
     backgroundSize: 'contain',
+    width: '100%',
+    display: 'table',
+    verticalAlign: 'middle',
+    backgroundRepeat: 'no-repeat',
+    position: 'relative',
   },
+  overlay: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    top: 0,
+    background: 'rgba(0,0,0,.1)',
+  },
+  image: {
+    width: '100%',
+    objectFit: 'cover',
+    display: 'block',
+  },
+
   paragraphWrapper: {
     width: '80%',
     margin: '0 auto',
   },
-  header: {
-    margin: 0,
-    color: 'white',
-    position: 'relative',
-    top: '54%',
-    textAlign: 'center',
-    transform: 'translateY(-50%)',
+  paragraph: {
+    fontSize: 20,
   }
 });
 export default styles;
