@@ -110,7 +110,7 @@ class SongsContainer extends Component {
       console.log('Getting Songs')
       //fetch('http://localhost:8081/api/songs/', {
 
-      fetch('http://api.shiftedmusicgroup.com/api/songs/', {
+      fetch('https://api.shiftedmusicgroup.com/api/songs/', {
         method: 'GET',
         headers: { "Content-Type": "application/json" }
       })
@@ -133,7 +133,7 @@ class SongsContainer extends Component {
         if(filters.length){
           let query = filters.join('%20');
           //fetch('http://localhost:8081/api/songs/?include=' + query, {
-          fetch('http://api.shiftedmusicgroup.com/api/songs/?include=' + query, {
+          fetch('https://api.shiftedmusicgroup.com/api/songs/?include=' + query, {
             method: 'GET',
             headers: { "Content-Type": "application/json" }
           })
