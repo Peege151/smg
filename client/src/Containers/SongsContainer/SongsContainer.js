@@ -108,6 +108,8 @@ class SongsContainer extends Component {
     }
     getAllSongs = () => {
       console.log('Getting Songs')
+      //fetch('http://localhost:8081/api/songs/', {
+
       fetch('http://api.shiftedmusicgroup.com/api/songs/', {
         method: 'GET',
         headers: { "Content-Type": "application/json" }

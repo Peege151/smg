@@ -19,10 +19,6 @@ class Searchbar extends Component {
       this.setState({active: index});
     }
 
-    search(){
-      console.log('TODO -- Add Actions ');
-    }
-
     render() {
       let items = routes.map((route, index) => {
         return (

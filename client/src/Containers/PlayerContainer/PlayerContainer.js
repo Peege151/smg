@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './styles.js';
 import { css } from 'aphrodite';
-import image from './../../assets/jom.jpg';
+import defaultArtwork from './../../assets/loader.png';
 
 
 
@@ -97,6 +97,7 @@ class PlayerContainer extends Component {
       console.log('Sup', this.props)
     }
     render() {
+      let albumArtwork = this.props.song && this.props.song.album ? this.props.song.album.artwork || this.props.song.artwork : defaultArtwork
       let writers = this.props.song.writers.map( writer => {
         return writer.name;
       })
@@ -115,7 +116,7 @@ class PlayerContainer extends Component {
             }
           </div>
           <div className={css(styles.artworkWrap)}>
-            <img className={css(styles.artwork)} alt='album-artwork' src={image}/>
+            <img className={css(styles.artwork)} alt='album-artwork' src={albumArtwork}/>
           </div>
           <div className={css(styles.scrubOuterWrapper)}>
             <div

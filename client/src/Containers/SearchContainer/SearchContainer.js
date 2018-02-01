@@ -77,7 +77,8 @@ class SearchContainer extends Component {
     onInputEntry = (evt) => {
       // SEARCH
       if(evt.target.value){
-        fetch(`http://localhost:8081/api/${this.state.searchModel}/search/${evt.target.value}`, {
+        fetch(`http://api.shiftedmusicgroup.com/api/${this.state.searchModel}/search/${evt.target.value}`,{
+        //fetch(`http://localhost:8081/api/${this.state.searchModel}/search/${evt.target.value}`, {
           method: 'GET',
           headers: { "Content-Type": "application/json" }
         })
@@ -91,7 +92,8 @@ class SearchContainer extends Component {
           this.setState({songsFromSearchInput: songs })
         })
       } else {
-        fetch(`http://localhost:8081/api/songs/`, {
+        fetch(`http://api.shiftedmusicgroup.com/api/songs`,{
+        //fetch(`http://localhost:8081/api/songs/`, {
           method: 'GET',
           headers: { "Content-Type": "application/json" }
         })
@@ -100,8 +102,6 @@ class SearchContainer extends Component {
           return data.json();
         })
         .then(data => {
-          console.log('data back?', data)
-          console.log('songs set to', data);
           this.setState({songsFromSearchInput: data })
         })
       }
