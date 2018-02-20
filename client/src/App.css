@@ -18,9 +18,25 @@
 html, body {
   height: 100%;
 }
+.Footer {
+  flexShrink: 0;
+  width:  100% ;
+  display:  flex ;
+  flexDirection:  row ;
+  alignItems:  center ;
+  justifyContent:  center ;
+  padding:  30px ;
+  background:  #5f4c7c ;
+  font-size: 16;
+  color:  white ;
+  font-family:  Akkurat-Light ;
+},
 body {
   display: flex;
   flex-direction: column;
+}
+.text-stroke {
+  -webkit-text-stroke: 3px white;
 }
 #root{
   height: 100%;

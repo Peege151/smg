@@ -67,11 +67,12 @@ class PlayerContainer extends Component {
 
     scrubAudio = (e) => {
       let audio = document.getElementById('audio-track');
-
-      console.log(e.target.getBoundingClientRect(),  e.target.clientWidth, e.screenX);
-      let x = e.screenX - e.target.getBoundingClientRect().x
+      console.log('Client', e.clientX)
+      console.log('Bounding Rect X', e.target.getBoundingClientRect().x)
+      console.log('X', e.clientX - e.target.getBoundingClientRect().x);
+      let x = (e.clientX - e.target.getBoundingClientRect().x)
       let playerWidth = document.getElementById('scrub').clientWidth;
-      console.log('playerWidth', playerWidth, playerWidth.width)
+      console.log('playerWidth', playerWidth, )
       let percentageToScrubTo = x / playerWidth;
       console.log('percentage to scrub to', percentageToScrubTo);
       let secondsOfSongToScrubTo = Math.floor(this.state.track.duration * percentageToScrubTo);
@@ -93,11 +94,14 @@ class PlayerContainer extends Component {
         return time;
       }
     }
+
     onSongTitleClick = () => {
       console.log('Sup', this.props)
     }
+
     render() {
-      let albumArtwork = this.props.song && this.props.song.album ? this.props.song.album.artwork || this.props.song.artwork : defaultArtwork
+      let albumArtwork = ( this.props.song && this.props.song.album ) ? ( this.props.song.album.artwork || this.props.song.artwork ) : defaultArtwork
+      console.log('Props and State', this.props)
       let writers = this.props.song.writers.map( writer => {
         return writer.name;
       })

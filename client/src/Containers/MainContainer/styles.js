@@ -13,14 +13,17 @@ const styles = StyleSheet.create({
       boxSizing: 'border-box',
       height: '100%',
     },
+
     routerContainer: {
       height: '100%',
       display: 'flex',
       flexDirection: 'column'
     },
+
     content: {
       flex: '1 0 auto',
     },
+
     footer: {
       flexShrink: 0,
       width: '100%',

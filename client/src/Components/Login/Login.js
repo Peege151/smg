@@ -21,73 +21,63 @@ class Login extends Component {
         clientError: null,
       }
     }
+
+    componentWillMount(){
+      if(this.props.location.state && this.props.location.state.action === 'signup') this.changeAction('signup');
+    }
+
+    setErr = (err) => { this.setState({clientError: err }) }
+
+    changeAction(action){
+      this.setState({action: action, clientError: undefined})
+    }
+
     getButtonText = () => {
       if(this.state.action === 'login') return 'Log In';
       if(this.state.action === 'signup') return 'Sign Up';
       if(this.state.action === 'forgot') return 'Retrieve'
     }
+
     changeField(field, event){
       var stateObject = function() {
         let returnObj = {};
         returnObj[field] = this.target.value;
            return returnObj;
       }.bind(event)();
-      this.setState( stateObject )
+      this.setState( stateObject, () => console.log('Updated State', this.state) )
     }
+
+    validateData = () => {
+      let valid = true
+      if (this.state.confirm !== this.state.password){
+        this.setState({clientError: 'Passwords do Not Match'})
+        valid = false;
+      }
+      if (this.state.password.length < 6){
+        this.setState({clientError: 'Your Password Kinda Sucks. Can You Make It Longer? K Thx.'})
+        valid = false;
+      }
+      return valid;
+    }
+
     handleClick(){
-      if( this.state.action === 'login' ){
-        fetch('http://localhost:3001/api/users/login', {
-          method: 'POST',
-          body: JSON.stringify({email: this.state.email, password: this.state.password}),
-          headers: { "Content-Type": "application/json" }
-        })
-        .then(handleErrors)
-        .then(data => {
-          this.setState({email: undefined, password: 'undefined', confirmed: undefined })
-        })
-        .catch(err => {
-          this.setState({clientError: err.message})
-        })
-      } else if (this.state.action === 'signup') {
-        if (this.state.confirm !== this.state.password){
-          this.setState({clientError: 'Passwords do Not Match'})
-          return;
-        }
-        if (this.state.password.length < 8){
-          this.setState({clientError: 'Your Password Kinda Sucks. Can You Make It Longer? K Thx.'})
-          return;
-        }
-        fetch('http://localhost:3001/api/users/', {
-          method: 'POST',
-          body: JSON.stringify({email: this.state.email, password: this.state.password}),
-          headers: { "Content-Type": "application/json" }
-        })
-        .then(handleErrors)
+      let body = {email: this.state.email, password: this.state.password, confirm: this.state.confirm}
+      let referrer = this.props.location.state ? this.props.location.state.referrer : '/'
+      if( this.state.action === 'login' ) this.props.login(body)
+      if (this.state.action === 'signup') {
+        let valid = this.validateData()
+        if (valid) this.props.signup(body, referrer).then(data => this.resetForm()).catch(err => this.setErr(err)) // TODO
+      }
+      if (this.state.action === 'forgot'){
+        this.props.requestForgottenPassword(body)
         .then( data => {
-          this.setState({email: undefined, password: 'undefined', confirmed: undefined })
-        })
-        .catch(err => {
-          this.setState({clientError: err.message})
-        })
-      } else if (this.state.action === 'forgot'){
-        fetch('http://localhost:3001/api/users/forgot', {
-          method: 'POST',
-          body: JSON.stringify({ email: this.state.email }),
-          headers: { "Content-Type": "application/json" }
-        })
-        .then(handleErrors)
-        .then( data => {
-          this.setState({email: undefined, password: 'undefined', confirmed: undefined })
+          this.resetForm()
           alert('Check Your Email For Instructions')
         })
-        .catch(err => {
-          this.setState({clientError: err.message})
-        })
+        .catch(err => { this.setErr(err) } )
       }
     }
-    changeAction(action){
-      this.setState({action: action, clientError: undefined})
-    }
+
     renderInputs(){
       if (this.state.action === 'login'){
         return (
@@ -137,6 +127,7 @@ class Login extends Component {
       }
     }
     render() {
+      //let inputsToRender = this.determineInputsToRender()
       let inputs = this.renderInputs(this.state.action)
       return (
         <div className={css(styles.wrapper)}>

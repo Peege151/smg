@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom'
 
 import Login from '../Login/Login.js';
+import ModalContainer from '../../Containers/ModalContainer/ModalContainer.js';
 
 let routes = [
   { title: 'SEARCH', active: true, href: '/' },
@@ -27,23 +28,15 @@ class Sidebar extends Component {
       this.setState({active: index})
     }
     componentWillMount(){
-      console.log('GOING TO MOUNT INITIALLY', this.props)
       routes.forEach((route, idx) => {
         if(route.href === this.props.location.pathname) {
           this.setState({active: idx});
         }
       })
     }
-    // componentWillReceiveProps(newProps){
-    //   console.log('Getting Props', newProps)
-    //   if(newProps.location.pathname === '/contact') {
-    //     this.setState({ invert: true })
-    //   } else {
-    //     this.setState({ invert: false })
-    //   }
-    // }
+
     render() {
-      console.log('Props are here?', this.props.location.pathname)
+      console.log('Props are here?', this.props)
       const headers = routes.map( (route, index) => {
         return (
           <span className={css(styles.innerWrapper)} onClick={() => this.onClick(index)} key={index + '1'}> &nbsp;
@@ -65,8 +58,11 @@ class Sidebar extends Component {
         )
       })
         return (
-          <div className={css(styles.wrapper)}>
-            { headers }
+          <div className={css(styles.outer)}>
+            { this.props.modal ? <ModalContainer { ...this.props } /> : null }
+            <div className={css(styles.wrapper)}>
+              { headers }
+            </div>
           </div>
       );
     }

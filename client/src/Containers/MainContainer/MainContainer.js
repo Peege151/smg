@@ -1,21 +1,36 @@
 import React, { Component } from 'react';
-import SearchContainer from '../SearchContainer/SearchContainer.js';
-import BrowseContainer from '../BrowseContainer/BrowseContainer.js';
-import Login from '../../Components/Login/Login.js';
-import Contact from '../../Components/Contact/Contact.js'
-import NewPassword from '../../Components/NewPassword/NewPassword.js';
-import PlayerContainer from '../PlayerContainer/PlayerContainer.js';
-import Footer from '../../Components/Footer/Footer.js';
-import About from '../../Components/About/About.js';
-import styles from './styles.js';
 import { css } from 'aphrodite';
-import Navbar from '../../Components/Navbar/Navbar.js';
+import styles from './styles.js';
 
+import BrowseContainer from '../BrowseContainer/BrowseContainer.js';
+import PlayerContainer from '../PlayerContainer/PlayerContainer.js';
+import PlaylistContainer from '../PlaylistContainer/PlaylistContainer.js';
+import SearchContainer from '../SearchContainer/SearchContainer.js';
+import WriterContainer from '../SearchContainer/WriterContainer/WriterContainer.js';
+
+import About from '../../Components/About/About.js';
+import Contact from '../../Components/Contact/Contact.js'
+import Footer from '../../Components/Footer/Footer.js';
+import Login from '../../Components/Login/Login.js';
+import Navbar from '../../Components/Navbar/Navbar.js';
+import NewPassword from '../../Components/NewPassword/NewPassword.js';
+
+import PlaylistActions from '../../Actions/PlaylistActions.js';
+import UserActions from '../../Actions/UserActions.js';
+import Promise from 'bluebird';
 
 import {
   Route,
+  Switch,
   BrowserRouter as Router
 } from 'react-router-dom'
+
+function handleErrors(response) {
+    if (!response.ok) {
+      throw Error(response.statusText);
+    }
+    return response;
+}
 
 class MainContainer extends Component {
     constructor(props) {
@@ -24,8 +39,106 @@ class MainContainer extends Component {
         playing: false,
         initiatedPlayer: false,
         song: undefined,
-        paused: true
+        paused: true,
+        modal: false,
+        token: undefined
       };
+    }
+    getRequiredData = () => {
+      // this should be things you need as soon as you get a user
+      return Promise.all([
+        PlaylistActions.getUserPlaylists()
+      ]);
+    }
+    componentWillReceiveProps(newProps){
+      console.log('WRP', this.props, newProps);
+      if(!this.props.token, this.props.token){
+        this.getRequiredData()
+        .then( data => {
+          let token = newProps.token;
+          console.log('All Promises have Resolved', data, token);
+          newProps.token.user.playlists = data[0];
+          this.setState({token: token})
+        })
+      }
+    }
+    componentWillMount(){
+      let token;
+      UserActions.getSession()
+      .then(userToken => {
+        console.log('User Token? ', userToken)
+        token = userToken;
+        if(!userToken) throw new Error('No Token')
+        if(userToken) return this.getRequiredData()
+      })
+      .then( data => {
+        console.log('All Promises have Resolved', data, token);
+        token.user.playlists = data[0];
+        this.setState({token: token})
+        // user
+      })
+      .catch(err => {
+        console.log( 'Promises Have Failed To Resolve', err);
+      })
+    }
+
+    loginUser = (body, push) => {
+      let token;
+      UserActions.login(body)
+      .then( data => {
+        token = Object.assign({}, data);
+        return this.getRequiredData()
+      })
+      .then( data => {
+        console.log('Back From User', data, token);
+        token.user.playlists = data[0];
+        this.setState({token: token, modal: false})
+      })
+      .catch(err => {
+        console.error('HOLY F', err)
+        throw err;
+      })
+    }
+
+
+    openSongActionModal = (type, song) => {
+      console.log('Opened Modal with this song', song)
+      this.setState({modal: type, songToAddToPlaylist: song})
+    }
+
+    closeSongActionModal = () =>{
+      this.setState({modal: false })
+    }
+
+    submitModal = ( modalType, action, body, params ) => {
+      if(modalType === 'playlist' && action === 'post') {
+        PlaylistActions.createNewPlaylist(body, this.state.songToAddToPlaylist)
+        .then(playlist => {
+          let token = Object.assign({}, this.state.token);
+          token.user.playlists.push(playlist)
+          this.setState({ token: token, songToAddToPlaylist: undefined, modal: false })
+          return
+        }).catch(err => {console.log('Err!', err)})
+      }
+
+      if ( modalType === 'playlist' && action === 'put' ){
+        PlaylistActions.editPlaylist(body)
+        .then(playlist => {
+          let token = Object.assign({}, this.state.token);
+          let idx = this.state.token.user.playlists.findIndex(item => item._id === playlist._id)
+          token.user.playlists.splice(idx, 1, playlist);
+          this.setState({ token: token, songToAddToPlaylist: undefined, modal: false })
+        })
+      }
+      if(modalType === 'login' && params.action === 'login'){
+        this.loginUser(body)
+      } else if (modalType === 'login' && params.action === 'signup'){
+        UserActions.signup(body)
+        .then(resp => {
+          this.setState({ token: resp, modal: false })
+        })
+      }
+
     }
     toggleAudio = (song) => {
       let track = document.getElementById('audio-track');
@@ -49,31 +162,37 @@ class MainContainer extends Component {
     }
 
     render() {
-        console.log('Router Props of MC', this.props)
+      let functions = {
+        login: this.loginUser,
+        toggleAudio: this.toggleAudio,
+        openSongActionModal: this.openSongActionModal,
+        closeModal: this.closeSongActionModal,
+        modal: this.state.modal,
+        submitModal: this.submitModal,
+      }
+      let state = this.state
         return (
           <div className={ css(styles.mainContainerWrapper) }>
             <Router>
               <div className={css(styles.routerContainer)}>
                 <div className={css(styles.content)}>
-                  <Route path='/' component={ Navbar } />
-                  <Route exact path='/' render={(routeProps)=><SearchContainer {...routeProps}{...this.state} toggleAudio={this.toggleAudio}/>}/>
-                  <Route exact path='/browse' component={ BrowseContainer } />
-                  <Route exact path='/login' component={ Login } />
-                  <Route exact path='/contact' component={ Contact } />
-                  <Route exact path='/reset' component={ NewPassword } />
-                  <Route exact path='/about' component={ About } />
+                  <Route path='/' render={(routeProps) => <Navbar {...functions}{...state}{...routeProps} />}/>
+                  <Switch>
+                    <Route exact path='/browse' component={ BrowseContainer } />
+                    <Route exact path='/login' render={(routeProps) => <Login {...functions} {...routeProps}/>}/>
+                    <Route exact path='/reset' component={ NewPassword } />
+                    <Route exact path='/about' component={ About } />
+                    <Route exact path='/contact' component={ Contact } />
+
+                    <Route exact path='/writer/:writer' render={(routeProps) => <WriterContainer {...routeProps} {...state} {...functions}/> } />
+                    <Route exact path='/playlists/:id' render={(routeProps) => <PlaylistContainer {...routeProps} {...state} {...functions}/> } />
+                    <Route path='/' render={(routeProps) => <SearchContainer {...routeProps}{...state} {...functions}/>}/>
+                  </Switch>
                 </div>
                 <div className={css(styles.footer)}>
                   <Footer />
                 </div>
-
-                  {
-                    this.state.initiatedPlayer
-                    ?
-                    <PlayerContainer {...this.state} toggleAudio={ this.toggleAudio } />
-                    :
-                    null
-                  }
+                  {   state.initiatedPlayer ? <PlayerContainer {...state} toggleAudio={ this.toggleAudio } /> :   null }
               </div>
             </Router>
           </div>

@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 3,
     left: 5,
-    zIndex: 99,
+    zIndex: 3,
   },
   clearVibe: {
     position: 'absolute',

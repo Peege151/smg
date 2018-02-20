@@ -2,15 +2,21 @@ import React, { Component } from 'react';
 import styles from './styles.js';
 import { css } from 'aphrodite';
 import bgimage  from './../../assets/banner_speaker.jpg';
+import { CATEGORIES } from '../../Components/FilterHeaders/categories.js';
 
 import Actions from './../../'
 
 import Searchbar from '../../Components/Searchbar/Searchbar.js';
 import FilterHeaders from '../../Components/FilterHeaders/FilterHeaders.js';
 import Filters from '../../Components/Filters/Filters.js';
-
+import WriterContainer from './WriterContainer/WriterContainer.js';
 import SongsContainer from '../SongsContainer/SongsContainer';
-import { CATEGORIES } from '../../Components/FilterHeaders/categories.js';
+
+
+import {
+  Route,
+  BrowserRouter as Router
+} from 'react-router-dom'
 
 function serializeData(data) {
   console.log('Data?', data);
@@ -19,8 +25,6 @@ function serializeData(data) {
     data.forEach(resource => {
       if(resource.songs){
         resource.songs.forEach(song => {
-          console.log( 'Writer?', resource );
-          console.log( 'Adding', song.title );
           array.push(song)
         });
       } else if(resource.tempo){
@@ -63,6 +67,10 @@ class SearchContainer extends Component {
       };
     }
 
+    componentWillReceiveProps(nextProps){
+      console.log('The Searchcontainer is receiving props', nextProps)
+    }
+
     apply(str){
       this.setState({method: str})
     }
@@ -88,10 +96,10 @@ class SearchContainer extends Component {
         })
         .then(data => {
           let songs = serializeData(data)
-          console.log('songs set to', songs);
-          this.setState({songsFromSearchInput: songs })
+          this.setState({songs})
         })
       } else {
+        // The searchbar is empty, so lets get all songs
         fetch(`https://smg-api.herokuapp.com/api/songs`,{
         //fetch(`http://localhost:8081/api/songs/`, {
           method: 'GET',
@@ -102,7 +110,7 @@ class SearchContainer extends Component {
           return data.json();
         })
         .then(data => {
-          this.setState({songsFromSearchInput: data })
+          this.setState({songs: data })
         })
       }
     }
@@ -116,6 +124,7 @@ class SearchContainer extends Component {
       selected.vibe = newArr;
       this.setState({vibeDescriptors: array, selected}, () => {console.log('Cleared Vibe, filters left', this.state.selected)})
     }
+
     removeFilters = (e) => {
       e.stopPropagation();
       let obj = {};
@@ -125,6 +134,7 @@ class SearchContainer extends Component {
       });
       this.setState({selected: obj, vibeDescriptors: []}, () => console.log('State?', this.state));
     }
+
     selectFilter = (data) => {
       let { category, variant, vibeIndex } = data;
       let showingDescriptorMenu = false;
@@ -149,32 +159,43 @@ class SearchContainer extends Component {
     setActiveFilter = (index) => {
       this.setState({activeFilterIndex: index})
     }
+    openWriterContainer = (writer) => {
+      console.log('Viewing', writer);
+      this.setState({viewingWriter: writer._id})
+    }
+    renderButtons = () => {
+      return (
+        <div className={css(styles.buttonContainer)}>
+          <button
+            className={css(
+              styles.button,
+              this.state.method === 'filter' && styles.active
+            )}
+            onClick={() => this.apply('filter')}
+          >
+            Filter
+          </button>
+          <button
+            className={css(
+              styles.button,
+              this.state.method === 'search' && styles.active
+            )}
+            onClick={() => this.apply('search')}
+          >
+            Search
+          </button>
+        </div>
+      )
+    }
 
     render() {
       let props = this.props;
+      let Buttons = this.renderButtons();
+      console.log('props', props)
       return (
         <div className={ css(styles.wrapper) }>
           <img src={bgimage} className={css(styles.banner)} alt="logo" />
-          <div className={css(styles.buttonContainer)}>
-            <button
-              className={css(
-                styles.button,
-                this.state.method === 'filter' && styles.active
-              )}
-              onClick={() => this.apply('filter')}
-            >
-              Filter
-            </button>
-            <button
-              className={css(
-                styles.button,
-                this.state.method === 'search' && styles.active
-              )}
-              onClick={() => this.apply('search')}
-            >
-              Search
-            </button>
-          </div>
+            {Buttons}
           { this.state.method === 'search'
             ?
             <div className={css(styles.filterContainerWrapper)}>
@@ -186,10 +207,11 @@ class SearchContainer extends Component {
               <Filters removeFilters={this.removeFilters} clearVibe={ this.clearVibe } vibeDescriptors={this.state.vibeDescriptors} selected={ this.state.selected } selectFilter={ this.selectFilter } activeFilterIndex={ this.state.activeFilterIndex } />
             </div>
           }
-          <SongsContainer songsFromSearchInput={this.state.songsFromSearchInput}{...props}{...this.state}/>
+          <SongsContainer openWriterContainer={this.openWriterContainer} songsFromSearchInput={this.state.songsFromSearchInput}{...props}{...this.state}/>
           <div className={css(styles.songNote)}>
             <p>If you have any questions, feel free to contact us at any time.  We rep 100% of all tracks here  </p>
           </div>
+
         </div>
       );
     }

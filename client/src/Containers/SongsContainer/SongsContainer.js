@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
 import styles from './styles.js';
 import { css } from 'aphrodite';
+import helpers from './helpers';
 
 import { CATEGORIES } from '../../Components/FilterHeaders/categories.js';
+import  WriterContainer from '../SearchContainer/WriterContainer/WriterContainer.js';
 
+import SongActions from './SongActions.js'
+import {
+  Route,
+  Link
+} from 'react-router-dom'
+
+console.log('Helpers', helpers)
 function handleErrors(response) {
     if (!response.ok) {
       throw Error(response.statusText);
@@ -18,18 +27,29 @@ class SongsContainer extends Component {
       this.state = {
         songs: [],
         filtered: [],
-        paused: undefined ,
+        paused: undefined,
+        hoveredSong: undefined
       };
     }
-
+    onMouseEnter = (song, evt) => {
+      console.log('Enter!', song, evt)
+      this.setState({hoveredSong: song._id})
+    }
+    onMouseLeave = () => {
+      console.log('Leave')
+      //this.setState({hoveredSong: undefined})
+    }
     toggleAudio = (song) => {
       if(!this.props.song){
+        window.mixpanel.track(song.title + '-- Audio Play')
         this.props.toggleAudio(song);
       } else if (this.state.paused && (this.props.playing !== song._id)){
+        window.mixpanel.track(song.title + '-- Audio Play')
         this.setState({paused: false});
         this.props.toggleAudio(song);
       }
       else if (this.props.song._id !== song._id){
+        window.mixpanel.track(song.title + '-- Audio Play')
         this.props.toggleAudio(song)
       } else {
         this.props.toggleAudio(song)
@@ -37,39 +57,35 @@ class SongsContainer extends Component {
       }
     }
 
-    beautifyFilters = (song) => {
-      let categories = CATEGORIES.filter(cat => cat.selector === 'genres')[0].variants.map(vari => vari.value);
-      let filters =  song.filters.map( filter => {
-        if (categories.indexOf(filter) > -1 ){
-          if (filter === 'hiphop-rap') filter = 'hip|hop';
-          let letter = filter.split('')[0].toUpperCase();
-          return filter.split('').map( (lett, idx) => {
-            if (filter.split('')[idx - 1] === '_') return lett.toUpperCase();
-            if (filter.split('')[idx - 1] === '-') return lett.toUpperCase();
-            if (filter.split('')[idx - 1] === '|') return lett.toUpperCase();
-            if (idx === 0) return letter;
-            if (lett === '_') return " ";
-            if (lett === '-') return " ";
-            if (lett === '|') return '-';
-            return lett;
-          }).join('')
-        }
-        // this next line removes undefined values from the array, that arrived
-        // there as a result of non-genre filter variants initially pushing undefined to array
-      }).filter(i => i).join(' ')
-      if (filters.length > 20){
-        filters = filters.replace(/^(.{11}[^\s]*).*/, "$1...")
-      } else {
-        filters = filters.replace(/^(.{11}[^\s]*).*/, "$1")
-      }
-      return filters;
-    };
-    renderSongTable = () => {
-      return this.state.songs.map( song => {
-        let prettyFilters = this.beautifyFilters(song);
-        let writers = song.writers.map(writer => writer.name)
+    createClickableWriters = (song) => {
+      return song.writers.map(writer => {
         return (
-          <div key={`${song.title}` } className={css(styles.rowWrapper)}>
+              <span key={writer._id}>
+                <Link
+                  to={{ pathname:'/writer/' + writer.writer, state: {writer: writer}}}
+                  className={css(styles.clickableWriter)}
+                  onClick={ this.props.openWriterContainer ? this.props.openWriterContainer.bind(null, writer) : null } >
+                    {writer.name}&nbsp;
+                </Link>
+              </span>
+        )
+      })
+    }
+    renderSongTable = (songs) => {
+      let toMap = songs ? songs : this.state.songs;
+      return toMap.map(( song, idx) => {
+        let prettyFilters = helpers.beautifyFilters(song);
+        let writers = song.writers.map(writer => writer.name);
+        return (
+          <div
+            onMouseEnter={this.onMouseEnter.bind(null, song)}
+            onMouseLeave={this.onMouseLeave.bind(this, song)}
+            key={`${song.title}${idx}` }
+            className={css(
+              styles.rowWrapper,
+              song._id === this.state.hoveredSong && styles.active
+            )}
+            >
             <div className={ css(styles.playButtonContainer)} onClick={this.toggleAudio.bind(null, song)}>
               <div className={ css(styles.playButton)}>
                 {
@@ -83,13 +99,23 @@ class SongsContainer extends Component {
                 }
               </div>
             </div>
-            <div className={css(styles.innerSongRow)}>
-              <div className={ css(styles.td, styles.songTitle) }> { song.title } </div>
-              <div className={ css(styles.td) }> { writers.join(', ') }</div>
-              <div className={ css(styles.td) }> { prettyFilters } </div>
-              <div className={ css(styles.td) }> { song.tempo } BPM </div>
-              <div className={ css(styles.td) }> { song.duration } </div>
-            </div>
+            {
+              song._id === this.state.hoveredSong
+              ?
+              <div className={css(styles.innerSongRow)}>
+                <div className={ css(styles.td, styles.songTitle) }> { song.title } </div>
+                <div className={ css(styles.td) }> { this.createClickableWriters(song) } </div>
+                <SongActions hoveredSong={this.state.hoveredSong} {...this.props} />
+              </div>
+              :
+              <div className={css(styles.innerSongRow)}>
+                <div className={ css(styles.td, styles.songTitle) }> { song.title } </div>
+                <div className={ css(styles.td) }> { this.createClickableWriters(song) } </div>
+                <div className={ css(styles.td) }> { prettyFilters } </div>
+                <div className={ css(styles.td) }> { song.tempo } BPM </div>
+                <div className={ css(styles.td) }> { song.duration } </div>
+              </div>
+            }
           </div>
         )
       })
@@ -109,21 +135,14 @@ class SongsContainer extends Component {
     getAllSongs = () => {
       console.log('Getting Songs')
       //fetch('http://localhost:8081/api/songs/', {
-
       fetch('https://smg-api.herokuapp.com/api/songs/', {
         method: 'GET',
         headers: { "Content-Type": "application/json" }
       })
       .then(handleErrors)
-      .then(data => {
-        return data.json();
-      })
-      .then(json => {
-        this.setState({ songs: json })
-      })
-      .catch(err => {
-        this.setState({clientError: err.message})
-      })
+      .then(data => { return data.json() })
+      .then(json => { this.setState({ songs: json }) })
+      .catch(err => { this.setState({clientError: err.message}) })
     }
     filterSongs = (newProps) => {
       console.log('the props', newProps);
@@ -138,12 +157,8 @@ class SongsContainer extends Component {
             headers: { "Content-Type": "application/json" }
           })
           .then(handleErrors)
-          .then(data => {
-            return data.json();
-          })
-          .then(json => {
-            this.setState({ songs: json })
-          })
+          .then(data => { return data.json() })
+          .then(json => {   this.setState({ songs: json }) })
         } else {
           this.getAllSongs();
         }
@@ -168,11 +183,12 @@ class SongsContainer extends Component {
         }
       } else {
         // using input bar
+        console.log('Props', this.props)
         if(newProps.searchModel !== this.props.searchModel){
           this.getAllSongs();
         }
-        if(newProps.songsFromSearchInput.length){
-          this.setState({ songs: newProps.songsFromSearchInput })
+        if(newProps.songs && newProps.songs.length){
+          this.setState({ songs: newProps.songs })
         } else {
           console.log('Ok...', this.state)
           this.setState({songs: this.state.songs})
@@ -180,10 +196,11 @@ class SongsContainer extends Component {
       }
     }
     componentWillMount(){
-      this.getAllSongs();
+      if(this.props.parent !== 'writers') this.getAllSongs();
     }
     render() {
-      let songs =  this.renderSongTable();
+      console.log('Props and State', this.props, this.state)
+      let songs =  this.props.songs ? this.renderSongTable(this.props.songs) : this.renderSongTable();
       let headers = this.renderHeaders();
       return (
         <div id='song-container' className={ css(styles.wrapper) }>

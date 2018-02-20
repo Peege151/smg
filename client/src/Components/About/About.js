@@ -15,6 +15,7 @@ class About extends Component {
 
 
     render() {
+      console.log('Props', this.props);
         return (
           <div className={css(styles.outerWrapper)}>
             <div className={css(styles.wrapper)}>

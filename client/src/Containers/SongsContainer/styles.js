@@ -74,6 +74,9 @@ const styles = StyleSheet.create({
     top: "calc(50% - " + playWidth / 2 + "px)",
     bottom: 0,
   },
+  active: {
+    background: '#ddd',
+  }
 });
 
 export default styles
