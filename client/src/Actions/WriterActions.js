@@ -4,18 +4,18 @@ function handleErrors(response) {
     }
     return response;
 }
+let WriterActions = {
+  getWriter:(id) => {
+    return fetch('https://smg-api.herokuapp.com/api/writers/' + id, {
 
-WriterActions(id) {
-  fetch('https://smg-api.herokuapp.com/api/writers/' + id, {
-
-  //fetch('https://smg-api.herokuapp.com/api/writers/' + this.props.match.params.writer, {
-    method: 'GET',
-    headers: { "Content-Type": "application/json" }
-  })
-  .then(handleErrors)
-  .then(data => {
-    return data.json();
-  })
-
+      //fetch('https://smg-api.herokuapp.com/api/writers/' + this.props.match.params.writer, {
+      method: 'GET',
+      headers: { "Content-Type": "application/json" }
+    })
+    .then(handleErrors)
+    .then(data => {
+      return data.json();
+    })
+  }
 }
 export default WriterActions
