@@ -1,8 +1,8 @@
 {
-  "main.css": "static/css/main.893fcfa6.css",
-  "main.css.map": "static/css/main.893fcfa6.css.map",
-  "main.js": "static/js/main.f8c65c8e.js",
-  "main.js.map": "static/js/main.f8c65c8e.js.map",
+  "main.css": "static/css/main.694dac64.css",
+  "main.css.map": "static/css/main.694dac64.css.map",
+  "main.js": "static/js/main.445f89dc.js",
+  "main.js.map": "static/js/main.445f89dc.js.map",
   "static/media/Akkurat-Light.ttf": "static/media/Akkurat-Light.6e3e0ae2.ttf",
   "static/media/KnockoutBan.otf": "static/media/KnockoutBan.9cf1d567.otf",
   "static/media/KnockoutJunior.otf": "static/media/KnockoutJunior.1a48997b.otf",
@@ -11,5 +11,6 @@
   "static/media/banner.jpg": "static/media/banner.b2f7ace2.jpg",
   "static/media/banner2.jpg": "static/media/banner2.0f218080.jpg",
   "static/media/banner_speaker.jpg": "static/media/banner_speaker.07a98f5f.jpg",
+  "static/media/jom.jpg": "static/media/jom.fe118b05.jpg",
   "static/media/login-bg.jpg": "static/media/login-bg.3f97c242.jpg"
 }

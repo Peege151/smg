@@ -60,18 +60,38 @@ class Login extends Component {
       return valid;
     }
 
+    resetForm = () => {
+      let email = '', password = '', confirm = '';
+      this.setState({ email, password, confirm });
+    }
+
     handleClick(){
+      console.log('props in handle click', this.props)
       let body = {email: this.state.email, password: this.state.password, confirm: this.state.confirm}
       let referrer = this.props.location.state ? this.props.location.state.referrer : '/'
-      if( this.state.action === 'login' ) this.props.login(body)
+      if( this.state.action === 'login' ){
+        return this.props.login(body)
+        .then(data => {
+          this.resetForm()
+          this.props.history.push(referrer);
+        })
+        .catch(err => this.setErr(err)) // TODO
+      }
       if (this.state.action === 'signup') {
         let valid = this.validateData()
-        if (valid) this.props.signup(body, referrer).then(data => this.resetForm()).catch(err => this.setErr(err)) // TODO
+        if (valid) {
+          this.props.signup(body, referrer)
+          .then(data => {
+            this.resetForm();
+            this.props.history.push(referrer);
+          })
+          .catch(err => this.setErr(err)) // TODO
+        }
       }
       if (this.state.action === 'forgot'){
         this.props.requestForgottenPassword(body)
         .then( data => {
-          this.resetForm()
+          this.resetForm();
           alert('Check Your Email For Instructions')
         })
         .catch(err => { this.setErr(err) } )

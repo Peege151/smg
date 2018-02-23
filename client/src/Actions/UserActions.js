@@ -8,7 +8,7 @@ function handleErrors(response) {
 let UserActions = {
   getSession: () => {
     console.log('Getting Session...')
-    return fetch('http://localhost:8081/api/cookie', {
+    return fetch('https://smg-api.herokuapp.com/api/cookie', {
       method: 'GET',
       credentials: 'include',
       headers: { "Content-Type": "application/json" }
@@ -27,7 +27,7 @@ let UserActions = {
     })
   },
   login: (body) => {
-    return fetch('http://localhost:8081/api/users/login', {
+    return fetch('https://smg-api.herokuapp.com/api/users/login', {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify(body),
@@ -42,7 +42,7 @@ let UserActions = {
     })
   },
   signup: (body) => {
-    return fetch('http://localhost:8081/api/users/', {
+    return fetch('https://smg-api.herokuapp.com/api/users/', {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify({email: body.email, password: body.password}),
@@ -56,8 +56,19 @@ let UserActions = {
       throw err
     })
   },
+  logout(){
+    return fetch('https://smg-api.herokuapp.com/api/users/logout', {
+      credentials: 'include',
+      method: 'POST',
+      headers: { "Content-Type": "application/json" }
+    })
+    .then(handleErrors)
+    .then(data => {
+      return data;
+    })
+  },
   requestForgottenPassword: (body) => {
-    return fetch('http://localhost:8081/api/users/forgot', {
+    return fetch('https://smg-api.herokuapp.com/api/users/forgot', {
       method: 'POST',
       body: JSON.stringify(body),
       headers: { "Content-Type": "application/json" }

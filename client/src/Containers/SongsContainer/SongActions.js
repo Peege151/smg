@@ -19,12 +19,13 @@ class SongActions extends Component {
     onClick = (value) => {
       console.log('Clicked STUFF', value, this.props);
       if(!this.props.token){
-        this.props.openSongActionModal('login', this.props.hoveredSong)
+        this.props.openSongActionModal('login', this.props.hoveredSong._id)
         return;
       }
-      if(value==='addToPlaylist'){ this.props.openSongActionModal('playlist', this.props.hoveredSong)}
+      if(value==='addToPlaylist'){ this.props.openSongActionModal('playlist', this.props.hoveredSong._id)}
       if(value === 'download'){
-        fetch(this.props.song.files[0].url)
+        console.log('DOWNLOAD CALLED', this.props)
+        fetch(this.props.hoveredSong.files[0].url)
         // res is the beginning of a request it only gets the response headers
         // here you can use .blob() .text() .json or res.arrayBuffer() depending
         // on what you need, if it contains Content-Type: application/json
@@ -34,7 +35,7 @@ class SongActions extends Component {
         .then(blob => {
           let a = document.createElement('a');
           a.href = URL.createObjectURL(blob);
-          a.download = this.props.song.files[0].title + '.mp3';
+          a.download = this.props.hoveredSong.files[0].title + '.mp3';
           document.body.appendChild(a);
           a.click();
         });
@@ -57,11 +58,10 @@ class SongActions extends Component {
       let ICONS = [
         {class: 'fa fa-list-ul', tooltip: 'Add To Playlist', value: 'addToPlaylist'},
         {class: 'fa fa-download', tooltip: 'Download Song For Trial', value: 'download' },
-        {class: 'fa fa-paper-plane', tooltip: 'Share Song', value: 'share' },
+        //{class: 'fa fa-paper-plane', tooltip: 'Share Song', value: 'share' },
       ]
       if(p.context === 'playlist' && p.token && p.token.user._id === p.playlist.createdBy._id){
         //allow delete
-        console.log('We Here? DEEEEE')
         ICONS.push({class: 'fa fa-trash', tooltip: 'Remove From Playlist', value: 'delete'})
       }
       return ICONS
@@ -87,7 +87,6 @@ class SongActions extends Component {
       })
     }
     render() {
-      console.log('Props', this.props)
       let iconsToRender = this.determineIconsToRender()
       let icons = this.renderIcons(iconsToRender)
       let tooltip = this.state.activeIcon ? this.state.activeIcon.tooltip : null

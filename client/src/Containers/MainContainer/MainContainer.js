@@ -12,6 +12,7 @@ import About from '../../Components/About/About.js';
 import Contact from '../../Components/Contact/Contact.js'
 import Footer from '../../Components/Footer/Footer.js';
 import Login from '../../Components/Login/Login.js';
+import Logout from '../../Components/Logout/Logout.js';
 import Navbar from '../../Components/Navbar/Navbar.js';
 import NewPassword from '../../Components/NewPassword/NewPassword.js';
 
@@ -44,15 +45,17 @@ class MainContainer extends Component {
         token: undefined
       };
     }
+
     getRequiredData = () => {
       // this should be things you need as soon as you get a user
       return Promise.all([
         PlaylistActions.getUserPlaylists()
       ]);
     }
+
     componentWillReceiveProps(newProps){
       console.log('WRP', this.props, newProps);
-      if(!this.props.token, this.props.token){
+      if(!this.props.token){
         this.getRequiredData()
         .then( data => {
           let token = newProps.token;
@@ -62,6 +65,7 @@ class MainContainer extends Component {
         })
       }
     }
+
     componentWillMount(){
       let token;
       UserActions.getSession()
@@ -83,8 +87,9 @@ class MainContainer extends Component {
     }
 
     loginUser = (body, push) => {
+      console.log('Login Usr Called', body, push);
       let token;
-      UserActions.login(body)
+      return UserActions.login(body)
       .then( data => {
         token = Object.assign({}, data);
         return this.getRequiredData()
@@ -100,7 +105,6 @@ class MainContainer extends Component {
       })
     }
 
-
     openSongActionModal = (type, song) => {
       console.log('Opened Modal with this song', song)
       this.setState({modal: type, songToAddToPlaylist: song})
@@ -110,24 +114,29 @@ class MainContainer extends Component {
       this.setState({modal: false })
     }
 
+    clearToken = () => {
+      this.setState({token: undefined})
+    }
+
     submitModal = ( modalType, action, body, params ) => {
       if(modalType === 'playlist' && action === 'post') {
         PlaylistActions.createNewPlaylist(body, this.state.songToAddToPlaylist)
         .then(playlist => {
           let token = Object.assign({}, this.state.token);
           token.user.playlists.push(playlist)
-          this.setState({ token: token, songToAddToPlaylist: undefined, modal: false })
+          this.setState({ token: token, songToAddToPlaylist: undefined })
           return
         }).catch(err => {console.log('Err!', err)})
       }
 
       if ( modalType === 'playlist' && action === 'put' ){
+        console.log('SUBMIT MODAL', body)
         PlaylistActions.editPlaylist(body)
         .then(playlist => {
           let token = Object.assign({}, this.state.token);
           let idx = this.state.token.user.playlists.findIndex(item => item._id === playlist._id)
           token.user.playlists.splice(idx, 1, playlist);
-          this.setState({ token: token, songToAddToPlaylist: undefined, modal: false })
+          this.setState({ token: token, songToAddToPlaylist: undefined })
         })
       }
       if(modalType === 'login' && params.action === 'login'){
@@ -138,8 +147,8 @@ class MainContainer extends Component {
           this.setState({ token: resp, modal: false })
         })
       }
-
     }
+
     toggleAudio = (song) => {
       let track = document.getElementById('audio-track');
       if (!this.state.playing && !this.state.initiatedPlayer){
@@ -169,6 +178,7 @@ class MainContainer extends Component {
         closeModal: this.closeSongActionModal,
         modal: this.state.modal,
         submitModal: this.submitModal,
+        clearToken: this.clearToken
       }
       let state = this.state
         return (
@@ -183,7 +193,7 @@ class MainContainer extends Component {
                     <Route exact path='/reset' component={ NewPassword } />
                     <Route exact path='/about' component={ About } />
                     <Route exact path='/contact' component={ Contact } />
-
+                    <Route exact path='/logout' render={(routeProps) => <Logout {...functions} {...routeProps}/>} />
                     <Route exact path='/writer/:writer' render={(routeProps) => <WriterContainer {...routeProps} {...state} {...functions}/> } />
                     <Route exact path='/playlists/:id' render={(routeProps) => <PlaylistContainer {...routeProps} {...state} {...functions}/> } />
                     <Route path='/' render={(routeProps) => <SearchContainer {...routeProps}{...state} {...functions}/>}/>

@@ -77,12 +77,14 @@ class ModalContainer extends Component {
     }
 
     addSongToPlaylist = (playlist) => {
+      console.log("ADDING TO PLAYLIST", this.props)
       if( this.props.songToAddToPlaylist) {
         this.setState({ submitted: true })
         playlist.songs.push(this.props.songToAddToPlaylist)
         this.props.submitModal('playlist', 'put', playlist); //second param would be an id for a put req
       } else {
         this.props.history.push('/playlists/'+ playlist._id )
+        this.props.closeModal();
       }
     }
 

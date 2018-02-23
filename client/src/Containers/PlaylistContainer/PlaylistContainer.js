@@ -26,6 +26,10 @@ class PlaylistContainer extends Component {
       this.setState({viewingWriter: writer._id})
     }
 
+    componentDidMount(){
+      this.props.closeModal();
+    }
+
     componentWillMount(){
       fetch('http://localhost:8081/api/playlists/' + this.props.match.params.id, {
 

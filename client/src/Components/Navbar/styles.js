@@ -21,6 +21,20 @@ const styles = StyleSheet.create({
       zIndex: 2,
       color: 'white',
     },
+    userbar: {
+      display: 'table',
+      position: 'fixed',
+      top: 0,
+      left: 8,
+      zIndex: 20,
+      borderRadius: '0px 0px 5px 5px',
+      background: '#4c7c5f',
+      cursor: 'pointer',
+    },
+    icon: {
+      color: 'white',
+      padding: 10,
+    },
     item: {
       margin: 0,
       fontSize: 18,

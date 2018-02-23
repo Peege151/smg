@@ -46,7 +46,10 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   songTitle: {
-    textDecoration: 'underline',
+    //textDecoration: 'underline',
+  },
+  clickableWriter: {
+    color: '#4b5d7c',
   },
   serverError: {
     color: APP_CONSTANTS.ERROR_COLOR

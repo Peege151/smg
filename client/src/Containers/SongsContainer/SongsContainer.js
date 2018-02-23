@@ -12,7 +12,6 @@ import {
   Link
 } from 'react-router-dom'
 
-console.log('Helpers', helpers)
 function handleErrors(response) {
     if (!response.ok) {
       throw Error(response.statusText);
@@ -28,16 +27,16 @@ class SongsContainer extends Component {
         songs: [],
         filtered: [],
         paused: undefined,
-        hoveredSong: undefined
+        hoveredSong: {}
       };
     }
     onMouseEnter = (song, evt) => {
       console.log('Enter!', song, evt)
-      this.setState({hoveredSong: song._id})
+      this.setState({hoveredSong: song})
     }
     onMouseLeave = () => {
       console.log('Leave')
-      //this.setState({hoveredSong: undefined})
+      this.setState({hoveredSong: {}})
     }
     toggleAudio = (song) => {
       if(!this.props.song){
@@ -83,7 +82,7 @@ class SongsContainer extends Component {
             key={`${song.title}${idx}` }
             className={css(
               styles.rowWrapper,
-              song._id === this.state.hoveredSong && styles.active
+              song._id === this.state.hoveredSong._id && styles.active
             )}
             >
             <div className={ css(styles.playButtonContainer)} onClick={this.toggleAudio.bind(null, song)}>
@@ -100,7 +99,7 @@ class SongsContainer extends Component {
               </div>
             </div>
             {
-              song._id === this.state.hoveredSong
+              this.state.hoveredSong && (song._id === this.state.hoveredSong._id)
               ?
               <div className={css(styles.innerSongRow)}>
                 <div className={ css(styles.td, styles.songTitle) }> { song.title } </div>
@@ -199,7 +198,6 @@ class SongsContainer extends Component {
       if(this.props.parent !== 'writers') this.getAllSongs();
     }
     render() {
-      console.log('Props and State', this.props, this.state)
       let songs =  this.props.songs ? this.renderSongTable(this.props.songs) : this.renderSongTable();
       let headers = this.renderHeaders();
       return (
