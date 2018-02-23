@@ -4,6 +4,7 @@ import { css } from 'aphrodite';
 import bgimage  from './../../../assets/banner_speaker.jpg';
 import SongsContainer from '../../SongsContainer/SongsContainer';
 import writerImg from './../../../assets/jom.jpg';
+import WriterActions from '../../../Actions/WriterActions.js'
 
 function handleErrors(response) {
     if (!response.ok) {
@@ -21,16 +22,7 @@ class WriterContainer extends Component {
     componentWillMount(){
       console.log('Getting Writer')
       //fetch('http://localhost:8081/api/songs/', {
-      fetch('http://localhost:8081/api/writers/' + this.props.match.params.writer, {
-
-      //fetch('https://smg-api.herokuapp.com/api/writers/' + this.props.match.params.writer, {
-        method: 'GET',
-        headers: { "Content-Type": "application/json" }
-      })
-      .then(handleErrors)
-      .then(data => {
-        return data.json();
-      })
+      WriterActions.getWriter(this.props.match.params.writer)
       .then(json => {
         console.log('we back?', json)
         this.setState({ writer: json })

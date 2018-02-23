@@ -4,11 +4,11 @@ import { StyleSheet } from 'aphrodite';
 import constants from './../../constants.js'
 const styles = StyleSheet.create({
   modal: {
-    width: '50%',
+    width: window.innerWidth <= 768 ? '100%' : '50%',
     margin: '0 auto',
     position: 'absolute',
     top: '50%',
-    left: '25%',
+    left: window.innerWidth <= 768 ? '0' : '25%',
     minHeight: 370,
     transform: 'translateY(-50%)',
     background: '#f1efee',

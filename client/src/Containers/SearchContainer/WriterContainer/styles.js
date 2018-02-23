@@ -25,17 +25,17 @@ const styles = StyleSheet.create({
     },
     bioWrap: {
       display: 'flex',
+      flexDirection: window.innerWidth <= 768 ? 'column' : 'row',
       margin: '0% 15%',
       background: '#4a4a4a'
     },
     image: {
-      width: '35%',
+      width: window.innerWidth <= 768 ? '100%' : '35%',
       display: 'inline',
-      maxWidth: '50%',
       alignSelf: 'center'
     },
     textWrap: {
-      width: '65%',
+      width: window.innerWidth <= 768 ? '100%' : '65%',
       color: 'white',
       fontFamily: 'Akkurat-Light',
       fontSize: 16,
