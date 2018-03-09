@@ -5,6 +5,8 @@ import image from './../../assets/banner.jpg';
 
 import playlistHTMLBuilder from './playlistHTMLBuilder';
 import loginHTMLBuilder from './loginHTMLBuilder';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+
 
 class ModalContainer extends Component {
     constructor(props) {
@@ -77,10 +79,11 @@ class ModalContainer extends Component {
     }
 
     addSongToPlaylist = (playlist) => {
-      console.log("ADDING TO PLAYLIST", this.props)
       if( this.props.songToAddToPlaylist) {
+        console.log('Okay what is statp', this.props.songToAddToPlaylist)
         this.setState({ submitted: true })
-        playlist.songs.push(this.props.songToAddToPlaylist)
+        playlist.songs.push({song: this.props.songToAddToPlaylist.song, addedBy: this.props.token.user._id})
+        console.log('Submitting Modal With ', playlist);
         this.props.submitModal('playlist', 'put', playlist); //second param would be an id for a put req
       } else {
         this.props.history.push('/playlists/'+ playlist._id )
@@ -100,10 +103,11 @@ class ModalContainer extends Component {
             <h5 className={css(styles.modalTitle)}>
               {this.generateModalTitle()}
               <span className={css(styles.closeModal)} onClick={this.props.closeModal.bind(null, this)}>
-                <i className={`fa text-stroke fa-times`} />
+                <FontAwesomeIcon icon={'times'} />
               </span>
             </h5>
             { form }
+            <div className={css(styles.success)}> { this.props.XHRMessage } </div>
           </div>
         </div>
       )

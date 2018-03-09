@@ -28,12 +28,15 @@ const styles = StyleSheet.create({
       left: 8,
       zIndex: 20,
       borderRadius: '0px 0px 5px 5px',
-      background: '#4c7c5f',
       cursor: 'pointer',
     },
     icon: {
       color: 'white',
       padding: 10,
+      display: 'inline-block',
+      marginRight: '2px',
+      borderRadius: '0px 0px 5px 5px',
+      background: '#4c7c5f',
     },
     item: {
       margin: 0,

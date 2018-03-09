@@ -8,6 +8,7 @@ import {
 
 import Login from '../Login/Login.js';
 import ModalContainer from '../../Containers/ModalContainer/ModalContainer.js';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 let ROUTES = [
   { title: 'SEARCH', active: true, href: '/' },
@@ -27,21 +28,23 @@ class Navbar extends Component {
     onClick(index) {
       this.setState({active: index})
     }
-
+    goToUser = () => {
+      console.log('Props', this.props)
+      this.props.history.push('/user/' + this.props.token.user._id)
+    }
     generateIcons = () => {
-      let icons = ['list']
+      let icons = [
+        { class: 'list-ul', click: this.props.openSongActionModal.bind(null, 'playlist', null) },
+        { class: 'user', click: this.goToUser }
+      ]
+
       return icons.map(icon => {
         return (
-          <div key={icon} className={css(styles.icon)}
-            onClick={this.props.openSongActionModal.bind(null, 'playlist', null)}>
-            <i className={`fa fa-${icon}`} />
+          <div key={icon.class} onClick={icon.click} className={css(styles.icon)}>
+            <FontAwesomeIcon icon={icon.class} />
           </div>
         )
       })
-    }
-
-    componentWillReceiveProps(newProps){
-      console.log('WRP in Navbar', newProps);
     }
 
     componentWillMount(){

@@ -7,11 +7,14 @@
     "bluebird": "^3.5.0",
     "crypto": "^1.0.1",
     "express": "^4.15.3",
+    "lodash": "^4.17.5",
     "nodemailer": "^4.1.1",
     "password-generator": "^2.1.0",
     "react-fontawesome": "^1.6.1",
     "react-router-dom": "^4.2.2",
-    "validator": "^8.2.0"
+    "react-wavesurfer": "^0.8.6",
+    "validator": "^8.2.0",
+    "wavesurfer.js": "^2.0.4"
   },
   "scripts": {
     "start": "node index.js",

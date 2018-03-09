@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
       ':focus': {
         outline:0
       },
+      cursor: 'pointer',
       fontFamily: 'Akkurat-Light',
       display: 'inline-block',
       width:'50%',

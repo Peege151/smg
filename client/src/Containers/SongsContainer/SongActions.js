@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import styles from './songActionStyles.js';
 import { css } from 'aphrodite';
 import image from './../../assets/banner2.jpg';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import DownloadActions from '../../Actions/DownloadActions.js';
 
 class SongActions extends Component {
     constructor(props) {
@@ -18,6 +20,7 @@ class SongActions extends Component {
     }
     onClick = (value) => {
       console.log('Clicked STUFF', value, this.props);
+      // TODO check the actual session
       if(!this.props.token){
         this.props.openSongActionModal('login', this.props.hoveredSong._id)
         return;
@@ -26,11 +29,6 @@ class SongActions extends Component {
       if(value === 'download'){
         console.log('DOWNLOAD CALLED', this.props)
         fetch(this.props.hoveredSong.files[0].url)
-        // res is the beginning of a request it only gets the response headers
-        // here you can use .blob() .text() .json or res.arrayBuffer() depending
-        // on what you need, if it contains Content-Type: application/json
-        // then you might want to choose res.json()
-        // all this returns a promise
         .then(res => res.blob())
         .then(blob => {
           let a = document.createElement('a');
@@ -39,6 +37,7 @@ class SongActions extends Component {
           document.body.appendChild(a);
           a.click();
         });
+        DownloadActions.createDownload({song: this.props.hoveredSong._id, user: this.props.token.user._id})
       }
       if(value === 'delete'){
         // this is not really apprp named
@@ -56,11 +55,11 @@ class SongActions extends Component {
     determineIconsToRender = () => {
       let p = this.props;
       let ICONS = [
-        {class: 'fa fa-list-ul', tooltip: 'Add To Playlist', value: 'addToPlaylist'},
-        {class: 'fa fa-download', tooltip: 'Download Song For Trial', value: 'download' },
-        //{class: 'fa fa-paper-plane', tooltip: 'Share Song', value: 'share' },
+        { class: 'list-ul', tooltip: 'Add To Playlist', value: 'addToPlaylist'},
+        { class: 'download', tooltip: 'Download Song For Trial', value: 'download' },
+        // {class: 'fa fa-paper-plane', tooltip: 'Share Song', value: 'share' },
       ]
-      if(p.context === 'playlist' && p.token && p.token.user._id === p.playlist.createdBy._id){
+      if (p.context === 'playlist' && p.token && p.token.user._id === p.playlist.createdBy._id){
         //allow delete
         ICONS.push({class: 'fa fa-trash', tooltip: 'Remove From Playlist', value: 'delete'})
       }
@@ -80,7 +79,7 @@ class SongActions extends Component {
 
             )}
           >
-            <i className={icon.class} />
+            <FontAwesomeIcon icon={icon.class}/>
           </div>
 
         )

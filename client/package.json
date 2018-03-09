@@ -3,10 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome": "^1.1.4",
+    "@fortawesome/react-fontawesome": "^0.0.17",
     "aphrodite": "^1.2.4",
     "moment": "^2.20.1",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dnd": "^2.5.4",
+    "react-dnd-html5-backend": "^2.5.4",
+    "react-dom": "^15.5.4",
+    "react-wavesurfer": "^0.8.6",
+    "wavesurfer.js": "1.4.0"
   },
   "devDependencies": {
     "react-scripts": "1.0.7"

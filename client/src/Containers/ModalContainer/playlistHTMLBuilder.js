@@ -5,11 +5,12 @@ import { css } from 'aphrodite';
 
 let generateUserPlaylistList = (props, atp) => {
   let userPlaylists = props.token ? props.token.user.playlists : [];
+  console.log('USERP', userPlaylists)
   return userPlaylists.map(playlist => {
     return (
       <div onClick={atp.bind(null, playlist)} className={css(styles.playlistOption)} key={playlist._id}>
-      { playlist.title }
-      <span className={css(styles.numSongs)}> { playlist.songs.length }  Songs </span>
+        { playlist.title }
+        <span className={css(styles.numSongs)}> { playlist.songs ? playlist.songs.length : 0 }  Songs </span>
       </div>
     )
   })
@@ -17,7 +18,6 @@ let generateUserPlaylistList = (props, atp) => {
 
 let playlistHTMLBuilder = {
   renderPlaylistForm: (props, state, setter, validator, atp) => {
-    console.log('A TO THE P', atp)
     let playlistOptions = generateUserPlaylistList(props, atp)
     return (
       <div>

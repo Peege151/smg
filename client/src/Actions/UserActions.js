@@ -4,11 +4,28 @@ function handleErrors(response) {
     }
     return response;
 }
-
+let APIROUTE = process.env.NODE_ENV === 'development' ? "http://localhost:8081/api" : "https://smg-api.herokuapp.com/api"
 let UserActions = {
+  editUser: (body ) => {
+    console.log('Editing user...')
+    return fetch(APIROUTE + '/users/' + body._id, {
+    //return fetch('https://smg-api.herokuapp.com/api/users/login', {
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify(body),
+      headers: { "Content-Type": "application/json" }
+    })
+    .then(handleErrors)
+    .then(data => {
+      return data.json();
+    })
+    .catch(err => {
+      throw new Error( err.message )
+    })
+  },
   getSession: () => {
-    console.log('Getting Session...')
-    return fetch('https://smg-api.herokuapp.com/api/cookie', {
+    return fetch(APIROUTE + '/cookie', {
+    //return fetch('https://smg-api.herokuapp.com/api/cookie', {
       method: 'GET',
       credentials: 'include',
       headers: { "Content-Type": "application/json" }
@@ -27,7 +44,9 @@ let UserActions = {
     })
   },
   login: (body) => {
-    return fetch('https://smg-api.herokuapp.com/api/users/login', {
+    return fetch(APIROUTE + '/users/login', {
+
+    //return fetch('https://smg-api.herokuapp.com/api/users/login', {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify(body),
@@ -42,10 +61,10 @@ let UserActions = {
     })
   },
   signup: (body) => {
-    return fetch('https://smg-api.herokuapp.com/api/users/', {
+    return fetch(APIROUTE + '/users/', {
       method: 'POST',
       credentials: 'include',
-      body: JSON.stringify({email: body.email, password: body.password}),
+      body: JSON.stringify({email: body.email, password: body.password, firstName: body.firstName, lastName: body.lastName}),
       headers: { "Content-Type": "application/json" }
     })
     .then(handleErrors)
@@ -57,7 +76,7 @@ let UserActions = {
     })
   },
   logout(){
-    return fetch('https://smg-api.herokuapp.com/api/users/logout', {
+    return fetch(APIROUTE + '/users/logout', {
       credentials: 'include',
       method: 'POST',
       headers: { "Content-Type": "application/json" }
@@ -68,7 +87,7 @@ let UserActions = {
     })
   },
   requestForgottenPassword: (body) => {
-    return fetch('https://smg-api.herokuapp.com/api/users/forgot', {
+    return fetch(APIROUTE + '/users/forgot', {
       method: 'POST',
       body: JSON.stringify(body),
       headers: { "Content-Type": "application/json" }

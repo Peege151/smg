@@ -1,9 +1,11 @@
+
 import React, { Component } from 'react';
 import styles from './styles.js';
 import { css } from 'aphrodite';
 import defaultArtwork from './../../assets/loader.png';
-
-
+import WaveSurfer from 'react-wavesurfer';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import helpers from './helpers.js'
 
 class PlayerContainer extends Component {
     constructor(props) {
@@ -11,112 +13,73 @@ class PlayerContainer extends Component {
       this.state = {
         playing: true,
         currentTime: "0:00",
-        track: undefined,
-        waveformLoaded: false,
+        pos: 0,
+        paused: false,
+        bufferingNewSong: true
       };
     }
 
     componentDidMount(){
-      let audio = document.getElementById('audio-track');
-      audio.ontimeupdate = () => {
-        this.setState({ currentTime: this.prettyTime(audio.currentTime)})
-      }
-      this.setState({ playing: true, track: audio })
+      this.setState({ playing: true })
     }
 
     componentWillReceiveProps(newProps){
-      console.log('PLAYER GETTING PROPS', newProps.paused, this.state.paused)
+      if(this.props.playing && newProps.song._id && (this.props.playing !== newProps.song._id)){
+        // user hit play on another track withuot pausing.
+        console.log('MisMatch', this.props.playing, newProps.song._id);
+        this.setState({bufferingNewSong: true})
+      }
       this.setState({paused: newProps.paused})
-        // if(this.props.playing !== newProps.playing) {
-        //   console.log('Not the same song...')
-        //   document.getElementById('audio-track').currentTime = 0;
-        //   this.setState({playing: newProps.song._id || true, currentTime: 0, paused: false})
-        // }
-        // if(this.props.song._id === newProps.playing && !this.state.paused){
-        //   console.log('Lets Pause the player icon', newProps.playing)
-        //   this.state.track.pause();
-        //   this.setState({playing: false, paused: true }, () => console.log('Playing? ', this.state.playing))
-        // } else if (this.props.song._id === newProps.playing && this.state.paused){
-        //   this.state.track.play();
-        //   this.setState({playing: newProps.song._id, paused: false })
-        // }
-
     }
 
     onPlayClick = () => {
       console.log('Play Click...')
-      let track = document.getElementById('audio-track');
       this.props.toggleAudio(this.props.song);
       this.setState({ paused: !this.state.paused })
     }
-    renderAudioTrack = () => {
-      return (
-        <audio autoPlay id='audio-track' src={this.props.song.files[0].url}> </audio>
-      )
-    }
-
-    waveformLoaded = () => {
-      console.log('WAVEFORM LOADED');
-      this.setState({waveformLoaded: true})
-    }
 
     hide404Image = (nt, node) => {
-      console.log('Error Hit', node);
       node.target.style.display='none'
-    }
-
-    scrubAudio = (e) => {
-      let audio = document.getElementById('audio-track');
-      console.log('Client', e.clientX)
-      console.log('Bounding Rect X', e.target.getBoundingClientRect().x)
-      console.log('X', e.clientX - e.target.getBoundingClientRect().x);
-      let x = (e.clientX - e.target.getBoundingClientRect().x)
-      let playerWidth = document.getElementById('scrub').clientWidth;
-      console.log('playerWidth', playerWidth, )
-      let percentageToScrubTo = x / playerWidth;
-      console.log('percentage to scrub to', percentageToScrubTo);
-      let secondsOfSongToScrubTo = Math.floor(this.state.track.duration * percentageToScrubTo);
-      audio.currentTime = secondsOfSongToScrubTo;
-      this.setState({ track: audio }, () => console.log( 'State', this.state ))
-    }
-    prettyTime = (time) => {
-      // Well, if time is the duration on the track, it is a string... NAN
-      var minutes = Math.floor(time / 60);
-      var seconds = Math.round(time - minutes * 60);
-      if (seconds < 10) seconds = "0" + seconds;
-      if (!seconds) seconds = this.props.song.duration.slice(-1, 2)
-      if(time){
-        return minutes + ':' + seconds;
-      } else {
-        if(time === 0) {
-          return '0:0' + time;
-        }
-        return time;
-      }
     }
 
     onSongTitleClick = () => {
       console.log('Sup', this.props)
     }
 
+    handlePosChange = (e) => { this.setState({ pos: e.originalArgs[0], currentTime: helpers.prettyTime(e.originalArgs[0]) }) }
+    onPlay = (e) => { console.log('On Play', e)}
+    onFinish = (e) => { console.log('On Finish', e)}
+    onLoading = (e) => { console.log('On Loading', e)}
+    onReady = (e) => { this.setState({bufferingNewSong: false })}
+
     render() {
+      let WSOpts = {
+        height: 70,
+        waveColor: '#d7d7d7',
+        progressColor: 'white',
+        cursorColor: '#4b5d7c'
+      };
+
       let albumArtwork = ( this.props.song && this.props.song.album ) ? ( this.props.song.album.artwork || this.props.song.artwork ) : defaultArtwork
-      console.log('Props and State', this.props)
       let writers = this.props.song.writers.map( writer => {
         return writer.name;
       })
-      let progWidth = this.state.track ? ((this.state.track.currentTime / this.state.track.duration * 100) + '%') : '0%';
-      let track = this.renderAudioTrack();
+      let playSong = this.state.bufferingNewSong ? false : true;
+      if (this.state.paused || this.state.buffering) playSong = false;
       return (
         <div className={ css(styles.playerWrapper) }>
-          <div className={css(
-            styles.playButtonWrapper,
-          //  this.state.waveformLoaded && styles.waveformLoaded
-          )}>
-            { this.state.paused ?
-              <i className={`fa fa-play ${css(styles.playIcon)}`} onClick={ this.onPlayClick.bind(null, this) }></i>
+          <div
+            onClick={ this.onPlayClick.bind(null, this) }
+            className={css(
+              styles.playButtonWrapper,
+              //  this.state.waveformLoaded && styles.waveformLoaded
+            )}>
+            { this.state.bufferingNewSong ? <div className={css(styles.playIcon)}> <FontAwesomeIcon icon="spinner" pulse/></div>
+            :
+             this.state.paused ?
+              <div className={css(styles.playIcon)}> <FontAwesomeIcon icon="play"/></div>
               :
-              <i className={`fa fa-pause ${css(styles.playIcon)}`} onClick={ this.onPlayClick.bind(null, this) }></i>
+              <div className={css(styles.playIcon)}> <FontAwesomeIcon icon="pause"/></div>
             }
           </div>
           <div className={css(styles.artworkWrap)}>
@@ -125,22 +88,23 @@ class PlayerContainer extends Component {
           <div className={css(styles.scrubOuterWrapper)}>
             <div
               id='scrub'
-              onClick={(e) => this.scrubAudio(e) }
               className={css(
                 styles.scrubInnerWrapper,
-                this.state.waveformLoaded && styles.waveformLoaded
               )}>
-              <img
-                className={css(
-                  styles.waveformImage,
-                  //this.state.waveformLoaded && styles.waveformLoaded
-                )}
-                src={`${this.props.song.waveform}`}
-                onLoad={this.waveformLoaded.bind(null, this)}
-                onError={this.hide404Image.bind(null, this)}
+              <WaveSurfer
+                audioFile={this.props.song.files[0].url}
+                pos={this.state.pos}
+                onPlay={this.onPlay}
+                onFinish={this.onFinish}
+                onReady={this.onReady}
+                onLoading={this.onLoading}
+                onPosChange={this.handlePosChange}
+                playing={playSong}
+                height={60}
+                options={WSOpts}
+                zoom={1}
                 />
-              <div style={{ width: progWidth }} className={css(styles.scrubProgress)}> </div>
-            </div>
+              </div>
           </div>
 
           <div className={css(styles.song)}>
@@ -151,7 +115,6 @@ class PlayerContainer extends Component {
             <span className={css(styles.songWriters)}> { writers.join(', ') } </span>
           </div>
           <div className={css(styles.timeCounters)}> { this.state.currentTime } / { this.props.song.duration }</div>
-          { track }
         </div>
       );
     }

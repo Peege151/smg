@@ -20,6 +20,11 @@ const styles = StyleSheet.create({
     width: '80%',
     margin: '0 auto',
   },
+  success: {
+    color: '#4c7c5f',
+    textAlign: 'center',
+  },
+
   selectPlaylists: {
     padding: '20px',
     fontSize: '14px',
@@ -44,6 +49,8 @@ const styles = StyleSheet.create({
   numSongs: {
     position: 'absolute',
     right: 20,
+    top: '50%',
+    transform: 'translateY(-50%)',
   },
   formTitle: {
     textAlign: 'center',

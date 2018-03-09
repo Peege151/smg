@@ -67,10 +67,6 @@ class SearchContainer extends Component {
       };
     }
 
-    componentWillReceiveProps(nextProps){
-      console.log('The Searchcontainer is receiving props', nextProps)
-    }
-
     apply(str){
       this.setState({method: str})
     }
@@ -85,8 +81,8 @@ class SearchContainer extends Component {
     onInputEntry = (evt) => {
       // SEARCH
       if(evt.target.value){
-        fetch(` https://smg-api.herokuapp.com/api/${this.state.searchModel}/search/${evt.target.value}`,{
-        //fetch(`http://localhost:8081/api/${this.state.searchModel}/search/${evt.target.value}`, {
+        //fetch(` https://smg-api.herokuapp.com/api/${this.state.searchModel}/search/${evt.target.value}`,{
+        fetch(`http://localhost:8081/api/${this.state.searchModel}/search/${evt.target.value}`, {
           method: 'GET',
           headers: { "Content-Type": "application/json" }
         })
@@ -100,8 +96,8 @@ class SearchContainer extends Component {
         })
       } else {
         // The searchbar is empty, so lets get all songs
-        fetch(`https://smg-api.herokuapp.com/api/songs`,{
-        //fetch(`http://localhost:8081/api/songs/`, {
+        //fetch(`https://smg-api.herokuapp.com/api/songs`,{
+        fetch(`http://localhost:8081/api/songs/`, {
           method: 'GET',
           headers: { "Content-Type": "application/json" }
         })
@@ -143,6 +139,9 @@ class SearchContainer extends Component {
 
       if ( categoryObject[category.selector].indexOf(variant.value) === -1 ) {
         categoryObject[category.selector].push(variant.value)
+        // this.props.history.push('/')
+         var separator = (window.location.href.indexOf("?")===-1)?"?":"&";
+         window.history.pushState({}, 'Searching',  window.location.href + separator + "query");
       } else {
         categoryObject[category.selector].splice(this.state.selected[category.selector].indexOf(variant.value), 1);
       }

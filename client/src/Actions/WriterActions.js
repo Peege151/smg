@@ -6,9 +6,9 @@ function handleErrors(response) {
 }
 let WriterActions = {
   getWriter:(id) => {
-    return fetch('https://smg-api.herokuapp.com/api/writers/' + id, {
+    //return fetch('https://smg-api.herokuapp.com/api/writers/' + id, {
 
-      //fetch('https://smg-api.herokuapp.com/api/writers/' + this.props.match.params.writer, {
+    return fetch('http://localhost:8081/api/writers/' + id, {
       method: 'GET',
       headers: { "Content-Type": "application/json" }
     })

@@ -2,8 +2,7 @@ import { StyleSheet } from 'aphrodite';
 const styles = StyleSheet.create({
     wrapper: {
       width: '100%',
-      textAlign: 'center',
-      background: '#eee',
+      background: '#efefed',
       position: 'relative',
     },
     overlay: {
@@ -17,16 +16,70 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
     playlistTitle: {
-      marginTop: 0
+      marginTop: 0,
+      textAlign: 'center',
+
+    },
+    collabie: {
+      background: '#f8f8f8',
+      textAlign: 'center',
+      fontSize: '16px',
+    },
+    loadingContainer: {
+      textAlign: 'center',
+      paddingTop: '50px',
+      background: 'white',
     },
     by: {
 
+    },
+    playlistSCWrapper: {
+      background: 'white',
+    },
+    actionsWrapper: {
+      position: 'relative',
+      width: '100%',
+      display: 'flex',
+      background: '#f8f8f8',
+      marginTop: 20,
+      padding: 20,
+    },
+    collaboratingInfo: {
+      fontSize: 16,
+      background: '#f8f8f8 !important',
+      textAlign: 'center',
+      padding: 16,
+      margin: 0,
+    },
+    right: {
+      position: 'absolute',
+      right: 0,
+      top: 10,
+      display: 'flex',
+    },
+    center: {
+      display: 'inline',
+      top: 0,
+      margin: 'auto'
+    },
+    action: {
+      background: '#efefed',
+      borderRadius: 5,
+      cursor: 'pointer',
+      border: '1px solid #d7d7d7',
+      padding: 10,
+      width: 50,
+      display: 'inline',
+      textAlign: 'center',
     },
     infoLine: {
       color: '#666',
       fontStyle: 'italic',
       fontSize: '16px',
-
+      textAlign: 'center',
+    },
+    tooltip: {
+      position: 'absolute',
     },
     data: {
       fontStyle: 'normal',

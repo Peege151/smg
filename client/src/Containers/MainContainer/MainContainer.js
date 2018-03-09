@@ -6,7 +6,9 @@ import BrowseContainer from '../BrowseContainer/BrowseContainer.js';
 import PlayerContainer from '../PlayerContainer/PlayerContainer.js';
 import PlaylistContainer from '../PlaylistContainer/PlaylistContainer.js';
 import SearchContainer from '../SearchContainer/SearchContainer.js';
+import UserContainer from '../UserContainer/UserContainer.js';
 import WriterContainer from '../SearchContainer/WriterContainer/WriterContainer.js';
+
 
 import About from '../../Components/About/About.js';
 import Contact from '../../Components/Contact/Contact.js'
@@ -60,12 +62,11 @@ class MainContainer extends Component {
         .then( data => {
           let token = newProps.token;
           console.log('All Promises have Resolved', data, token);
-          newProps.token.user.playlists = data[0];
+          newProps.token.user.playlists = data[0] || [];
           this.setState({token: token})
         })
       }
     }
-
     componentWillMount(){
       let token;
       UserActions.getSession()
@@ -86,10 +87,47 @@ class MainContainer extends Component {
       })
     }
 
+    editUser = (body) => {
+      let token;
+      return UserActions.editUser(body)
+      .then( data => {
+        token = Object.assign({}, data);
+        this.setState({token: token, XHRMessage: 'Successfully Edited User'})
+        console.log('Back From Edit User', token);
+        setTimeout(() => {
+          this.setState({modal: false, XHRMessage: ''})
+        }, 500)
+      })
+      .catch( err => {
+        console.log('Err', err)
+      })
+    }
     loginUser = (body, push) => {
       console.log('Login Usr Called', body, push);
       let token;
       return UserActions.login(body)
+      .then( data => {
+        token = Object.assign({}, data);
+        return this.getRequiredData()
+      })
+      .then( data => {
+        console.log('Back From User', data, token);
+        token.user.playlists = data[0];
+        this.setState({token: token, XHRMessage: 'Successfully Logged In'})
+        setTimeout(() => {
+          this.setState({modal: false, XHRMessage: ''})
+        }, 500)
+      })
+      .catch(err => {
+        console.error('HOLY F', err)
+        throw err;
+      })
+    }
+
+    signupUser = (body, push) => {
+      console.log('Signup Usr Called', body, push);
+      let token;
+      return UserActions.signup(body)
       .then( data => {
         token = Object.assign({}, data);
         return this.getRequiredData()
@@ -107,7 +145,8 @@ class MainContainer extends Component {
 
     openSongActionModal = (type, song) => {
       console.log('Opened Modal with this song', song)
-      this.setState({modal: type, songToAddToPlaylist: song})
+      if(song) this.setState({modal: type, songToAddToPlaylist: {song: song, addedBy: this.state.token.user._id}})
+      if(!song) this.setState({modal: type })
     }
 
     closeSongActionModal = () =>{
@@ -150,21 +189,21 @@ class MainContainer extends Component {
     }
 
     toggleAudio = (song) => {
-      let track = document.getElementById('audio-track');
+      // let track = document.getElementById('audio-track');
       if (!this.state.playing && !this.state.initiatedPlayer){
         this.setState({ song: song, paused: false, playing: song._id, initiatedPlayer: true },  )
       } else if(!this.state.playing && this.state.initiatedPlayer){
-        track.play();
+        //track.play();
         this.setState({ song: song, paused: false, playing: song._id, initiatedPlayer: true },  )
       } else if (this.state.playing === song._id){
-        track.pause();
+        //track.pause();
         this.setState( {playing: false, paused: true } )
       } else if(this.state.playing !== song._id){
         // new song hit from container
-        track.pause();
+        //track.pause();
         this.setState( {song: song, playing: song._id, paused: false } )
       } else {
-        track.play();
+        //track.play();
         this.setState( { paused: false } )
         // this.props.toggleAudio(this.props.song);
       }
@@ -173,6 +212,8 @@ class MainContainer extends Component {
     render() {
       let functions = {
         login: this.loginUser,
+        signup: this.signupUser,
+        editUser: this.editUser,
         toggleAudio: this.toggleAudio,
         openSongActionModal: this.openSongActionModal,
         closeModal: this.closeSongActionModal,
@@ -190,6 +231,7 @@ class MainContainer extends Component {
                   <Switch>
                     <Route exact path='/browse' component={ BrowseContainer } />
                     <Route exact path='/login' render={(routeProps) => <Login {...functions} {...routeProps}/>}/>
+                    <Route exact path='/user/:user' render={(routeProps) => <UserContainer token={this.state.token} {...routeProps} {...functions}/>}/>
                     <Route exact path='/reset' component={ NewPassword } />
                     <Route exact path='/about' component={ About } />
                     <Route exact path='/contact' component={ Contact } />

@@ -53,6 +53,9 @@ class Login extends Component {
         this.setState({clientError: 'Passwords do Not Match'})
         valid = false;
       }
+      if(!this.state.firstName || !this.state.lastName){
+        this.setState({clientError: 'Please Include Your Name!'})
+      }
       if (this.state.password.length < 6){
         this.setState({clientError: 'Your Password Kinda Sucks. Can You Make It Longer? K Thx.'})
         valid = false;
@@ -61,13 +64,13 @@ class Login extends Component {
     }
 
     resetForm = () => {
-      let email = '', password = '', confirm = '';
+      let email = '', password = '', confirm = '', firstName = '', lastName = '';
       this.setState({ email, password, confirm });
     }
 
     handleClick(){
       console.log('props in handle click', this.props)
-      let body = {email: this.state.email, password: this.state.password, confirm: this.state.confirm}
+      let body = {email: this.state.email, password: this.state.password, confirm: this.state.confirm, firstName: this.state.firstName, lastName: this.state.lastName}
       let referrer = this.props.location.state ? this.props.location.state.referrer : '/'
       if( this.state.action === 'login' ){
         return this.props.login(body)
@@ -117,6 +120,16 @@ class Login extends Component {
       } else if(this.state.action === 'signup') {
         return (
           <div className={css(styles.inputWrappers)}>
+            <input
+              onChange={this.changeField.bind(this, 'firstName')}
+              placeholder='First Name'
+              type='text'
+              className={css(styles.input)}/>
+            <input
+              onChange={this.changeField.bind(this, 'lastName')}
+              placeholder='Last Name'
+              type='text'
+              className={css(styles.input)}/>
             <input
               onChange={this.changeField.bind(this, 'email')}
               placeholder='Email'

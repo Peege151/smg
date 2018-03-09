@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import styles from './styles.js';
 import { css } from 'aphrodite';
-import helpers from './helpers';
 
 import { CATEGORIES } from '../../Components/FilterHeaders/categories.js';
 import  WriterContainer from '../SearchContainer/WriterContainer/WriterContainer.js';
 
-import SongActions from './SongActions.js'
-import {
-  Route,
-  Link
-} from 'react-router-dom'
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+
+import Song from '../../Components/Song/Song.js';
+import SongActions from '../../Actions/SongActions.js';
 
 function handleErrors(response) {
     if (!response.ok) {
@@ -19,7 +18,7 @@ function handleErrors(response) {
     return response;
 }
 
-let HEADERS = ['', 'Name', 'Writer', 'Genres', 'Tempo', 'Length']
+let HEADERS = ['Name', 'Writer', 'Genres', 'Tempo', 'Length']
 class SongsContainer extends Component {
     constructor(props) {
       super(props);
@@ -30,14 +29,24 @@ class SongsContainer extends Component {
         hoveredSong: {}
       };
     }
-    onMouseEnter = (song, evt) => {
-      console.log('Enter!', song, evt)
-      this.setState({hoveredSong: song})
+
+    onTouchMove = (song, evt) => {
+      console.log('TOUCH MOVE', evt)
     }
+
     onMouseLeave = () => {
-      console.log('Leave')
       this.setState({hoveredSong: {}})
     }
+
+    onMouseOver = (song, evt) => {
+      if (window.innerWidth <= 768) {
+        // don't fire mouse over event for mobile devices
+      } else {
+        evt.stopPropagation();
+        this.setState({hoveredSong: song})
+      }
+    }
+
     toggleAudio = (song) => {
       if(!this.props.song){
         window.mixpanel.track(song.title + '-- Audio Play')
@@ -56,75 +65,39 @@ class SongsContainer extends Component {
       }
     }
 
-    createClickableWriters = (song) => {
-      return song.writers.map(writer => {
-        return (
-              <span key={writer._id}>
-                <Link
-                  to={{ pathname:'/writer/' + writer.writer, state: {writer: writer}}}
-                  className={css(styles.clickableWriter)}
-                  onClick={ this.props.openWriterContainer ? this.props.openWriterContainer.bind(null, writer) : null } >
-                    {writer.name}&nbsp;
-                </Link>
-              </span>
-        )
-      })
-    }
     renderSongTable = (songs) => {
+
+      let functions = {
+        onMouseLeave: this.onMouseLeave,
+        moveSong: this.props.moveSong,
+        onTouchMove: this.onTouchMove,
+        onMouseOver: this.onMouseOver,
+        toggleAudio: this.toggleAudio
+      }
+
       let toMap = songs ? songs : this.state.songs;
       return toMap.map(( song, idx) => {
-        let prettyFilters = helpers.beautifyFilters(song);
-        let writers = song.writers.map(writer => writer.name);
+        let collaborator = this.props.collaborators ? this.props.collaborators[idx] : undefined;
+        let writers = song.writers.map((writer, idx) => writer.name);
         return (
-          <div
-            onMouseEnter={this.onMouseEnter.bind(null, song)}
-            onMouseLeave={this.onMouseLeave.bind(this, song)}
-            key={`${song.title}${idx}` }
-            className={css(
-              styles.rowWrapper,
-              song._id === this.state.hoveredSong._id && styles.active
-            )}
-            >
-            <div className={ css(styles.playButtonContainer)} onClick={this.toggleAudio.bind(null, song)}>
-              <div className={ css(styles.playButton)}>
-                {
-                  this.props.paused
-                  ?
-                  <i className={`fa fa-play ${css(styles.playIcon)}`}></i>
-                  :
-                  this.props.playing === song._id
-                  ? <i className={`fa fa-pause ${css(styles.playIcon)}`}></i>
-                  : <i className={`fa fa-play ${css(styles.playIcon)}`}></i>
-                }
-              </div>
-            </div>
-            {
-              this.state.hoveredSong && (song._id === this.state.hoveredSong._id)
-              ?
-              <div className={css(styles.innerSongRow)}>
-                <div className={ css(styles.td, styles.songTitle) }> { song.title } </div>
-                <div className={ css(styles.td) }> { this.createClickableWriters(song) } </div>
-                <SongActions hoveredSong={this.state.hoveredSong} {...this.props} />
-              </div>
-              :
-              <div className={css(styles.innerSongRow)}>
-                <div className={ css(styles.td, styles.songTitle) }> { song.title } </div>
-                <div className={ css(styles.td) }> { this.createClickableWriters(song) } </div>
-                <div className={ css(styles.td) }> { prettyFilters } </div>
-                <div className={ css(styles.td) }> { song.tempo } BPM </div>
-                <div className={ css(styles.td) }> { song.duration } </div>
-              </div>
-            }
-          </div>
-        )
+            <Song
+              key={idx}
+              data={song}
+              idx={idx}
+              hoveredSong={this.state.hoveredSong}
+              collaborator={collaborator}
+              {...this.props}
+              { ...functions}
+            />
+          )
       })
     }
+
     renderHeaders = () => {
       return HEADERS.map( header => {
         return (
           <div key={header} className={css(
             styles.header,
-            header === '' && styles.play
           )}>
             { header }
           </div>
@@ -132,31 +105,16 @@ class SongsContainer extends Component {
       })
     }
     getAllSongs = () => {
-      console.log('Getting Songs')
-      //fetch('http://localhost:8081/api/songs/', {
-      fetch('https://smg-api.herokuapp.com/api/songs/', {
-        method: 'GET',
-        headers: { "Content-Type": "application/json" }
-      })
-      .then(handleErrors)
-      .then(data => { return data.json() })
+      SongActions.getAllSongs()
       .then(json => { this.setState({ songs: json }) })
       .catch(err => { this.setState({clientError: err.message}) })
     }
     filterSongs = (newProps) => {
-      console.log('the props', newProps);
       if(newProps.method === 'filter'){
         let filters =  [].concat(...Object.keys(newProps.selected).map(key => { return newProps.selected[key] }))
-        console.log('FIltering with these filters', filters)
         if(filters.length){
           let query = filters.join('%20');
-          //fetch('http://localhost:8081/api/songs/?include=' + query, {
-          fetch('https://smg-api.herokuapp.com/api/songs/?include=' + query, {
-            method: 'GET',
-            headers: { "Content-Type": "application/json" }
-          })
-          .then(handleErrors)
-          .then(data => { return data.json() })
+          SongActions.filterSongs(query)
           .then(json => {   this.setState({ songs: json }) })
         } else {
           this.getAllSongs();
@@ -169,27 +127,20 @@ class SongsContainer extends Component {
       if(newProps.method === 'filter'){
         let oldFilters = [].concat(...Object.keys(this.props.selected).map(key => {return this.props.selected[key]}))
         let newFilters = [].concat(...Object.keys(newProps.selected).map(key => {return newProps.selected[key]})).filter(Boolean)
-        console.log('Receiving new Props in SC', oldFilters.length, newFilters.length);
         if (oldFilters.length !== newFilters.length) {
-          console.log('Different length')
           this.filterSongs(newProps);
         } else {
-          console.log('Filtering Songs', newProps.selected)
           this.filterSongs(newProps);
         }
-        if(!newFilters.length){
-          this.getAllSongs();
-        }
+        if(!newFilters.length) this.getAllSongs()
       } else {
         // using input bar
-        console.log('Props', this.props)
         if(newProps.searchModel !== this.props.searchModel){
           this.getAllSongs();
         }
         if(newProps.songs && newProps.songs.length){
           this.setState({ songs: newProps.songs })
         } else {
-          console.log('Ok...', this.state)
           this.setState({songs: this.state.songs})
         }
       }
@@ -210,4 +161,4 @@ class SongsContainer extends Component {
       );
     }
 }
-export default SongsContainer;
+export default DragDropContext(HTML5Backend)(SongsContainer);
