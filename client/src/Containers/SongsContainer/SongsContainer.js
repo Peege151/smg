@@ -131,7 +131,7 @@ class SongsContainer extends Component {
     }
     componentWillReceiveProps = (newProps) => {
       console.log('New Props', newProps)
-      if(newProps.method === 'filter' && this.props === 'filter'){
+      if(newProps.method === 'filter' && this.props.method === 'filter'){
         let oldFilters = [].concat(...Object.keys(this.props.selected).map(key => {return this.props.selected[key]}))
         let newFilters = [].concat(...Object.keys(newProps.selected).map(key => {return newProps.selected[key]})).filter(Boolean)
         if (oldFilters.length !== newFilters.length) {
@@ -140,9 +140,9 @@ class SongsContainer extends Component {
           this.filterSongs(newProps);
         }
         //if(!newFilters.length) this.getAllSongs()
-      } else if( newProps.method === 'filter' && this.props !=='filter'){
+      } else if( newProps.method === 'filter' && this.props.method !=='filter'){
         console.log('Moved to Filter From Search');
-        this.getAllSongs()
+        //this.getAllSongs()
       } else {
         // using input bar
         if(newProps.searchModel !== this.props.searchModel){
