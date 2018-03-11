@@ -85,6 +85,7 @@ class SongsContainer extends Component {
     }
 
     renderSongTable = (songs) => {
+      console.log('Ok', songs)
       let functions = {
         onMouseLeave: this.onMouseLeave,
         moveSong: this.props.moveSong,
@@ -179,6 +180,7 @@ class SongsContainer extends Component {
       if(this.props.parent !== 'writers') this.getAllSongs();
     }
     render() {
+      console.log('Song Container PL', this.props, this.state)
       let songs =  this.props.songs ? this.renderSongTable(this.props.songs) : this.renderSongTable();
       let headers = this.renderHeaders();
       return (

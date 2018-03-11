@@ -120,7 +120,7 @@ class MainContainer extends Component {
       })
       .catch(err => {
         console.error('HOLY F', err)
-        throw err;
+        //throw err;
       })
     }
 

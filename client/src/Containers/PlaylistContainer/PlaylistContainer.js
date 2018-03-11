@@ -36,7 +36,7 @@ class PlaylistContainer extends Component {
       if(this.props.match.url !== newProps.match.url){
         PlaylistActions.getPlaylist(newProps.match.params.id)
         .then(data => {
-          this.setState({ playlist: data })
+          this.setState({ playlist: data, songs: data.songs.map(song => song.song) })
         })
         .catch(err => {
           console.log('err', err)
@@ -55,6 +55,10 @@ class PlaylistContainer extends Component {
     toggleCollaboration = () => {
       let collaborative = !this.state.playlist.collaborative
       let playlist = Object.assign({}, this.state.playlist);
+      playlist.songs.map(function(song){
+        song.addedBy = song.addedBy._id;
+        song.song = song.song._id
+      })
       playlist.collaborative = collaborative;
       PlaylistActions.editPlaylist(playlist)
       .then(data => {
