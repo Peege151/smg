@@ -40,7 +40,6 @@ let PlaylistActions = {
   },
 
   editPlaylist: (playlist) => {
-    console.log('PRE', playlist)
     playlist.songs = [...new Set(playlist.songs)];
     console.log('Songs As We Send Them Up?', playlist)
     let opts = {
@@ -59,8 +58,8 @@ let PlaylistActions = {
   },
 
   getPlaylist: (id) => {
-    //return fetch('http://localhost:8081/api/playlists/' + id, {
-    return fetch('https://smg-api.herokuapp.com/api/playlists/' + id, {
+    return fetch('http://localhost:8081/api/playlists/' + id, {
+    //return fetch('https://smg-api.herokuapp.com/api/playlists/' + id, {
       method: 'GET',
       headers: { "Content-Type": "application/json" }
     })

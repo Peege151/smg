@@ -96,6 +96,25 @@ class Song extends Component {
 
       };
     }
+    getWidthOfTd = (numColumns, td) => {
+      numColumns = this.props.collaborators ? 6 : 5;
+      let base = 100 / numColumns;
+      if(numColumns === 5 ){
+        if(td === 'Name') return  base * 1.333 + '%';
+        if(td === 'Writer') return base * 1.333 + '%'
+        if(td === 'Genres') return base * 1.333 + '%'
+        if(td === 'Tempo') return base /2 + '%'
+        if(td === 'Length') return base /2  + '%'
+      } else if( numColumns === 6){
+        if(td === 'Name') return  Math.floor(base * 1.333) + '%';
+        if(td === 'Writer') return Math.floor(base * 1.333) + '%'
+        if(td === 'Genres') return base + '%'
+        if(td === 'Tempo') return base /2 + '%'
+        if(td === 'Length') return base /2  + '%'
+        if(td === 'Added_By') return base * 1.33 + '%'
+
+      }
+    }
 
     createClickableWriters = (song) => {
       return song.writers.map(writer => {
@@ -152,12 +171,18 @@ class Song extends Component {
               </div>
               :
               <div className={css(styles.innerSongRow)}>
-                <div className={ css(styles.td, styles.songTitle) }> { p.data.title } </div>
-                <div className={ css(styles.td) }> { this.createClickableWriters(p.data) } </div>
-                <div className={ css(styles.td) }> { prettyFilters } </div>
-                <div className={ css(styles.td) }> { p.data.tempo } BPM </div>
-                <div className={ css(styles.td) }> { p.data.duration } </div>
-                { p.collaborator ? <div className={ css(styles.td) }> { p.collaborator } </div> : null }
+                <div style={{width: this.getWidthOfTd(null, 'Name')}} className={ css(styles.td, styles.songTitle) }> { p.data.title } </div>
+                <div style={{width: this.getWidthOfTd(null, 'Writer')}}className={ css(styles.td) }> { this.createClickableWriters(p.data) } </div>
+                <div style={{width: this.getWidthOfTd(null, 'Genres')}}className={ css(styles.td) }> { prettyFilters } </div>
+                <div style={{width: this.getWidthOfTd(null, 'Tempo')}}className={ css(styles.td) }> { p.data.tempo } BPM </div>
+                <div style={{width: this.getWidthOfTd(null, 'Length')}}className={ css(styles.td) }> { p.data.duration } </div>
+                { p.collaborator ?
+                  <div
+                    style={{width: this.getWidthOfTd(null, 'Added_By')}}
+                    className={ css(styles.td) }>
+                      { p.collaborator. length > 20 ? p.collaborator.substr(0,18)+'...' : p.collaborator }
+                  </div>
+                : null }
 
               </div>
             }

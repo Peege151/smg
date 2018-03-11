@@ -106,7 +106,7 @@ class PlaylistContainer extends Component {
     deletePlaylist = () => {
       let txt;
       console.log('Deleting Playlist')
-      let confirmed = window.confirm('Are You Sure You Want To Delete The Playlist?  This Action Is Not Reversable')
+      let confirmed = window.confirm('Deleting Playlists Will Be Possible In Next Site Update')
       if (confirmed) {
         console.log('You Did THE THING')
       } else {
@@ -140,13 +140,11 @@ class PlaylistContainer extends Component {
       })
     }
     renderCollaboratorsHTML = () => {
-      console.log('State', this.state.playlist)
       return this.state.playlist.collaborators.map(collab => {
         return <div className={css(styles.collabie)} key={collab}> { collab.email } </div>
       })
     }
     render() {
-      console.log('Playlist is => ', this.state, this.state.playlist, this.state.playlist.songs, this.state.playlist.createdBy)
       let currentUser = this.props.token ? this.props.token.user : {};
       let playlistCreator = this.state.playlist.createdBy ? this.state.playlist.createdBy._id : undefined;
       let access = playlistCreator && (currentUser === playlistCreator);

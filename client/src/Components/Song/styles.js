@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
   },
   td: {
     display: window.innerWidth < 768 ? 'block' : 'inline-block',
-    width: window.innerWidth < 768 ? '100%' : 'calc(20% - ' +  Math.ceil((playWidth) / numHeadersOtherThanPlay) + 'px)',
     padding: window.innerWidth < 768 ? 3 : 10,
+    width: window.innerWidth < 768 ? '100%' : undefined,
   },
   clickableWriter: {
     color: '#4b5d7c',
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   active: {
-    background: '#ddd',
+    background: '#e7e7e7',
   }
 });
 

@@ -30,6 +30,24 @@ class SongsContainer extends Component {
         hoveredSong: {}
       };
     }
+    getWidthOfHeader = (numColumns, header) => {
+      let base = 100 / numColumns;
+      if(numColumns === 5 ){
+        if(header === 'Name') return  base * 1.333 + '%';
+        if(header === 'Writer') return base * 1.333 + '%'
+        if(header === 'Genres') return base * 1.333 + '%'
+        if(header === 'Tempo') return base /2 + '%'
+        if(header === 'Length') return base /2  + '%'
+      } else if( numColumns === 6){
+        if(header === 'Name') return  Math.floor(base * 1.333) + '%';
+        if(header === 'Writer') return Math.floor(base * 1.333) + '%'
+        if(header === 'Genres') return base + '%'
+        if(header === 'Tempo') return base /2 + '%'
+        if(header === 'Length') return base /2  + '%'
+        if(header === 'Added_By') return base * 1.33 + '%'
+
+      }
+    }
 
     onTouchMove = (song, evt) => {
       console.log('TOUCH MOVE', evt)
@@ -93,12 +111,16 @@ class SongsContainer extends Component {
     }
 
     renderHeaders = () => {
-      return HEADERS.map( header => {
+      let NEW_HEADERS = [].concat(HEADERS);
+      if(this.props.context === 'playlist') NEW_HEADERS.push('Added_By');
+      let playlistHeaders = this.props.context === 'playlist' ? true : false;
+      return NEW_HEADERS.map( header => {
+        let width = this.getWidthOfHeader(NEW_HEADERS.length, header)
         return (
           <div key={header} className={css(
             styles.header,
-          )}>
-            { header }
+          )} style={{width: width}}>
+            { header.split('_').join(' ') }
           </div>
         )
       })
@@ -111,7 +133,6 @@ class SongsContainer extends Component {
       .catch(err => { this.setState({clientError: err.message}) })
     }
     filterSongs = (nP) => {
-      console.log('NewProps', nP)
       if(nP.method === 'filter'){
         let included = [].concat(...Object.keys(nP.selected).map(key => { return nP.selected[key] }))
         let tempoString = `&tempo=${nP.tempoRange.min}-${nP.tempoRange.max}`
@@ -130,7 +151,6 @@ class SongsContainer extends Component {
       }
     }
     componentWillReceiveProps = (newProps) => {
-      console.log('New Props', newProps)
       if(newProps.method === 'filter' && this.props.method === 'filter'){
         let oldFilters = [].concat(...Object.keys(this.props.selected).map(key => {return this.props.selected[key]}))
         let newFilters = [].concat(...Object.keys(newProps.selected).map(key => {return newProps.selected[key]})).filter(Boolean)

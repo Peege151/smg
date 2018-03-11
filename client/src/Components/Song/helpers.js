@@ -22,7 +22,7 @@ let helpers = {
       // there as a result of non-genre filter variants initially pushing undefined to array
     }).filter(i => i).join(' ')
     if (filters.length > 20){
-      filters = filters.replace(/^(.{11}[^\s]*).*/, "$1...")
+      filters = filters.replace(/^(.{19}[^\s]*).*/, "$1...")
     } else {
       filters = filters.replace(/^(.{11}[^\s]*).*/, "$1")
     }

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'aphrodite';
 import APP_CONSTANTS from '../../constants.js';
-let numHeadersOtherThanPlay = 4.5;
+let numHeadersOtherThanPlay = 5;
 let playWidth = 50
 const styles = StyleSheet.create({
   headerWrapper: {
@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     paddingLeft: 70,
   },
+  headerLength: {
+    width: `calc(${ 100 / numHeadersOtherThanPlay }% -  ${Math.ceil((playWidth) / numHeadersOtherThanPlay)}px)`,
+  },
   header: {
     textAlign: 'left',
     color: '#999',
@@ -20,7 +23,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: 14,
     padding: 10,
-    width: 'calc(20% - ' +  Math.ceil((playWidth) / numHeadersOtherThanPlay) + 'px)',
   },
   serverError: {
     color: APP_CONSTANTS.ERROR_COLOR

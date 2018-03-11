@@ -61,6 +61,7 @@ class PlayerContainer extends Component {
       };
 
       let albumArtwork = ( this.props.song && this.props.song.album ) ? ( this.props.song.album.artwork || this.props.song.artwork ) : defaultArtwork
+      console.log('LF Artwork', albumArtwork, this.props.song)
       let writers = this.props.song.writers.map( writer => {
         return writer.name;
       })
