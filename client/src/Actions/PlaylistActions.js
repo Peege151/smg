@@ -8,8 +8,8 @@ function handleErrors(response) {
 let PlaylistActions = {
   getUserPlaylists: () => {
     console.log('Grabbing Playlists!')
-      return fetch('http://localhost:8081/api/playlists/user/', {
-//    return fetch('https://smg-api.herokuapp.com/api/playlists/user/', {
+    //return fetch('http://localhost:8081/api/playlists/user/', {
+    return fetch('https://smg-api.herokuapp.com/api/playlists/user/', {
       method: 'GET',
       credentials: 'include',
       headers: { "Content-Type": "application/json" }
@@ -30,8 +30,8 @@ let PlaylistActions = {
     opts.body.songs = songToInitiatePlaylist || [];
     opts.body = JSON.stringify(body);
     console.log('Body? ', opts.body)
-    return fetch('http://localhost:8081/api/playlists/', opts).then(handleErrors).then(data => data.json())
-    //return fetch('https://smg-api.herokuapp.com/api/playlists/', opts).then(handleErrors).then(data => data.json())
+    //return fetch('http://localhost:8081/api/playlists/', opts).then(handleErrors).then(data => data.json())
+    return fetch('https://smg-api.herokuapp.com/api/playlists/', opts).then(handleErrors).then(data => data.json())
     .then(data => {
       console.log('response from create new playlist', data)
       return data;
@@ -49,9 +49,9 @@ let PlaylistActions = {
         body: JSON.stringify(playlist),
         headers: { "Content-Type": "application/json" }
     };
-    return fetch('http://localhost:8081/api/playlists/' + playlist._id, opts).then(handleErrors).then(data => data.json())
+    //return fetch('http://localhost:8081/api/playlists/' + playlist._id, opts).then(handleErrors).then(data => data.json())
 
-    //return fetch('https://smg-api.herokuapp.com/api/playlists/' + playlist._id, opts).then(handleErrors).then(data => data.json())
+    return fetch('https://smg-api.herokuapp.com/api/playlists/' + playlist._id, opts).then(handleErrors).then(data => data.json())
     .then(data => {
       console.log('response from playlist', data)
       return data;
@@ -59,8 +59,8 @@ let PlaylistActions = {
   },
 
   getPlaylist: (id) => {
-    return fetch('http://localhost:8081/api/playlists/' + id, {
-    //fetch('https://smg-api.herokuapp.com/api/playlists/' + this.props.match.params.id, {
+    //return fetch('http://localhost:8081/api/playlists/' + id, {
+    return fetch('https://smg-api.herokuapp.com/api/playlists/' + id, {
       method: 'GET',
       headers: { "Content-Type": "application/json" }
     })

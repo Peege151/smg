@@ -18,6 +18,10 @@
 html, body {
   height: 100%;
 }
+.input-range {
+  width: 80%;
+  margin: 0 auto;
+}
 .Footer {
   flexShrink: 0;
   width:  100% ;

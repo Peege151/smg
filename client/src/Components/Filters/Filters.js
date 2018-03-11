@@ -4,7 +4,8 @@ import styles from './styles.js';
 import { CATEGORIES } from '../FilterHeaders/categories.js';
 
 import VibeDescriptor from '../VibeDescriptor/VibeDescriptor.js';
-
+import InputRange from 'react-input-range';
+import 'react-input-range/lib/css/index.css'
 const VIBE_CONTEXTS = ['STORY', 'CHARACTER', 'PROJECT' ];
 const VIBE_DESCRIPTOR_LIMIT = [0,1,2];
 
@@ -88,6 +89,20 @@ class Filters extends Component {
             { this.generateOptionCategories() }
           </div>
         )
+      } else if(category.selector === 'tempo'){
+        return (
+          <div className={css(styles.tempo)}>
+          <p style={{textAlign: 'center', position:'relative', bottom: 50}}> Select Tempo Range </p>
+          <InputRange
+             maxValue={250}
+             minValue={0}
+             formatLabel={value => `${value} BPM`}
+             value={this.props.tempoRange}
+             onChange={(value) => {
+               this.props.setTempo(value) }
+             } />
+          </div>
+        )
       } else {
         return category.variants.map((variant, idx) => {
           return (
@@ -97,6 +112,7 @@ class Filters extends Component {
                 className={css(
                   styles.inner,
                   window.innerWidth < 768 && styles[category.selector + 'Mobile'],
+                  this.props.excluded[category.selector].indexOf(variant.value) > -1 && styles.excluded,
                   this.props.selected[category.selector].indexOf(variant.value) > -1 && styles.active
               )}>
                 { variant.title }
@@ -109,7 +125,7 @@ class Filters extends Component {
     }
 
     render() {
-      console.log('SELECTED FILTERS', this.props.selected);
+      console.log('SELECTED FILTERS', this.props);
       let filters = this.createFilters(this.props.activeFilterIndex);
       return (
         <div className={ css(styles.filtersWrapperOuter) }>

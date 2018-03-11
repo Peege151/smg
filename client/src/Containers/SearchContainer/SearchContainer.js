@@ -3,6 +3,7 @@ import styles from './styles.js';
 import { css } from 'aphrodite';
 import bgimage  from './../../assets/banner_speaker.jpg';
 import { CATEGORIES } from '../../Components/FilterHeaders/categories.js';
+import helpers from './helpers';
 
 import Actions from './../../'
 
@@ -53,33 +54,39 @@ class SearchContainer extends Component {
     constructor(props) {
       super(props);
       let obj = {};
+      let excluded = {}
       CATEGORIES.forEach((cat, index) => {
         let key = cat.selector;
         obj[key] = [];
+        excluded[key] = [];
       });
       this.state = {
         method: 'filter',
         activeFilterIndex: 0,
         selected: obj,
+        excludeSelected: excluded,
         vibeDescriptors: [],
         searchModel: 'writers',
-        songsFromSearchInput: [],
+        songs: undefined,
+        tempoRange: { min: 60, max: 120 }
       };
     }
 
     apply(str){
-      this.setState({method: str})
+      this.setState({method: str, songs: undefined})
     }
 
     changeSearchModel = (evt) => {
       console.log('Search model', this.props)
-      this.setState({searchModel: evt.target.value})
+
+      this.setState({searchModel: evt.target.value, songs: undefined})
       let search = document.getElementById('thesearchbar');
       search.value = ''
     }
 
     onInputEntry = (evt) => {
       // SEARCH
+      console.log('Val', evt.target.value)
       if(evt.target.value){
         //fetch(` https://smg-api.herokuapp.com/api/${this.state.searchModel}/search/${evt.target.value}`,{
         fetch(`http://localhost:8081/api/${this.state.searchModel}/search/${evt.target.value}`, {
@@ -130,25 +137,34 @@ class SearchContainer extends Component {
       });
       this.setState({selected: obj, vibeDescriptors: []}, () => console.log('State?', this.state));
     }
-
+    setTempo = (range) => {
+        this.setState({tempoRange: range})
+    }
     selectFilter = (data) => {
       let { category, variant, vibeIndex } = data;
       let showingDescriptorMenu = false;
       let vibeDescriptors = this.state.vibeDescriptors;
-      let categoryObject = Object.assign(this.state.selected);
-
-      if ( categoryObject[category.selector].indexOf(variant.value) === -1 ) {
+      let categoryObject = Object.assign({}, this.state.selected);
+      let excludedCategoryObject = Object.assign({}, this.state.excludeSelected);
+      // Three click filter system.  First click adds it to selected, second adds it to excluded
+      // Third click removes it from both.  The below if statement checks and assigns.
+      if( categoryObject[category.selector].indexOf(variant.value) === -1 && excludedCategoryObject[category.selector].indexOf(variant.value) === -1 ) {
         categoryObject[category.selector].push(variant.value)
         // this.props.history.push('/')
-         var separator = (window.location.href.indexOf("?")===-1)?"?":"&";
-         window.history.pushState({}, 'Searching',  window.location.href + separator + "query");
-      } else {
+        // var separator = (window.location.href.indexOf("?")===-1)?"?":"&";
+        // window.history.pushState({}, 'Searching',  window.location.href + separator + "query");
+      } else if (excludedCategoryObject[category.selector].indexOf(variant.value) > -1){
+        excludedCategoryObject[category.selector].splice(this.state.excludeSelected[category.selector].indexOf(variant.value), 1);
+      } else if (categoryObject[category.selector].indexOf(variant.value) > -1) {
         categoryObject[category.selector].splice(this.state.selected[category.selector].indexOf(variant.value), 1);
+        excludedCategoryObject[category.selector].push(variant.value);
+        console.log( 'SPLICING OUT CATEGORY', categoryObject[category.selector].indexOf(variant.value) );
       }
       if ( category.selector === 'vibe' ) {
         vibeDescriptors.splice(vibeIndex, 1, variant);
       }
       this.setState({
+        excludeSelected: excludedCategoryObject,
         selected: categoryObject,
         showingDescriptorMenu: showingDescriptorMenu,
         vibeDescriptors: vibeDescriptors
@@ -190,7 +206,7 @@ class SearchContainer extends Component {
     render() {
       let props = this.props;
       let Buttons = this.renderButtons();
-      console.log('props', props)
+      console.log('STATE OF SEARCHCONTAINER', this.state)
       return (
         <div className={ css(styles.wrapper) }>
           <img src={bgimage} className={css(styles.banner)} alt="logo" />
@@ -202,11 +218,11 @@ class SearchContainer extends Component {
             </div>
             :
             <div className={css(styles.filterContainerWrapper)}>
-              <FilterHeaders selected={ this.state.selected } setActiveFilter={this.setActiveFilter} activeFilterIndex={ this.state.activeFilterIndex } />
-              <Filters removeFilters={this.removeFilters} clearVibe={ this.clearVibe } vibeDescriptors={this.state.vibeDescriptors} selected={ this.state.selected } selectFilter={ this.selectFilter } activeFilterIndex={ this.state.activeFilterIndex } />
+              <FilterHeaders excluded={this.state.excludeSelected} selected={ this.state.selected } setActiveFilter={this.setActiveFilter} activeFilterIndex={ this.state.activeFilterIndex } />
+              <Filters setTempo={this.setTempo} tempoRange={this.state.tempoRange} removeFilters={this.removeFilters} clearVibe={ this.clearVibe } vibeDescriptors={this.state.vibeDescriptors} excluded={ this.state.excludeSelected } selected={ this.state.selected } selectFilter={ this.selectFilter } activeFilterIndex={ this.state.activeFilterIndex } />
             </div>
           }
-          <SongsContainer openWriterContainer={this.openWriterContainer} songsFromSearchInput={this.state.songsFromSearchInput}{...props}{...this.state}/>
+          <SongsContainer openWriterContainer={this.openWriterContainer} {...props}{...this.state}/>
           <div className={css(styles.songNote)}>
             <p>If you have any questions, feel free to contact us at any time.  We rep 100% of all tracks here  </p>
           </div>

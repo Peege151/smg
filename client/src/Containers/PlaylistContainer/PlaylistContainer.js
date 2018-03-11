@@ -20,6 +20,8 @@ class PlaylistContainer extends Component {
     componentWillMount(){
       PlaylistActions.getPlaylist(this.props.match.params.id)
       .then(data => {
+        console.log('Data?', data)
+        if(!data.songs) data.songs = [];
         let collaborators = data.songs.map(song => song.addedBy.email);
         let songs = data.songs.map(songAndCollab => songAndCollab.song);
         console.log('Data', data);
@@ -144,7 +146,7 @@ class PlaylistContainer extends Component {
       })
     }
     render() {
-      console.log('Playlist is => ', this.state)
+      console.log('Playlist is => ', this.state, this.state.playlist, this.state.playlist.songs, this.state.playlist.createdBy)
       let currentUser = this.props.token ? this.props.token.user : {};
       let playlistCreator = this.state.playlist.createdBy ? this.state.playlist.createdBy._id : undefined;
       let access = playlistCreator && (currentUser === playlistCreator);

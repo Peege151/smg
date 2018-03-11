@@ -22,6 +22,9 @@ const styles = StyleSheet.create({
     top: 3,
     left: 5,
   },
+  excluded: {
+    textDecoration: 'line-through',
+  },
   active: {
     background: '#5f4c7c',
     color: 'white'
@@ -80,10 +83,13 @@ const styles = StyleSheet.create({
     background: 'white',
     border: '1px solid #EEE',
     height: BENCH_HEIGHT,
-    width: window.innerWidth < 768 ? '100%' : '33.333%',
+    width: '100%',
     fontSize: 18,
     verticalAlign: 'middle',
-    display: 'table',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
     float: 'left'
   },
   genres: {

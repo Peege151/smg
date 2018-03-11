@@ -29,8 +29,10 @@ class ModalContainer extends Component {
       this.setState({modalData}, () => console.log('Set MODAL DATA EMPTY?'), this.state)
     }
     generateModalTitle = () => {
+      console.log("generating modal title", this.props)
       let modal = this.props.modal;
-      if(modal === 'playlist') return 'Add to Playlist';
+      if(modal === 'playlist' && this.props.songToAddToPlaylist) return 'Add to Playlist';
+      if(modal === 'playlist' && !this.props.songToAddToPlaylist) return 'Playlists';
       if(modal === 'login') return 'Oops, You Need To Be Signed In For That';
     }
 

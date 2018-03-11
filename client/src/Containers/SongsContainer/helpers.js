@@ -27,6 +27,9 @@ let helpers = {
       filters = filters.replace(/^(.{11}[^\s]*).*/, "$1")
     }
     return filters;
+  },
+  prependNo__: (excluded) => {
+    return excluded.map(item => {return `NO__${item}`})
   }
 }
 export default helpers

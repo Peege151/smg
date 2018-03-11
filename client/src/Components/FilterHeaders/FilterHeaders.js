@@ -31,6 +31,8 @@ class FilterHeaders extends Component {
             <div className={css(
               styles.innerHeader,
               window.innerWidth < 768 && styles.innerHeaderMobile,
+              this.props.excluded[category.selector].length && styles.hasActive,
+              category.selector === 'tempo' && styles.hasActive,
               this.props.selected[category.selector].length && styles.hasActive,
               this.props.activeFilterIndex === index && styles.active
             )}>

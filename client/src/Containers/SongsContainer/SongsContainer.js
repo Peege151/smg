@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styles from './styles.js';
 import { css } from 'aphrodite';
+import helpers from './helpers';
 
 import { CATEGORIES } from '../../Components/FilterHeaders/categories.js';
 import  WriterContainer from '../SearchContainer/WriterContainer/WriterContainer.js';
@@ -66,7 +67,6 @@ class SongsContainer extends Component {
     }
 
     renderSongTable = (songs) => {
-
       let functions = {
         onMouseLeave: this.onMouseLeave,
         moveSong: this.props.moveSong,
@@ -74,7 +74,6 @@ class SongsContainer extends Component {
         onMouseOver: this.onMouseOver,
         toggleAudio: this.toggleAudio
       }
-
       let toMap = songs ? songs : this.state.songs;
       return toMap.map(( song, idx) => {
         let collaborator = this.props.collaborators ? this.props.collaborators[idx] : undefined;
@@ -106,15 +105,22 @@ class SongsContainer extends Component {
     }
     getAllSongs = () => {
       SongActions.getAllSongs()
-      .then(json => { this.setState({ songs: json }) })
+      .then(json => {
+        this.setState({ songs: json })
+      })
       .catch(err => { this.setState({clientError: err.message}) })
     }
-    filterSongs = (newProps) => {
-      if(newProps.method === 'filter'){
-        let filters =  [].concat(...Object.keys(newProps.selected).map(key => { return newProps.selected[key] }))
-        if(filters.length){
-          let query = filters.join('%20');
-          SongActions.filterSongs(query)
+    filterSongs = (nP) => {
+      console.log('NewProps', nP)
+      if(nP.method === 'filter'){
+        let included = [].concat(...Object.keys(nP.selected).map(key => { return nP.selected[key] }))
+        let tempoString = `&tempo=${nP.tempoRange.min}-${nP.tempoRange.max}`
+        let excluded = [].concat(...Object.keys(nP.excludeSelected).map(key => { return nP.excludeSelected[key] }))
+        //excluded = helpers.prependNo__(excluded);
+        if(included.length || excluded.length || tempoString){
+          let includeQuery = included.join('%20');
+          let excludeQuery = excluded.join('%20');
+          SongActions.filterSongs(includeQuery, excludeQuery, tempoString)
           .then(json => {   this.setState({ songs: json }) })
         } else {
           this.getAllSongs();
@@ -124,7 +130,8 @@ class SongsContainer extends Component {
       }
     }
     componentWillReceiveProps = (newProps) => {
-      if(newProps.method === 'filter'){
+      console.log('New Props', newProps)
+      if(newProps.method === 'filter' && this.props === 'filter'){
         let oldFilters = [].concat(...Object.keys(this.props.selected).map(key => {return this.props.selected[key]}))
         let newFilters = [].concat(...Object.keys(newProps.selected).map(key => {return newProps.selected[key]})).filter(Boolean)
         if (oldFilters.length !== newFilters.length) {
@@ -132,7 +139,10 @@ class SongsContainer extends Component {
         } else {
           this.filterSongs(newProps);
         }
-        if(!newFilters.length) this.getAllSongs()
+        //if(!newFilters.length) this.getAllSongs()
+      } else if( newProps.method === 'filter' && this.props !=='filter'){
+        console.log('Moved to Filter From Search');
+        this.getAllSongs()
       } else {
         // using input bar
         if(newProps.searchModel !== this.props.searchModel){

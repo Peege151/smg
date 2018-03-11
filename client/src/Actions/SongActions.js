@@ -5,9 +5,12 @@ function handleErrors(response) {
     return response;
 }
 let SongActions = {
-  filterSongs: (query) => {
-    return fetch('http://localhost:8081/api/songs/?include=' + query, {
-    //fetch('https://smg-api.herokuapp.com/api/songs/?include=' + query, {
+  filterSongs: (include, exclude, tempoRange) => {
+    return fetch('https://smg-api.herokuapp.com/api/songs/?include=' +
+    //return fetch('http://localhost:8081/api/songs/?include=' +
+    include +
+    '&exclude=' + exclude +
+    tempoRange, {
       method: 'GET',
       headers: { "Content-Type": "application/json" }
     })
@@ -15,13 +18,15 @@ let SongActions = {
     .then(data => { return data.json() })
   },
   getAllSongs: () => {
-    return fetch('http://localhost:8081/api/songs/', {
-    //fetch('https://smg-api.herokuapp.com/api/songs/', {
+    //return fetch('http://localhost:8081/api/songs/', {
+    return fetch('https://smg-api.herokuapp.com/api/songs/', {
       method: 'GET',
       headers: { "Content-Type": "application/json" }
     })
     .then(handleErrors)
-    .then(data => { return data.json() })
+    .then(data => {
+      return data.json()
+    })
   }
 }
-export default SongActions
+export default SongActions;

@@ -150,7 +150,7 @@ class MainContainer extends Component {
     }
 
     closeSongActionModal = () =>{
-      this.setState({modal: false })
+      this.setState({modal: false, songToAddToPlaylist: undefined })
     }
 
     clearToken = () => {
