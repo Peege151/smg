@@ -58,8 +58,8 @@ let PlaylistActions = {
   },
 
   getPlaylist: (id) => {
-    return fetch('http://localhost:8081/api/playlists/' + id, {
-    //return fetch('https://smg-api.herokuapp.com/api/playlists/' + id, {
+    //return fetch('http://localhost:8081/api/playlists/' + id, {
+    return fetch('https://smg-api.herokuapp.com/api/playlists/' + id, {
       method: 'GET',
       headers: { "Content-Type": "application/json" }
     })
