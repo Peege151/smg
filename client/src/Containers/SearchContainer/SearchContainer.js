@@ -88,8 +88,8 @@ class SearchContainer extends Component {
       // SEARCH
       console.log('Val', evt.target.value)
       if(evt.target.value){
-        //fetch(` https://smg-api.herokuapp.com/api/${this.state.searchModel}/search/${evt.target.value}`,{
-        fetch(`http://localhost:8081/api/${this.state.searchModel}/search/${evt.target.value}`, {
+        fetch(` https://smg-api.herokuapp.com/api/${this.state.searchModel}/search/${evt.target.value}`,{
+        //fetch(`http://localhost:8081/api/${this.state.searchModel}/search/${evt.target.value}`, {
           method: 'GET',
           headers: { "Content-Type": "application/json" }
         })
@@ -103,8 +103,8 @@ class SearchContainer extends Component {
         })
       } else {
         // The searchbar is empty, so lets get all songs
-        //fetch(`https://smg-api.herokuapp.com/api/songs`,{
-        fetch(`http://localhost:8081/api/songs/`, {
+        fetch(`https://smg-api.herokuapp.com/api/songs`,{
+        //fetch(`http://localhost:8081/api/songs/`, {
           method: 'GET',
           headers: { "Content-Type": "application/json" }
         })
