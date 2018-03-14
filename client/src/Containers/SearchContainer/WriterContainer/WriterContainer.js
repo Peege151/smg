@@ -6,12 +6,6 @@ import SongsContainer from '../../SongsContainer/SongsContainer';
 import writerImg from './../../../assets/jom.jpg';
 import WriterActions from '../../../Actions/WriterActions.js'
 
-function handleErrors(response) {
-    if (!response.ok) {
-      throw Error(response.statusText);
-    }
-    return response;
-}
 class WriterContainer extends Component {
     constructor(props) {
       super(props);
@@ -23,17 +17,21 @@ class WriterContainer extends Component {
       console.log('Getting Writer')
       //fetch('http://localhost:8081/api/songs/', {
       WriterActions.getWriter(this.props.match.params.writer)
-      .then(json => {
-        console.log('we back?', json)
-        this.setState({ writer: json })
-      })
-      .catch(err => {
-        this.setState({clientError: err.message})
-      })
+      .then(json => { this.setState({ writer: json }) })
+      .catch(err => { this.setState({clientError: err.message}) })
+    }
+    componentWillReceiveProps(newProps){
+      if(this.props.match.params.writer !== newProps.match.params.writer){
+        // new writer hit because user clicked a co-writer listed in the song-container
+        WriterActions.getWriter(this.props.match.params.writer)
+        .then(json => { this.setState({ writer: json }) })
+        .catch(err => {
+          this.setState({clientError: err.message})
+        })
+      }
     }
 
     render() {
-      console.log('Rendering Writer Container', this.props)
         let loadingEl = this.state.writer ? null :  <div> Loading </div>
         let writerImgSrc = this.state.writer ? this.state.writer.picture : null;
         return (
