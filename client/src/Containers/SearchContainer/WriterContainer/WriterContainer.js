@@ -22,8 +22,9 @@ class WriterContainer extends Component {
     }
     componentWillReceiveProps(newProps){
       if(this.props.match.params.writer !== newProps.match.params.writer){
+        console.log('Getting New Songs')
         // new writer hit because user clicked a co-writer listed in the song-container
-        WriterActions.getWriter(this.props.match.params.writer)
+        WriterActions.getWriter(newProps.match.params.writer)
         .then(json => { this.setState({ writer: json }) })
         .catch(err => {
           this.setState({clientError: err.message})
