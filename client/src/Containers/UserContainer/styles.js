@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     top: '50%',
     width: '100%',
-    textAlign: 'center',
   },
   outer: {
     textAlign: 'center',
@@ -61,7 +60,6 @@ const styles = StyleSheet.create({
     height: 40,
     margin: '20px auto',
     textAlign: 'center',
-    border: 'none',
     cursor: 'pointer',
     border: '2px solid #f1efee',
   },

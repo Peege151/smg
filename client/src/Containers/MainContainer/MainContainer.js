@@ -28,13 +28,6 @@ import {
   BrowserRouter as Router
 } from 'react-router-dom'
 
-function handleErrors(response) {
-    if (!response.ok) {
-      throw Error(response.statusText);
-    }
-    return response;
-}
-
 class MainContainer extends Component {
     constructor(props) {
       super(props);

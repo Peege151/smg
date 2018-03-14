@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { css } from 'aphrodite';
 import styles from './styles.js';
-import image from './../../assets/banner.jpg';
 
 import playlistHTMLBuilder from './playlistHTMLBuilder';
 import loginHTMLBuilder from './loginHTMLBuilder';
@@ -94,8 +93,7 @@ class ModalContainer extends Component {
     }
 
     generateModalHTML = () => {
-      let user = this.props.token ? this.props.token.user : null, t = this, p = this.props
-      let form
+      let form, t = this, p = this.props
       if (p.modal === 'playlist') form = playlistHTMLBuilder.renderPlaylistForm( t.props, t.state, t.textSetter , t.playlistValidator, t.addSongToPlaylist);
       if (p.modal === 'login') form = loginHTMLBuilder.renderLoginForm( t.props, t.state, t.textSetter , t.loginValidator, t.changeLoginAction);
 

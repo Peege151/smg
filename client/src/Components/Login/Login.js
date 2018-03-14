@@ -2,14 +2,6 @@ import React, { Component } from 'react';
 import styles from './styles.js';
 import { css } from 'aphrodite/no-important';
 
-function handleErrors(response) {
-  console.log('Handle Errors', response);
-    if (!response.ok) {
-        throw Error(response.statusText);
-    }
-    return response;
-}
-
 class Login extends Component {
     constructor(props) {
       super(props);
@@ -65,7 +57,7 @@ class Login extends Component {
 
     resetForm = () => {
       let email = '', password = '', confirm = '', firstName = '', lastName = '';
-      this.setState({ email, password, confirm });
+      this.setState({ email, password, confirm, firstName, lastName });
     }
 
     handleClick(){

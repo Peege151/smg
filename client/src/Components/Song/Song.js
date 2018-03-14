@@ -7,13 +7,7 @@ import { DragSource, DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
-
-
-import {
-  Route,
-  Link
-} from 'react-router-dom'
-import { flow } from 'lodash'
+import { Link } from 'react-router-dom'
 
 function collect(connect, monitor) {
   return {
@@ -103,14 +97,14 @@ class Song extends Component {
         if(td === 'Name') return  base * 1.333 + '%';
         if(td === 'Writer') return base * 1.333 + '%'
         if(td === 'Genres') return base * 1.333 + '%'
-        if(td === 'Tempo') return base /2 + '%'
-        if(td === 'Length') return base /2  + '%'
-      } else if( numColumns === 6){
+        if(td === 'Tempo') return base / 2 + '%'
+        if(td === 'Length') return base / 2  + '%'
+      } else if( numColumns === 6 ){
         if(td === 'Name') return  Math.floor(base * 1.333) + '%';
         if(td === 'Writer') return Math.floor(base * 1.333) + '%'
         if(td === 'Genres') return base + '%'
-        if(td === 'Tempo') return base /2 + '%'
-        if(td === 'Length') return base /2  + '%'
+        if(td === 'Tempo') return base / 2 + '%'
+        if(td === 'Length') return base / 2  + '%'
         if(td === 'Added_By') return base * 1.33 + '%'
 
       }
@@ -121,12 +115,16 @@ class Song extends Component {
         if( this.props.context === 'playlist') writer.writer = writer; // this is shit. data is different in playlist for some reason
         return (
           <span key={writer._id}>
-            <Link
-              to={{ pathname:'/writer/' + writer.writer._id, state: {writer: writer}}}
-              className={css(styles.clickableWriter)}
-              onClick={ this.props.openWriterContainer ? this.props.openWriterContainer.bind(null, writer) : null } >
+            { writer.writer.repped ?
+              <Link
+                to={{ pathname:'/writer/' + writer.writer._id, state: {writer: writer}}}
+                className={css(styles.clickableWriter)}
+                onClick={ this.props.openWriterContainer ? this.props.openWriterContainer.bind(null, writer) : null } >
                 {writer.writer ? writer.writer.name : 'John Smith'}&nbsp;
-            </Link>
+              </Link>
+              :
+              <span className={css(styles.unclickableWriter)}> {writer.writer ? writer.writer.name : 'John Smith'} &nbsp; </span>
+            }
           </span>
         )
       })
@@ -165,17 +163,17 @@ class Song extends Component {
               p.hoveredSong && (p.data._id === p.hoveredSong._id)
               ?
               <div className={css(styles.innerSongRow)}>
-                <div className={ css(styles.td, styles.songTitle) }> { p.data.title } </div>
-                <div className={ css(styles.td) }> { this.createClickableWriters(p.data) } </div>
+                <div style={{width: this.getWidthOfTd(null, 'Name')}} className={ css(styles.td, styles.songTitle) }> { p.data.title } </div>
+                <div style={{width: this.getWidthOfTd(null, 'Writer')}} className={ css(styles.td) }> { this.createClickableWriters(p.data) } </div>
                 <SongActions hoveredSong={p.hoveredSong} {...this.props} />
               </div>
               :
               <div className={css(styles.innerSongRow)}>
                 <div style={{width: this.getWidthOfTd(null, 'Name')}} className={ css(styles.td, styles.songTitle) }> { p.data.title } </div>
-                <div style={{width: this.getWidthOfTd(null, 'Writer')}}className={ css(styles.td) }> { this.createClickableWriters(p.data) } </div>
-                <div style={{width: this.getWidthOfTd(null, 'Genres')}}className={ css(styles.td) }> { prettyFilters } </div>
-                <div style={{width: this.getWidthOfTd(null, 'Tempo')}}className={ css(styles.td) }> { p.data.tempo } BPM </div>
-                <div style={{width: this.getWidthOfTd(null, 'Length')}}className={ css(styles.td) }> { p.data.duration } </div>
+                <div style={{width: this.getWidthOfTd(null, 'Writer')}} className={ css(styles.td) }> { this.createClickableWriters(p.data) } </div>
+                <div style={{width: this.getWidthOfTd(null, 'Genres')}} className={ css(styles.td) }> { prettyFilters } </div>
+                <div style={{width: this.getWidthOfTd(null, 'Tempo')}} className={ css(styles.td) }> { p.data.tempo } BPM </div>
+                <div style={{width: this.getWidthOfTd(null, 'Length')}} className={ css(styles.td) }> { p.data.duration } </div>
                 { p.collaborator ?
                   <div
                     style={{width: this.getWidthOfTd(null, 'Added_By')}}

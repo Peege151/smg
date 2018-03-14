@@ -3,21 +3,13 @@ import styles from './styles.js';
 import { css } from 'aphrodite';
 import bgimage  from './../../assets/banner_speaker.jpg';
 import { CATEGORIES } from '../../Components/FilterHeaders/categories.js';
-import helpers from './helpers';
 
-import Actions from './../../'
 
 import Searchbar from '../../Components/Searchbar/Searchbar.js';
 import FilterHeaders from '../../Components/FilterHeaders/FilterHeaders.js';
 import Filters from '../../Components/Filters/Filters.js';
-import WriterContainer from './WriterContainer/WriterContainer.js';
 import SongsContainer from '../SongsContainer/SongsContainer';
 
-
-import {
-  Route,
-  BrowserRouter as Router
-} from 'react-router-dom'
 
 function serializeData(data) {
   console.log('Data?', data);

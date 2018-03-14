@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import styles from './songActionStyles.js';
 import { css } from 'aphrodite';
-import image from './../../assets/banner2.jpg';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import DownloadActions from '../../Actions/DownloadActions.js';
 
@@ -52,6 +51,9 @@ class SongActions extends Component {
         this.props.submitModal('playlist', 'put', playlist);
       }
     }
+    // componentDidUpdate(){
+    //   debugger
+    // }
     determineIconsToRender = () => {
       let p = this.props;
       let ICONS = [
@@ -87,12 +89,16 @@ class SongActions extends Component {
     }
     render() {
       let iconsToRender = this.determineIconsToRender()
+      let tooltipOffset = iconsToRender.length * 92 // check songActionStyles for constant. Adding padding
       let icons = this.renderIcons(iconsToRender)
+
       let tooltip = this.state.activeIcon ? this.state.activeIcon.tooltip : null
       return (
-        <div className={css(styles.wrapper)}>
-          { tooltip ? <div> { tooltip } </div> : null}
-          { icons }
+        <div className={css(styles.songActionHoverWrapper)}>
+          <div className={css(styles.innerSongActionHoverWrapper)}>
+            { tooltip ? <div style={{right: tooltipOffset}} className={css(styles.tooltip)}> { tooltip } </div> : null}
+            { icons }
+          </div>
         </div>
       )
     }

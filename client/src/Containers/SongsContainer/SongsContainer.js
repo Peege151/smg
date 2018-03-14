@@ -1,23 +1,12 @@
 import React, { Component } from 'react';
 import styles from './styles.js';
 import { css } from 'aphrodite';
-import helpers from './helpers';
-
-import { CATEGORIES } from '../../Components/FilterHeaders/categories.js';
-import  WriterContainer from '../SearchContainer/WriterContainer/WriterContainer.js';
 
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 import Song from '../../Components/Song/Song.js';
 import SongActions from '../../Actions/SongActions.js';
-
-function handleErrors(response) {
-    if (!response.ok) {
-      throw Error(response.statusText);
-    }
-    return response;
-}
 
 let HEADERS = ['Name', 'Writer', 'Genres', 'Tempo', 'Length']
 class SongsContainer extends Component {
@@ -96,7 +85,6 @@ class SongsContainer extends Component {
       let toMap = songs ? songs : this.state.songs;
       return toMap.map(( song, idx) => {
         let collaborator = this.props.collaborators ? this.props.collaborators[idx] : undefined;
-        let writers = song.writers.map((writer, idx) => writer.name);
         return (
             <Song
               key={idx}
@@ -114,7 +102,6 @@ class SongsContainer extends Component {
     renderHeaders = () => {
       let NEW_HEADERS = [].concat(HEADERS);
       if(this.props.context === 'playlist') NEW_HEADERS.push('Added_By');
-      let playlistHeaders = this.props.context === 'playlist' ? true : false;
       return NEW_HEADERS.map( header => {
         let width = this.getWidthOfHeader(NEW_HEADERS.length, header)
         return (
