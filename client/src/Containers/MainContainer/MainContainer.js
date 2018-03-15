@@ -137,8 +137,8 @@ class MainContainer extends Component {
     }
 
     openSongActionModal = (type, song) => {
-      console.log('Opened Modal with this song', song)
-      if(song) this.setState({modal: type, songToAddToPlaylist: {song: song, addedBy: this.state.token.user._id}})
+      console.log('Opened Modal with this song', song);
+      if(song) this.setState({modal: type, songToAddToPlaylist: {song: song, addedBy: this.state.token ? this.state.token.user._id : undefined }})
       if(!song) this.setState({modal: type })
     }
 

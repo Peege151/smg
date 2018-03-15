@@ -4,6 +4,7 @@ import styles from './styles.js';
 import { css } from 'aphrodite';
 
 let generateUserPlaylistList = (props, atp) => {
+  console.log(props.token)
   let userPlaylists = props.token ? props.token.user.playlists : [];
   console.log('USERP', userPlaylists)
   return userPlaylists.map(playlist => {

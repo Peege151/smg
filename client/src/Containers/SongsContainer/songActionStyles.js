@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     width: 80,
     margin: '0px 6px',
     cursor: 'pointer',
+    zIndex: 2,
   },
   tooltip: {
     position: 'absolute',

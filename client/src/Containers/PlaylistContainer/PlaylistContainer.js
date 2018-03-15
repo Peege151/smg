@@ -36,6 +36,7 @@ class PlaylistContainer extends Component {
       if(this.props.match.url !== newProps.match.url){
         PlaylistActions.getPlaylist(newProps.match.params.id)
         .then(data => {
+          console.log('Got new data', data)
           this.setState({ playlist: data, songs: data.songs.map(song => song.song) })
         })
         .catch(err => {
@@ -127,8 +128,7 @@ class PlaylistContainer extends Component {
       let isCollaborator = this.props.playlist ? this.props.playlist.collaborators.find(bro => bro._id === currentUser._id) : false;
       let centerIcons = [{icon: 'share', tooltip: 'Share Playlist'}];
       if (access) centerIcons.push({icon: 'handshake', tooltip: 'Toggle Collaboration', click: this.toggleCollaboration.bind(null, this)})
-
-      if (!isCollaborator && (currentUser._id !== playlistCreator)) centerIcons.push({icon: 'sign-in-alt', tooltip: 'Join Playlist', click: this.joinPlaylist.bind(null, this)})
+      if (!isCollaborator && (currentUser._id !== playlistCreator)  && this.state.playlist.collaborative) centerIcons.push({icon: 'sign-in-alt', tooltip: 'Join Playlist', click: this.joinPlaylist.bind(null, this)})
       return centerIcons.map(icon => {
         return (
           <div
@@ -144,6 +144,7 @@ class PlaylistContainer extends Component {
       })
     }
     renderCollaboratorsHTML = () => {
+      console.log('Rendering Collab')
       return this.state.playlist.collaborators.map(collab => {
         return <div className={css(styles.collabie)} key={collab}> { collab.email } </div>
       })

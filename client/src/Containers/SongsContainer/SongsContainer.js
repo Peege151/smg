@@ -74,7 +74,7 @@ class SongsContainer extends Component {
     }
 
     renderSongTable = (songs) => {
-      console.log('Ok', songs)
+      console.log('Rendering Songs => ', songs)
       let functions = {
         onMouseLeave: this.onMouseLeave,
         moveSong: this.props.moveSong,
