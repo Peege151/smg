@@ -4,6 +4,7 @@ function handleErrors(response) {
     }
     return response;
 }
+//TODO use process.env
 let WriterActions = {
   getWriter:(id) => {
     return fetch('https://smg-api.herokuapp.com/api/writers/' + id, {

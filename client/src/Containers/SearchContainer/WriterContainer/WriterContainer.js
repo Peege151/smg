@@ -17,7 +17,7 @@ class WriterContainer extends Component {
       console.log('Getting Writer')
       //fetch('http://localhost:8081/api/songs/', {
       WriterActions.getWriter(this.props.match.params.writer)
-      .then(json => { this.setState({ writer: json }) })
+      .then(json => { this.setState({ writer: json }, () => { console.log('WRITER', json)}) })
       .catch(err => { this.setState({clientError: err.message}) })
     }
     componentWillReceiveProps(newProps){

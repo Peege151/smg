@@ -17,27 +17,33 @@ class PlaylistContainer extends Component {
         collaborators: []
       };
     }
+    serializePlaylistForSongContainer = (data) => {
+      let dataClone = Object.assign({}, data);
+      let collaborators = data.songs.map(song => song.addedBy.email);
+      let songs = data.songs.map(song => {
+        return song.song;
+      });
+      this.setState({ playlist: Object.assign({}, data), collaborators: collaborators, songs: [...songs] } )
+    }
     componentWillMount(){
       PlaylistActions.getPlaylist(this.props.match.params.id)
       .then(data => {
-        console.log('Data?', data)
-        if(!data.songs) data.songs = [];
-        let collaborators = data.songs.map(song => song.addedBy.email);
-        let songs = data.songs.map(songAndCollab => songAndCollab.song);
-        console.log('Data', data);
-        this.setState({ playlist: data, collaborators: collaborators, songs: songs})
+        this.serializePlaylistForSongContainer(data);
       })
       .catch(err => {
         console.log('err', err)
       })
     }
     componentWillReceiveProps(newProps){
-      console.log('Playlist RNP', newProps);
+      if( newProps.playlist){
+        this.serializePlaylistForSongContainer(newProps.playlist)
+        return;
+      }
       if(this.props.match.url !== newProps.match.url){
         PlaylistActions.getPlaylist(newProps.match.params.id)
         .then(data => {
           console.log('Got new data', data)
-          this.setState({ playlist: data, songs: data.songs.map(song => song.song) })
+          this.serializePlaylistForSongContainer(data);
         })
         .catch(err => {
           console.log('err', err)
@@ -63,16 +69,21 @@ class PlaylistContainer extends Component {
       playlist.collaborative = collaborative;
       PlaylistActions.editPlaylist(playlist)
       .then(data => {
-        let collaborators = data.songs.map(song => song.addedBy.email);
-        let songs = data.songs.map(songAndCollab => songAndCollab.song);
-        this.setState({ playlist: data, collaborators: collaborators, songs: songs})
+        this.serializePlaylistForSongContainer(data);
       })
     }
-
+    share = () => {
+      alert('Sharing Will Be Available In Next Site Update May 2018');
+      //TODO
+    }
     joinPlaylist = () => {
       // NO USER USE MODAL LOGIN
       let currentUser = this.props.token ? this.props.token.user : {};
       let playlist = Object.assign({}, this.state.playlist);
+      playlist.songs.map(function(song){
+        song.addedBy = song.addedBy._id;
+        song.song = song.song._id
+      })
       let collaborators = playlist.collaborators.map(collab => collab._id)
       console.log('playlist first', playlist);
       if (collaborators.indexOf(currentUser._id) > -1 ){
@@ -85,27 +96,23 @@ class PlaylistContainer extends Component {
       this.setState({playlist: playlist})
       PlaylistActions.editPlaylist(playlist)
       .then(data => {
-        this.setState({ playlist: data })
+        this.serializePlaylistForSongContainer(data);
       })
       .catch(err => console.log('err', err));
     }
 
     moveSong = (dragIndex, hoverIndex) => {
-      console.log('Moving Song', dragIndex, hoverIndex, this.state)
-      let songs = [].concat(this.state.playlist.songs)
-      let draggedSong = songs[dragIndex]
-      console.log('Dragged Song is ', draggedSong);
 
+      let songs = this.state.playlist.songs
+      let draggedSong = songs[dragIndex]
       songs.splice(dragIndex, 1);
       songs.splice(hoverIndex, 0, draggedSong);
+      let playlist = Object.assign({}, this.state.playlist);
+      // this.serializePlaylistForSongContainer(playlist);
 
-      let playlist = this.state.playlist;
-      playlist.songs = songs;
-      this.setState({playlist: playlist}, () => {
-        PlaylistActions.editPlaylist(playlist)
-        .then(data => {
-          this.setState({ playlist: data })
-        })
+      PlaylistActions.editPlaylist(playlist)
+      .then(data => {
+        this.serializePlaylistForSongContainer(data);
       })
     }
     deletePlaylist = () => {
@@ -126,7 +133,7 @@ class PlaylistContainer extends Component {
       let playlistCreator = this.state.playlist && this.state.playlist.createdBy ? this.state.playlist.createdBy._id : undefined;
       let access = playlistCreator && (currentUser === playlistCreator || currentUser.admin);
       let isCollaborator = this.props.playlist ? this.props.playlist.collaborators.find(bro => bro._id === currentUser._id) : false;
-      let centerIcons = [{icon: 'share', tooltip: 'Share Playlist'}];
+      let centerIcons = [ {icon: 'share', tooltip: 'Share Playlist', click: this.share.bind(null, this) } ]
       if (access) centerIcons.push({icon: 'handshake', tooltip: 'Toggle Collaboration', click: this.toggleCollaboration.bind(null, this)})
       if (!isCollaborator && (currentUser._id !== playlistCreator)  && this.state.playlist.collaborative) centerIcons.push({icon: 'sign-in-alt', tooltip: 'Join Playlist', click: this.joinPlaylist.bind(null, this)})
       return centerIcons.map(icon => {
@@ -150,6 +157,7 @@ class PlaylistContainer extends Component {
       })
     }
     render() {
+      console.log('Rendering Playlist', this.state)
       let currentUser = this.props.token ? this.props.token.user : {};
       let playlistCreator = this.state.playlist.createdBy ? this.state.playlist.createdBy._id : undefined;
       let access = playlistCreator && (currentUser === playlistCreator);
@@ -175,7 +183,7 @@ class PlaylistContainer extends Component {
                   <div className={css(styles.actionsWrapper)}>
                     <div className={css(styles.right)}>
                     {access ?
-                      <div className={css(styles.action)} onClick={this.deletePlaylist}> <FontAwesomeIcon icon='trash' /> </div>
+                      <div className={css(styles.action)} onClick={this.deletePlaylist}> <FontAwesomeIcon icon='trash-alt' /> </div>
                     : null }
                     </div>
                     <div className={css(styles.center)}>

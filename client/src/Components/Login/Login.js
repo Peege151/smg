@@ -18,7 +18,11 @@ class Login extends Component {
       if(this.props.location.state && this.props.location.state.action === 'signup') this.changeAction('signup');
     }
 
-    setErr = (err) => { this.setState({clientError: err }) }
+    setErr = (err) => {
+      console.log('Set Err', err)
+      this.setState({clientError: err })
+      return
+    }
 
     changeAction(action){
       this.setState({action: action, clientError: undefined})
@@ -47,6 +51,7 @@ class Login extends Component {
       }
       if(!this.state.firstName || !this.state.lastName){
         this.setState({clientError: 'Please Include Your Name!'})
+        valid = false;
       }
       if (this.state.password.length < 6){
         this.setState({clientError: 'Your Password Kinda Sucks. Can You Make It Longer? K Thx.'})
@@ -67,8 +72,9 @@ class Login extends Component {
       if( this.state.action === 'login' ){
         return this.props.login(body)
         .then(data => {
-          this.resetForm()
-          this.props.history.push(referrer);
+          console.log('Data Ran', data)
+          // this.resetForm()
+          // this.props.history.push(referrer);
         })
         .catch(err => this.setErr(err)) // TODO
       }
@@ -101,11 +107,13 @@ class Login extends Component {
               onChange={this.changeField.bind(this, 'email')}
               placeholder='Email'
               type='email'
+              key='email'
               className={css(styles.input)}/>
             <input
               onChange={this.changeField.bind(this, 'password')}
               placeholder='Password'
               type='password'
+              key='password'
               className={css(styles.input)} />
           </div>
         )
@@ -116,26 +124,31 @@ class Login extends Component {
               onChange={this.changeField.bind(this, 'firstName')}
               placeholder='First Name'
               type='text'
+              key='firstName'
               className={css(styles.input)}/>
             <input
               onChange={this.changeField.bind(this, 'lastName')}
               placeholder='Last Name'
               type='text'
+              key='lastName'
               className={css(styles.input)}/>
             <input
               onChange={this.changeField.bind(this, 'email')}
               placeholder='Email'
+              key='email'
               type='email'
               className={css(styles.input)}/>
             <input
               onChange={this.changeField.bind(this, 'password')}
               placeholder='Password'
               type='password'
+              key='Password'
               className={css(styles.input)}/>
             <input
               onChange={this.changeField.bind(this, 'confirm')}
               placeholder='Confirm Password'
               type='password'
+              key='confirm'
               className={css(styles.input)}/>
           </div>
         )
@@ -146,6 +159,7 @@ class Login extends Component {
               onChange={this.changeField.bind(this, 'email')}
               placeholder='Email'
               type='email'
+              key='email'
               className={css(styles.input)} />
           </div>
         )

@@ -113,7 +113,9 @@ class MainContainer extends Component {
       })
       .catch(err => {
         console.error('HOLY F', err)
+        throw err.message
         //throw err;
+        //TODO clear indication when email is in use
       })
     }
 
@@ -132,7 +134,7 @@ class MainContainer extends Component {
       })
       .catch(err => {
         console.error('HOLY F', err)
-        throw err;
+        throw err.message;
       })
     }
 
@@ -168,7 +170,7 @@ class MainContainer extends Component {
           let token = Object.assign({}, this.state.token);
           let idx = this.state.token.user.playlists.findIndex(item => item._id === playlist._id)
           token.user.playlists.splice(idx, 1, playlist);
-          this.setState({ token: token, songToAddToPlaylist: undefined })
+          this.setState({ token: token, songToAddToPlaylist: undefined, playlist: playlist })
         })
       }
       if(modalType === 'login' && params.action === 'login'){

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-
 import styles from './songActionStyles.js';
 import { css } from 'aphrodite';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import DownloadActions from '../../Actions/DownloadActions.js';
+import faTrashAlt from '@fortawesome/fontawesome-free-regular/faTrashAlt'
 
 class SongActions extends Component {
     constructor(props) {
@@ -24,6 +24,9 @@ class SongActions extends Component {
         this.props.openSongActionModal('login', this.props.hoveredSong._id)
         return;
       }
+      if(value === 'share'){
+        alert('Sharing will be available in the next update May 2018') // TODO
+      }
       if(value==='addToPlaylist'){ this.props.openSongActionModal('playlist', this.props.hoveredSong._id)}
       if(value === 'download'){
         console.log('DOWNLOAD CALLED', this.props)
@@ -40,20 +43,16 @@ class SongActions extends Component {
       }
       if(value === 'delete'){
         // this is not really apprp named
-        let index = this.props.playlist.songs.findIndex( item => item._id === this.props.hoveredSong)
-        console.log('Index ?', index)
+        let index = this.props.playlist.songs.findIndex( item => item.song._id === this.props.hoveredSong._id )
         let songs = this.props.playlist.songs
-        console.log('Songs? ', songs, this.props.playlist.songs)
         if(index > -1 ) songs.splice(index, 1);
-
         let playlist = Object.assign({}, this.props.playlist)
         playlist.songs = songs;
+        console.log('Playlist Now', playlist)
         this.props.submitModal('playlist', 'put', playlist);
       }
     }
-    // componentDidUpdate(){
-    //   debugger
-    // }
+
     determineIconsToRender = () => {
       let p = this.props;
       let ICONS = [
@@ -63,7 +62,7 @@ class SongActions extends Component {
       ]
       if (p.context === 'playlist' && p.token && p.token.user._id === p.playlist.createdBy._id){
         //allow delete
-        ICONS.push({class: 'fa fa-trash', tooltip: 'Remove From Playlist', value: 'delete'})
+        ICONS.push({class: 'trash-alt', tooltip: 'Remove From Playlist', value: 'delete'})
       }
       return ICONS
     }
@@ -78,12 +77,10 @@ class SongActions extends Component {
             className={css(
               styles.iconWrap,
               icon.value === this.state.activeIcon.value && styles.activeIcon
-
             )}
           >
             <FontAwesomeIcon icon={icon.class}/>
           </div>
-
         )
       })
     }

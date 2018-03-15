@@ -4,7 +4,7 @@ function handleErrors(response) {
     }
     return response;
 }
-
+// TODO use process.env
 let PlaylistActions = {
   getUserPlaylists: () => {
     console.log('Grabbing Playlists!')
@@ -58,6 +58,7 @@ let PlaylistActions = {
   },
 
   getPlaylist: (id) => {
+    console.log('Getting PL')
     //return fetch('http://localhost:8081/api/playlists/' + id, {
     return fetch('https://smg-api.herokuapp.com/api/playlists/' + id, {
       method: 'GET',

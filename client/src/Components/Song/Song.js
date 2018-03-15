@@ -5,8 +5,8 @@ import helpers from './helpers';
 import SongActions from '../../Containers/SongsContainer/SongActions.js';
 import { DragSource, DropTarget } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
+import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-
 import { Link } from 'react-router-dom'
 
 function collect(connect, monitor) {
@@ -112,7 +112,6 @@ class Song extends Component {
 
     createClickableWriters = (song) => {
       return song.writers.map(writer => {
-        if( this.props.context === 'playlist') writer.writer = writer; // this is shit. data is different in playlist for some reason
         return (
           <span key={writer._id}>
             { writer.writer.repped ?
@@ -153,7 +152,7 @@ class Song extends Component {
                   ?
                     <div className={css(styles.playIcon)}> <FontAwesomeIcon icon="play"/> </div>
                   :
-                  this.props.song._id === p.data._id
+                  this.props.song && (this.props.song._id === p.data._id)
                   ? <div className={css(styles.playIcon)}> <FontAwesomeIcon icon="pause"/> </div>
                   : <div className={css(styles.playIcon)}>  <FontAwesomeIcon icon="play"/> </div>
                 }
