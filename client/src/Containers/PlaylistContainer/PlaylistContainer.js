@@ -3,6 +3,7 @@ import styles from './styles.js';
 import { css } from 'aphrodite';
 import image from './../../assets/banner.jpg';
 import moment from 'moment';
+import ImageTop from '../../Components/ImageTop/ImageTop';
 import PlaylistActions from '../../Actions/PlaylistActions';
 import SongContainer from '../SongsContainer/SongsContainer';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
@@ -164,8 +165,7 @@ class PlaylistContainer extends Component {
       let centerIcons = this.renderIcons()
         return (
           <div className={ css(styles.wrapper) }>
-              <div className={css(styles.overlay)}></div>
-              <img className={css(styles.image)} src={image} />
+              <ImageTop image={image} />
               {
                 this.state.playlist && this.state.playlist.songs && this.state.playlist.createdBy
                 ?

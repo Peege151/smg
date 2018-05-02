@@ -3,12 +3,12 @@ import { css } from 'aphrodite';
 import styles from './styles.js';
 
 import BrowseContainer from '../BrowseContainer/BrowseContainer.js';
+import IndividualSongContainer from '../IndividualSongContainer/IndividualSongContainer.js';
 import PlayerContainer from '../PlayerContainer/PlayerContainer.js';
 import PlaylistContainer from '../PlaylistContainer/PlaylistContainer.js';
 import SearchContainer from '../SearchContainer/SearchContainer.js';
 import UserContainer from '../UserContainer/UserContainer.js';
 import WriterContainer from '../SearchContainer/WriterContainer/WriterContainer.js';
-
 
 import About from '../../Components/About/About.js';
 import Contact from '../../Components/Contact/Contact.js'
@@ -231,6 +231,8 @@ class MainContainer extends Component {
                     <Route exact path='/about' component={ About } />
                     <Route exact path='/contact' component={ Contact } />
                     <Route exact path='/logout' render={(routeProps) => <Logout {...functions} {...routeProps}/>} />
+                    <Route exact path='/songs/:song' render={(routeProps) => <IndividualSongContainer {...routeProps} {...state} {...functions}/> } />
+
                     <Route exact path='/writer/:writer' render={(routeProps) => <WriterContainer {...routeProps} {...state} {...functions}/> } />
                     <Route exact path='/playlists/:id' render={(routeProps) => <PlaylistContainer {...routeProps} {...state} {...functions}/> } />
                     <Route path='/' render={(routeProps) => <SearchContainer {...routeProps}{...state} {...functions}/>}/>

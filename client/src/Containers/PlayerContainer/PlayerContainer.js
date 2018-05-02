@@ -38,10 +38,6 @@ class PlayerContainer extends Component {
       this.setState({ paused: !this.state.paused })
     }
 
-    hide404Image = (nt, node) => {
-      node.target.style.display='none'
-    }
-
     onSongTitleClick = () => {
       console.log('Sup', this.props)
     }
@@ -61,7 +57,6 @@ class PlayerContainer extends Component {
       };
 
       let albumArtwork = ( this.props.song && this.props.song.album ) ? ( this.props.song.album.artwork || this.props.song.artwork ) : defaultArtwork
-      console.log('LF Artwork', albumArtwork, this.props.song)
       let writers = this.props.song.writers.map( writer => {
         return writer.name;
       })

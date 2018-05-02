@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styles from './styles.js';
 import { css } from 'aphrodite';
 import image from './../../assets/banner.jpg';
+import ImageTop from '../../Components/ImageTop/ImageTop';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 class UserContainer extends Component {
@@ -65,10 +66,7 @@ class UserContainer extends Component {
         let s = this.state;
         return (
           <div className={css(styles.outer)}>
-            <div className={css(styles.wrapper)}>
-              <div className={css(styles.overlay)}></div>
-              <img className={css(styles.image)} src={image} />
-            </div>
+            <ImageTop image={image} />
             <div className={css(styles.inner)}>
               <div className={css(styles.roundWrap)}> <FontAwesomeIcon icon='user' /> </div>
               { this.state.error ? <p> { this.state.error } </p> : null }

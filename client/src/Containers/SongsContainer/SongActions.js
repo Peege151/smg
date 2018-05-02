@@ -4,6 +4,7 @@ import { css } from 'aphrodite';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import DownloadActions from '../../Actions/DownloadActions.js';
 import faTrashAlt from '@fortawesome/fontawesome-free-regular/faTrashAlt'
+import faPaperPlane from '@fortawesome/fontawesome-free-regular/faPaperPlane'
 
 class SongActions extends Component {
     constructor(props) {
@@ -58,7 +59,7 @@ class SongActions extends Component {
       let ICONS = [
         { class: 'list-ul', tooltip: 'Add To Playlist', value: 'addToPlaylist'},
         { class: 'download', tooltip: 'Download Song For Trial', value: 'download' },
-        // {class: 'fa fa-paper-plane', tooltip: 'Share Song', value: 'share' },
+        { class: 'paper-plane', tooltip: 'Share Song', value: 'share' },
       ]
       if (p.context === 'playlist' && p.token && p.token.user._id === p.playlist.createdBy._id){
         //allow delete
@@ -85,15 +86,33 @@ class SongActions extends Component {
       })
     }
     render() {
-      let iconsToRender = this.determineIconsToRender()
-      let tooltipOffset = iconsToRender.length * 92 // check songActionStyles for constant. Adding padding
-      let icons = this.renderIcons(iconsToRender)
+      let iconsToRender = this.determineIconsToRender();
+      let tooltipOffsetWhenCentered = (window.innerWidth / 2) + (iconsToRender.length * 92 / 2);
+      let tooltipOffset = this.props.context === 'individual' ? tooltipOffsetWhenCentered : iconsToRender.length * 92 // check songActionStyles for constant. Adding padding
+      let icons = this.renderIcons(iconsToRender);
 
       let tooltip = this.state.activeIcon ? this.state.activeIcon.tooltip : null
       return (
         <div className={css(styles.songActionHoverWrapper)}>
-          <div className={css(styles.innerSongActionHoverWrapper)}>
-            { tooltip ? <div style={{right: tooltipOffset}} className={css(styles.tooltip)}> { tooltip } </div> : null}
+          <div
+            className={css(
+              styles.innerSongActionHoverWrapper,
+              this.props.context === 'individual' && styles.setCenter
+            )}>
+            { tooltip
+              ?
+                <div
+                  style={{right: tooltipOffset}}
+                  className={css(
+                    styles.tooltip,
+                    this.props.context === 'individual' && styles.setToolTipLeft
+                  )}
+                  >
+                    { tooltip }
+                </div>
+              :
+              null
+            }
             { icons }
           </div>
         </div>

@@ -1,8 +1,8 @@
 import { CATEGORIES } from '../FilterHeaders/categories.js';
 
 let helpers = {
-  beautifyFilters: (song) => {
-    let categories = CATEGORIES.filter(cat => cat.selector === 'genres')[0].variants.map(vari => vari.value);
+  beautifyFilters: (song, selector, verbose) => {
+    let categories = CATEGORIES.filter(cat => cat.selector === selector)[0].variants.map(vari => vari.value);
     let filters =  song.filters.map( filter => {
       if (categories.indexOf(filter) > -1 ){
         if (filter === 'hiphop-rap') filter = 'hip|hop';
@@ -21,7 +21,9 @@ let helpers = {
       // this next line removes undefined values from the array, that arrived
       // there as a result of non-genre filter variants initially pushing undefined to array
     }).filter(i => i).join(' ')
-    if (filters.length > 20){
+    if( verbose ){
+
+    } else if (filters.length > 20 ){
       filters = filters.replace(/^(.{19}[^\s]*).*/, "$1...")
     } else {
       filters = filters.replace(/^(.{11}[^\s]*).*/, "$1")

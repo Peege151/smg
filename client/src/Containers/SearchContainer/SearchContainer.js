@@ -4,6 +4,7 @@ import { css } from 'aphrodite';
 import bgimage  from './../../assets/banner_speaker.jpg';
 import { CATEGORIES } from '../../Components/FilterHeaders/categories.js';
 
+import ImageTop from '../../Components/ImageTop/ImageTop';
 
 import Searchbar from '../../Components/Searchbar/Searchbar.js';
 import FilterHeaders from '../../Components/FilterHeaders/FilterHeaders.js';
@@ -24,7 +25,7 @@ function serializeData(data) {
         //artists was called
         array = data;
       } else {
-        console.log('Data for artists', resource)
+        console.log('Data for artists', resource);
         resource.albums.forEach(function(album){
           console.log('album', album)
           array = [...album.songs]
@@ -201,7 +202,7 @@ class SearchContainer extends Component {
       console.log('STATE OF SEARCHCONTAINER', this.state)
       return (
         <div className={ css(styles.wrapper) }>
-          <img src={bgimage} className={css(styles.banner)} alt="logo" />
+          <ImageTop image={bgimage} />
             {Buttons}
           { this.state.method === 'search'
             ?
@@ -216,7 +217,7 @@ class SearchContainer extends Component {
           }
           <SongsContainer openWriterContainer={this.openWriterContainer} {...props}{...this.state}/>
           <div className={css(styles.songNote)}>
-            <p>If you have any questions, feel free to contact us at any time.  We rep 100% of all tracks here  </p>
+            <p> If you have any questions, feel free to contact us at any time.  </p>
           </div>
 
         </div>

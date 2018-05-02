@@ -27,17 +27,29 @@ const styles = StyleSheet.create({
     position: 'absolute',
     whiteSpace: 'nowrap'
   },
-  innerSongActionHoverWrapper: {
+  setToolTipLeft: {
+    display: 'flex-inline'
+  },
+  setCenter: {
+    position: 'relative',
     display: 'flex',
+    width: '100%',
+    height: '70px',
     alignContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'center',
+    //padding: '20px'
+  },
+  innerSongActionHoverWrapper: {
+    width: '50%',
     justifyContent: 'flex-end',
-    flexDirection: 'row',
     position: 'absolute',
-    height: '100%',
     top: 0,
     right: 0,
-    width: '50%',
+    alignItems: 'center',
+    display: 'flex',
+    alignContent: 'center',
+    flexDirection: 'row',
+    height: '100%',
   },
 });
 

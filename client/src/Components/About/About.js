@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import styles from './styles.js';
 import { css } from 'aphrodite';
 import image from './../../assets/banner2.jpg';
-
+import ImageTop from '../ImageTop/ImageTop';
 
 class About extends Component {
     constructor(props) {
@@ -18,10 +18,7 @@ class About extends Component {
       console.log('Props', this.props);
         return (
           <div className={css(styles.outerWrapper)}>
-            <div className={css(styles.wrapper)}>
-              <div className={css(styles.overlay)}></div>
-              <img className={css(styles.image)} src={image} />
-            </div>
+            <ImageTop image={image} />
             <div className={css(styles.paragraphWrapper)}>
               <h3 className={css(styles.header)}> Who We Are </h3>
               <p className={css(styles.paragraph)}>

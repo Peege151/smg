@@ -164,6 +164,7 @@ class SongsContainer extends Component {
     componentWillMount(){
       if(this.props.parent !== 'writers') this.getAllSongs();
     }
+    
     render() {
       let songs =  this.props.songs ? this.renderSongTable(this.props.songs) : this.renderSongTable();
       let headers = this.renderHeaders();

@@ -19,8 +19,8 @@ let SongActions = {
     .then(data => { return data.json() })
   },
   getAllSongs: () => {
-    //return fetch('http://localhost:8081/api/songs/', {
-    return fetch('https://smg-api.herokuapp.com/api/songs/', {
+    return fetch('http://localhost:8081/api/songs/', {
+    //return fetch('https://smg-api.herokuapp.com/api/songs/', {
       method: 'GET',
       headers: { "Content-Type": "application/json" }
     })

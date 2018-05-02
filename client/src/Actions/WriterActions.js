@@ -4,10 +4,11 @@ function handleErrors(response) {
     }
     return response;
 }
-//TODO use process.env
+
+let APIROUTE = process.env.NODE_ENV === 'development' ? "http://localhost:8081/api" : "https://smg-api.herokuapp.com/api"
 let WriterActions = {
   getWriter:(id) => {
-    return fetch('https://smg-api.herokuapp.com/api/writers/' + id, {
+    return fetch(APIROUTE + '/writers/' + id, {
 
     //return fetch('http://localhost:8081/api/writers/' + id, {
       method: 'GET',

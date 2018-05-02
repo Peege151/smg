@@ -3,29 +3,22 @@ import React, { Component } from 'react';
 import styles from './styles.js';
 import { css } from 'aphrodite';
 import image from './../../assets/banner.jpg';
-
+import ImageTop from '../ImageTop/ImageTop';
 
 class Contact extends Component {
     constructor(props) {
       super(props);
-      this.state = {
-        active: 0
-      };
+      this.state = { };
     }
 
     setActive = (idx) => {
-      console.log('Hit', idx)
       this.setState({active: idx})
     }
 
     render() {
-      console.log('')
         return (
           <div className={css(styles.outer)}>
-            <div className={css(styles.wrapper)}>
-              <div className={css(styles.overlay)}></div>
-              <img className={css(styles.image)} src={image} />
-            </div>
+            <ImageTop image={image} />
             <h3 className={css(styles.header)}> Here Is How to Reach Us. </h3>
             <div className={css(styles.content)}>
               <h5> Licensing </h5>

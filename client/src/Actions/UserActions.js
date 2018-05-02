@@ -44,9 +44,9 @@ let UserActions = {
     })
   },
   login: (body) => {
-    return fetch(APIROUTE + '/users/login', {
+    //return fetch(APIROUTE + '/users/login', {
 
-    //return fetch('https://smg-api.herokuapp.com/api/users/login', {
+    return fetch('http://localhost:8081/api/users/login', {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify(body),

@@ -109,7 +109,16 @@ class Song extends Component {
 
       }
     }
-
+    createClickableTitle = (song) => {
+      return (
+        <Link
+          to={{ pathname:'/songs/' + song._id, state: {song: song}}}
+          className={css(styles.clickableWriter)}
+          onClick={ this.props.openIndividualSongContainer ? this.props.openWriterContainer.bind(null, song) : null } >
+          { song.title }
+        </Link>
+      )
+    }
     createClickableWriters = (song) => {
       return song.writers.map(writer => {
         return (
@@ -131,7 +140,7 @@ class Song extends Component {
 
     render() {
       let p = this.props;
-      let prettyFilters = helpers.beautifyFilters(p.data);
+      let prettyFilters = helpers.beautifyFilters(p.data, 'genres', false);
       const { connectDragSource, connectDropTarget, isDragging } = this.props;
         return connectDragSource(
           connectDropTarget(<div
@@ -162,13 +171,13 @@ class Song extends Component {
               p.hoveredSong && (p.data._id === p.hoveredSong._id)
               ?
               <div className={css(styles.innerSongRow)}>
-                <div style={{width: this.getWidthOfTd(null, 'Name')}} className={ css(styles.td, styles.songTitle) }> { p.data.title } </div>
+                <div style={{width: this.getWidthOfTd(null, 'Name')}} className={ css(styles.td, styles.songTitle) }> {this.createClickableTitle(p.data)} </div>
                 <div style={{width: this.getWidthOfTd(null, 'Writer')}} className={ css(styles.td) }> { this.createClickableWriters(p.data) } </div>
                 <SongActions hoveredSong={p.hoveredSong} {...this.props} />
               </div>
               :
               <div className={css(styles.innerSongRow)}>
-                <div style={{width: this.getWidthOfTd(null, 'Name')}} className={ css(styles.td, styles.songTitle) }> { p.data.title } </div>
+                <div style={{width: this.getWidthOfTd(null, 'Name')}} className={ css(styles.td, styles.songTitle) }> {this.createClickableTitle(p.data)} </div>
                 <div style={{width: this.getWidthOfTd(null, 'Writer')}} className={ css(styles.td) }> { this.createClickableWriters(p.data) } </div>
                 <div style={{width: this.getWidthOfTd(null, 'Genres')}} className={ css(styles.td) }> { prettyFilters } </div>
                 <div style={{width: this.getWidthOfTd(null, 'Tempo')}} className={ css(styles.td) }> { p.data.tempo } BPM </div>
