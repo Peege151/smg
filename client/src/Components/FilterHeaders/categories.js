@@ -44,7 +44,11 @@ const CATEGORIES = [
       { title: 'Radiohead', status: 0, value: 'radiohead' },
       { title: 'The Roots', status: 0, value: 'the_roots'},
       { title: 'Sylvan Esso', status: 0, value: 'sylvan_esso'},
-
+      { title: 'Nirvana', status: 0, value: 'nirvana' },
+      { title: 'Daft Punk', status: 0, value: 'daft_punk' },
+      { title: 'The Notorious B.I.G', status: 0, value: 'notorius_big' },
+      { title: 'Justin Bieber', status: 0, value: 'justin_bieber' },
+      { title: 'Tame Impala', status: 0, value: 'tame_impala' },
     ]
   },
   { title: 'Genres',
