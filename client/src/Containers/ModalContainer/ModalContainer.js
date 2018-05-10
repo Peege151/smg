@@ -34,7 +34,9 @@ class ModalContainer extends Component {
       let modal = this.props.modal;
       if(modal === 'playlist' && this.props.songToAddToPlaylist) return 'Add to Playlist';
       if(modal === 'playlist' && !this.props.songToAddToPlaylist) return 'Playlists';
-      if(modal === 'share') return 'Share Song';
+      if(modal === 'share' && this.props.songToAddToPlaylist) return 'Share Song';
+      if(modal === 'share' && this.props.playlistToShare) return 'Share Playlist';
+
       if(modal === 'login') return 'Oops, You Need To Be Signed In For That';
     }
 

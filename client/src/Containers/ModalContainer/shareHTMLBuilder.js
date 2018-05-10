@@ -7,6 +7,7 @@ let shareHTMLBuilder = {
   renderShareForm: (props, state, setter, validator) => {
     console.log('Props?', props, state)
     let resource = props.songToAddToPlaylist ? props.songToAddToPlaylist.song : props.playlistToShare
+    let resourceStr = props.songToAddToPlaylist ? "Song" : 'Playlist'
     return (
       <div>
         <p className={css(styles.formTitle)} >
@@ -28,7 +29,7 @@ let shareHTMLBuilder = {
               styles.submitModal,
               state.submitted && styles.disabled
             )} >
-            Share Song
+            Share { resourceStr }
           </button>
         </form>
         { state.error ? <p className={css(styles.error)}> {state.error} </p> : null }
