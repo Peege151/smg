@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
+
 import styles from './styles.js';
 import { css } from 'aphrodite';
+
 import image from './../../assets/banner.jpg';
 import ImageTop from '../../Components/ImageTop/ImageTop';
+
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom'
 import SongActions from '../SongsContainer/SongActions';
 import songHelpers from '../../Components/Song/helpers';
+import SongAjax from '../../Actions/SongActions'
 import WaveSurfer from 'react-wavesurfer';
 import WriterContainer from '../SearchContainer/WriterContainer/WriterContainer';
 class IndividualSongContainer extends Component {
@@ -15,16 +19,23 @@ class IndividualSongContainer extends Component {
       this.state = {
         bufferingNewSong: true,
         pos: 0,
-        paused: false
+        paused: false,
+      //  song: {}
       };
     }
     onReady = (e) => { this.setState({bufferingNewSong: false})}
     onFinish = (e) => { console.log('On Finish', e)}
     onClick = (e) => {
-      this.props.toggleAudio(this.props.location.state.song);
+      this.props.toggleAudio(this.state.song);
       this.setState({ paused: !this.state.paused })
     }
+    componentWillMount(){
+      this.setState({song: this.props.location.state ? this.props.location.state.song : {} })
+      SongAjax.getSong(this.props.match.params.song)
+      .then(data => this.setState({song: data}))
+    }
     componentWillReceiveProps(newProps){
+      console.log('CWRP Idie', newProps)
       // console.log('New Props ISC', newProps)
       // if(newProps.paused && newProps.initiatedPlayer) this.setState({paused: false})
       // if(!newProps.playing && newProps.initiatedPlayer) this.setState({paused: true})
@@ -56,7 +67,12 @@ class IndividualSongContainer extends Component {
         cursorColor: 'white',
         overflow: 'auto !important'
       };
-      let s = this.props.location.state.song;
+      const s = this.state.song;
+      if (!this.state.song.hasOwnProperty('_id')){
+        return (
+          <div> Loading </div>
+        )
+      } else {
         return (
           <div className={ css(styles.wrapper) }>
             <ImageTop image={image} />
@@ -69,7 +85,7 @@ class IndividualSongContainer extends Component {
               <div className={css(styles.writers)}> { this.createClickableWriters(s) } </div>
             </div>
             <div className={css(styles.actions)}>
-              <SongActions context='individual' {...this.props} hoveredSong={s} />
+              <SongActions context='individualTop' {...this.props} hoveredSong={s} />
             </div>
             <div className={css(styles.songDataWrapperLeft)}>
               <h5 className={css(styles.title)}> Vocals </h5>
@@ -104,7 +120,7 @@ class IndividualSongContainer extends Component {
               s.writers.length === 1
               ?
               <div className={css(styles.loneWriter)}>
-                <WriterContainer context='individual' individualSong={s}/>
+                <WriterContainer context='individual' individualSong={s} {...this.props}/>
               </div>
               :
               null
@@ -112,6 +128,7 @@ class IndividualSongContainer extends Component {
           </div>
       );
     }
+  }
 }
 
 export default IndividualSongContainer;

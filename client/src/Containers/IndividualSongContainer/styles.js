@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
   waveform:{
     padding: 20,
     position: 'relative',
-    height: 110
+    height: 110,
+    zIndex: 0,
   },
   songDataWrapperRight: {
     padding: 20,

@@ -6,10 +6,11 @@ import { css } from 'aphrodite';
 let shareHTMLBuilder = {
   renderShareForm: (props, state, setter, validator) => {
     console.log('Props?', props, state)
+    let resource = props.songToAddToPlaylist ? props.songToAddToPlaylist.song : props.playlistToShare
     return (
       <div>
         <p className={css(styles.formTitle)} >
-          Sending "{props.songToAddToPlaylist.song.title}"
+          Sending "{resource.title}"
         </p>
         <form className={css(styles.modalForm)}>
           <input

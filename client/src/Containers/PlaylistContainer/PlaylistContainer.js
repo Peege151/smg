@@ -18,6 +18,7 @@ class PlaylistContainer extends Component {
         collaborators: []
       };
     }
+
     serializePlaylistForSongContainer = (data) => {
       let dataClone = Object.assign({}, data);
       let collaborators = data.songs.map(song => song.addedBy.email);
@@ -26,33 +27,26 @@ class PlaylistContainer extends Component {
       });
       this.setState({ playlist: Object.assign({}, data), collaborators: collaborators, songs: [...songs] } )
     }
+
     componentWillMount(){
       PlaylistActions.getPlaylist(this.props.match.params.id)
-      .then(data => {
-        this.serializePlaylistForSongContainer(data);
-      })
-      .catch(err => {
-        console.log('err', err)
-      })
+      .then(data => { this.serializePlaylistForSongContainer(data)})
+      .catch(err => { console.log('err', err) })
     }
+
     componentWillReceiveProps(newProps){
       if( newProps.playlist){
-        this.serializePlaylistForSongContainer(newProps.playlist)
+        this.serializePlaylistForSongContainer(newProps.playlist);
         return;
       }
       if(this.props.match.url !== newProps.match.url){
         PlaylistActions.getPlaylist(newProps.match.params.id)
-        .then(data => {
-          console.log('Got new data', data)
-          this.serializePlaylistForSongContainer(data);
-        })
-        .catch(err => {
-          console.log('err', err)
-        })
+        .then(data => { this.serializePlaylistForSongContainer(data) })
+        .catch(err => { console.log('err', err) })
       }
     }
+
     openWriterContainer = (writer) => {
-      console.log('Viewing', writer);
       this.setState({viewingWriter: writer._id})
     }
 
@@ -73,10 +67,11 @@ class PlaylistContainer extends Component {
         this.serializePlaylistForSongContainer(data);
       })
     }
+
     share = () => {
-      alert('Sharing Will Be Available In Next Site Update May 2018');
-      //TODO
+      this.props.openSongActionModal('share', this.state.playlist)
     }
+
     joinPlaylist = () => {
       // NO USER USE MODAL LOGIN
       let currentUser = this.props.token ? this.props.token.user : {};

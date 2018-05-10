@@ -88,7 +88,7 @@ class SongActions extends Component {
     render() {
       let iconsToRender = this.determineIconsToRender();
       let tooltipOffsetWhenCentered = (window.innerWidth / 2) + (iconsToRender.length * 92 / 2);
-      let tooltipOffset = this.props.context === 'individual' ? tooltipOffsetWhenCentered : iconsToRender.length * 92 // check songActionStyles for constant. Adding padding
+      let tooltipOffset = this.props.context === 'individualTop' ? tooltipOffsetWhenCentered : iconsToRender.length * 92 // check songActionStyles for constant. Adding padding
       let icons = this.renderIcons(iconsToRender);
 
       let tooltip = this.state.activeIcon ? this.state.activeIcon.tooltip : null
@@ -97,7 +97,7 @@ class SongActions extends Component {
           <div
             className={css(
               styles.innerSongActionHoverWrapper,
-              this.props.context === 'individual' && styles.setCenter
+              this.props.context === 'individualTop' && styles.setCenter
             )}>
             { tooltip
               ?
@@ -105,7 +105,7 @@ class SongActions extends Component {
                   style={{right: tooltipOffset}}
                   className={css(
                     styles.tooltip,
-                    this.props.context === 'individual' && styles.setToolTipLeft
+                    this.props.context === 'individualTop' && styles.setToolTipLeft
                   )}
                   >
                     { tooltip }

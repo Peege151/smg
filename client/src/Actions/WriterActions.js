@@ -5,19 +5,15 @@ function handleErrors(response) {
     return response;
 }
 
-let APIROUTE = process.env.NODE_ENV === 'development' ? "http://localhost:8081/api" : "https://smg-api.herokuapp.com/api"
-let WriterActions = {
+const APIROUTE = process.env.NODE_ENV === 'development' ? "http://localhost:8081/api" : "https://smg-api.herokuapp.com/api"
+const WriterActions = {
   getWriter:(id) => {
     return fetch(APIROUTE + '/writers/' + id, {
-
-    //return fetch('http://localhost:8081/api/writers/' + id, {
       method: 'GET',
       headers: { "Content-Type": "application/json" }
     })
     .then(handleErrors)
-    .then(data => {
-      return data.json();
-    })
+    .then(data => data.json())
   }
 }
 export default WriterActions

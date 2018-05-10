@@ -66,7 +66,12 @@ class ModalContainer extends Component {
       evt.preventDefault();
       let valid = true;
       let data = Object.assign({}, s.modalData);
-      data.song = this.props.songToAddToPlaylist.song;
+      if(this.props.songToAddToPlaylist){
+        data.song = this.props.songToAddToPlaylist.song;
+      }
+      if(this.props.playlistToShare){
+        data.playlist = this.props.playlistToShare
+      }
       console.log('Validator for Share Run! Make this actually do something');
       this.props.submitModal('share', 'post', data )
     }

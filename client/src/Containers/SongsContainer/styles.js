@@ -24,6 +24,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     padding: 10,
   },
+  spinnerWrapper: {
+    textAlign: 'center',
+    padding: 40,
+  },
   serverError: {
     color: APP_CONSTANTS.ERROR_COLOR
   },

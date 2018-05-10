@@ -4,11 +4,11 @@ function handleErrors(response) {
     }
     return response;
 }
-//TODO use process.env
-let SongActions = {
+const APIROUTE = process.env.NODE_ENV === 'development' ? "http://localhost:8081/api" : "https://smg-api.herokuapp.com/api"
+
+const SongActions = {
   filterSongs: (include, exclude, tempoRange) => {
-    return fetch('https://smg-api.herokuapp.com/api/songs/?include=' +
-    //return fetch('http://localhost:8081/api/songs/?include=' +
+    return fetch(APIROUTE + '/songs/?include=' +
     include +
     '&exclude=' + exclude +
     tempoRange, {
@@ -18,16 +18,23 @@ let SongActions = {
     .then(handleErrors)
     .then(data => { return data.json() })
   },
-  getAllSongs: () => {
-    //return fetch('http://localhost:8081/api/songs/', {
-    return fetch('https://smg-api.herokuapp.com/api/songs/', {
+
+  getSong: (id) => {
+    return fetch(APIROUTE + '/songs/' + id , {
       method: 'GET',
       headers: { "Content-Type": "application/json" }
     })
     .then(handleErrors)
-    .then(data => {
-      return data.json()
+    .then(data => data.json() )
+  },
+
+  getAllSongs: () => {
+    return fetch(APIROUTE + '/songs/', {
+      method: 'GET',
+      headers: { "Content-Type": "application/json" }
     })
+    .then(handleErrors)
+    .then(data =>  data.json() )
   }
 }
 export default SongActions;

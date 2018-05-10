@@ -26,14 +26,20 @@ class PlayerContainer extends Component {
     componentWillReceiveProps(newProps){
       if(this.props.playing && newProps.song._id && (this.props.playing !== newProps.song._id)){
         // user hit play on another track withuot pausing.
-        console.log('MisMatch', this.props.playing, newProps.song._id);
-        this.setState({bufferingNewSong: true})
+        console.log('Clicked A New Song While Music is Playing', this.props.playing, newProps.song._id);
+        this.setState({bufferingNewSong: true })
+      } else if (this.props.playing === newProps.song._id && !newProps.playing){
+        console.log('Clicked Pause On Playing Song')
+      } else if (this.props.playing !== newProps.song._id && newProps.playing){
+        console.log('Clicked A New Song While Nothing is Playing (playing is false)')
+        this.setState({pos: 0, bufferingNewSong: true})
       }
       this.setState({paused: newProps.paused})
     }
 
     onPlayClick = () => {
-      console.log('Play Click...')
+      console.log('Play Click...');
+      // TODO fix bug where IF SONG IS PAUSED and new one is clicked player does not reset to 0 timestamp
       this.props.toggleAudio(this.props.song);
       this.setState({ paused: !this.state.paused })
     }
@@ -43,9 +49,9 @@ class PlayerContainer extends Component {
     }
 
     handlePosChange = (e) => { this.setState({ pos: e.originalArgs[0], currentTime: helpers.prettyTime(e.originalArgs[0]) }) }
-    onPlay = (e) => { console.log('On Play', e)}
-    onFinish = (e) => { console.log('On Finish', e)}
-    onLoading = (e) => { console.log('On Loading', e)}
+    // onPlay = (e) => { console.log('On Play', e)}
+    // onFinish = (e) => { console.log('On Finish', e)}
+    // onLoading = (e) => { console.log('On Loading', e)}
     onReady = (e) => { this.setState({bufferingNewSong: false })}
 
     render() {
@@ -56,11 +62,10 @@ class PlayerContainer extends Component {
         cursorColor: '#4b5d7c'
       };
 
-      let albumArtwork = ( this.props.song && this.props.song.album ) ? ( this.props.song.album.artwork || this.props.song.artwork ) : defaultArtwork
-      let writers = this.props.song.writers.map( writer => {
-        return writer.name;
-      })
+      const albumArtwork = ( this.props.song && this.props.song.album ) ? ( this.props.song.album.artwork || this.props.song.artwork ) : defaultArtwork
+      const writers = this.props.song.writers.map( writer => { writer.name })
       let playSong = this.state.bufferingNewSong ? false : true;
+
       if (this.state.paused || this.state.buffering) playSong = false;
       return (
         <div className={ css(styles.playerWrapper) }>

@@ -199,7 +199,7 @@ class SearchContainer extends Component {
     render() {
       let props = this.props;
       let Buttons = this.renderButtons();
-      console.log('STATE OF SEARCHCONTAINER', this.state)
+
       return (
         <div className={ css(styles.wrapper) }>
           <ImageTop image={bgimage} />

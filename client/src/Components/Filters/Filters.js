@@ -125,8 +125,7 @@ class Filters extends Component {
     }
 
     render() {
-      console.log('SELECTED FILTERS', this.props);
-      let filters = this.createFilters(this.props.activeFilterIndex);
+      const filters = this.createFilters(this.props.activeFilterIndex);
       return (
         <div className={ css(styles.filtersWrapperOuter) }>
           <div className={ css(styles.filtersWrapperInner) }>

@@ -73,8 +73,8 @@ class Login extends Component {
         return this.props.login(body)
         .then(data => {
           console.log('Data Ran', data)
-          // this.resetForm()
-          // this.props.history.push(referrer);
+          this.resetForm()
+          this.props.history.push(referrer);
         })
         .catch(err => this.setErr(err)) // TODO
       }

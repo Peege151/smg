@@ -8,6 +8,9 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import Song from '../../Components/Song/Song.js';
 import SongActions from '../../Actions/SongActions.js';
 
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+
+
 let HEADERS = ['Name', 'Writer', 'Genres', 'Tempo', 'Length']
 class SongsContainer extends Component {
     constructor(props) {
@@ -111,6 +114,7 @@ class SongsContainer extends Component {
         )
       })
     }
+
     getAllSongs = () => {
       SongActions.getAllSongs()
       .then(json => {
@@ -118,6 +122,7 @@ class SongsContainer extends Component {
       })
       .catch(err => { this.setState({clientError: err.message}) })
     }
+
     filterSongs = (nP) => {
       if(nP.method === 'filter'){
         let included = [].concat(...Object.keys(nP.selected).map(key => { return nP.selected[key] }))
@@ -136,6 +141,7 @@ class SongsContainer extends Component {
         this.getAllSongs();
       }
     }
+
     componentWillReceiveProps = (newProps) => {
       if(newProps.method === 'filter' && this.props.method === 'filter'){
         let oldFilters = [].concat(...Object.keys(this.props.selected).map(key => {return this.props.selected[key]}))
@@ -161,10 +167,11 @@ class SongsContainer extends Component {
         }
       }
     }
+
     componentWillMount(){
       if(this.props.parent !== 'writers') this.getAllSongs();
     }
-    
+
     render() {
       let songs =  this.props.songs ? this.renderSongTable(this.props.songs) : this.renderSongTable();
       let headers = this.renderHeaders();
@@ -173,7 +180,15 @@ class SongsContainer extends Component {
           <div className={css(styles.headerWrapper)}>
             { headers }
           </div>
-          { songs }
+            { songs.length
+              ?
+                songs
+              :
+                <div className={css(styles.spinnerWrapper)}>
+                  <FontAwesomeIcon icon='spinner' pulse />
+                </div>
+            }
+
         </div>
       );
     }
