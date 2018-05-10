@@ -139,15 +139,21 @@ class MainContainer extends Component {
     }
 
     openSongActionModal = (type, resource) => {
-      console.log('Opened Modal with this song', typeof resource === 'object', resource);
+      console.log('Opened Modal with this', type, resource);
       if (!resource) {
         this.setState({modal: type });
         return;
       }
-      // Passing a song as data, this works for adding a song to a playlist as well as sharing that song
+      // Passing a song as data, this works for sharing that song
       if (typeof resource === 'object' && resource.hasOwnProperty('writers')) this.setState({modal: type, songToAddToPlaylist: {song: resource, addedBy: this.state.token ? this.state.token.user._id : undefined }})
       // passing a playlist as data for sharing
       if (typeof resource === 'object' && resource.hasOwnProperty('collaborative')) this.setState({modal: type, playlistToShare: resource })
+      // for adding to playlist, resource is just song id
+      // also for authentication modal
+      if (typeof resource === 'string'){
+        console.log('Addng to playlist')
+        this.setState({modal: type, songToAddToPlaylist: {song: resource, addedBy: this.state.token ? this.state.token.user._id : undefined }})
+      }
     }
 
     closeSongActionModal = () =>{
