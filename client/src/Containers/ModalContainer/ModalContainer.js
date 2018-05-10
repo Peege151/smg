@@ -4,6 +4,8 @@ import styles from './styles.js';
 
 import playlistHTMLBuilder from './playlistHTMLBuilder';
 import loginHTMLBuilder from './loginHTMLBuilder';
+import shareHTMLBuilder from './shareHTMLBuilder';
+
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 
@@ -32,6 +34,7 @@ class ModalContainer extends Component {
       let modal = this.props.modal;
       if(modal === 'playlist' && this.props.songToAddToPlaylist) return 'Add to Playlist';
       if(modal === 'playlist' && !this.props.songToAddToPlaylist) return 'Playlists';
+      if(modal === 'share') return 'Share Song';
       if(modal === 'login') return 'Oops, You Need To Be Signed In For That';
     }
 
@@ -58,15 +61,23 @@ class ModalContainer extends Component {
     changeLoginAction = (string) => {
       this.setState({action: string})
     }
-
+    shareValidator = (element, evt) => {
+      let s = this.state;
+      evt.preventDefault();
+      let valid = true;
+      let data = Object.assign({}, s.modalData);
+      data.song = this.props.songToAddToPlaylist.song;
+      console.log('Validator for Share Run! Make this actually do something');
+      this.props.submitModal('share', 'post', data )
+    }
     loginValidator = (element, evt) => {
       evt.preventDefault();
       let s = this.state
       let valid = true;
       let params = { action: this.state.action }
-      if(!s.modalData.email) valid = false;
-      if(s.action === 'login' && !s.modalData.password) valid = false;
-      if(s.action === 'signup' && (s.modalData.password !== s.modalData.confirm)) valid = false;
+      if (!s.modalData.email) valid = false;
+      if (s.action === 'login' && !s.modalData.password) valid = false;
+      if (s.action === 'signup' && (s.modalData.password !== s.modalData.confirm)) valid = false;
 
       if(valid && s.action === 'login') {
         this.props.submitModal('login', 'post', s.modalData, params );
@@ -94,14 +105,14 @@ class ModalContainer extends Component {
 
     generateModalHTML = () => {
       let form, t = this, p = this.props
-      if (p.modal === 'playlist') form = playlistHTMLBuilder.renderPlaylistForm( t.props, t.state, t.textSetter , t.playlistValidator, t.addSongToPlaylist);
-      if (p.modal === 'login') form = loginHTMLBuilder.renderLoginForm( t.props, t.state, t.textSetter , t.loginValidator, t.changeLoginAction);
-
+      if (p.modal === 'playlist') form = playlistHTMLBuilder.renderPlaylistForm( t.props, t.state, t.textSetter, t.playlistValidator, t.addSongToPlaylist );
+      if (p.modal === 'login') form = loginHTMLBuilder.renderLoginForm( t.props, t.state, t.textSetter , t.loginValidator, t.changeLoginAction );
+      if (p.modal === 'share') form = shareHTMLBuilder.renderShareForm(t.props, t.state, t.textSetter, t.shareValidator );
       return (
         <div className={css(styles.absoluteOverlay)}>
           <div className={css(styles.modal)}>
             <h5 className={css(styles.modalTitle)}>
-              {this.generateModalTitle()}
+              { this.generateModalTitle() }
               <span className={css(styles.closeModal)} onClick={this.props.closeModal.bind(null, this)}>
                 <FontAwesomeIcon icon={'times'} />
               </span>

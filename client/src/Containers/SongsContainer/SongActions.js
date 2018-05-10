@@ -26,7 +26,7 @@ class SongActions extends Component {
         return;
       }
       if(value === 'share'){
-        alert('Sharing will be available in the next update May 2018') // TODO
+        this.props.openSongActionModal('share', this.props.hoveredSong)
       }
       if(value==='addToPlaylist'){ this.props.openSongActionModal('playlist', this.props.hoveredSong._id)}
       if(value === 'download'){

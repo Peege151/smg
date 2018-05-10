@@ -20,6 +20,8 @@ import NewPassword from '../../Components/NewPassword/NewPassword.js';
 
 import PlaylistActions from '../../Actions/PlaylistActions.js';
 import UserActions from '../../Actions/UserActions.js';
+import ShareActions from '../../Actions/ShareActions.js';
+
 import Promise from 'bluebird';
 
 import {
@@ -49,12 +51,10 @@ class MainContainer extends Component {
     }
 
     componentWillReceiveProps(newProps){
-      console.log('WRP', this.props, newProps);
       if(!this.props.token){
         this.getRequiredData()
         .then( data => {
           let token = newProps.token;
-          console.log('All Promises have Resolved', data, token);
           newProps.token.user.playlists = data[0] || [];
           this.setState({token: token})
         })
@@ -86,7 +86,6 @@ class MainContainer extends Component {
       .then( data => {
         token = Object.assign({}, data);
         this.setState({token: token, XHRMessage: 'Successfully Edited User'})
-        console.log('Back From Edit User', token);
         setTimeout(() => {
           this.setState({modal: false, XHRMessage: ''})
         }, 500)
@@ -153,6 +152,14 @@ class MainContainer extends Component {
     }
 
     submitModal = ( modalType, action, body, params ) => {
+      if(modalType === 'share' && action === 'post'){
+        console.log('Data in here', modalType, action, body, params)
+        ShareActions.createNewShare(body)
+        .then(share => {
+          this.setState({ modal: false })
+        })
+        .catch(err => console.log('Error after share', err))
+      }
       if(modalType === 'playlist' && action === 'post') {
         PlaylistActions.createNewPlaylist(body, this.state.songToAddToPlaylist)
         .then(playlist => {
@@ -164,7 +171,6 @@ class MainContainer extends Component {
       }
 
       if ( modalType === 'playlist' && action === 'put' ){
-        console.log('SUBMIT MODAL', body)
         PlaylistActions.editPlaylist(body)
         .then(playlist => {
           let token = Object.assign({}, this.state.token);
